@@ -131,5 +131,4 @@ Advanced Stuff to consider:
   leave manual refresh there for fixing up if they edit on another device
 
 
-NEW IN 0.21
-* Renamed to Argus - v0.21+ will not work with ForTheRecord
+NEW IN 0.22
