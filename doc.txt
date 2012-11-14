@@ -1,0 +1,135 @@
+CODING CONVENTIONS I'M TRYING TO REMEMBER AND STICK TO ;)
+* @synthesize is being phased out, stop using it and remove old ones
+  * use _instancevar = foo in init* only
+  * use self.instancevar everywhere else
+    * EXCEPT IN SETTERS, it causes infinite loops :/
+* replace [x objectAtIndex:] with x[] (and objectForKey?), and all the setters eventually
+* dot notation or [] notation is personal preference really
+  * I like dots for an instance var or property, [] for selectors, but this isn't a hard and fast rule
+
+
+
+
+TODO:
+* connection timeout in preferences?
+
+* add Reachability class and don't bother trying to do anything when offline?
+  * finish isWWAN()
+
+
+* When loading new tables which need data, ie Whats On -> Programme List
+  the right thing to do seems to be to replace disclosure indicators with a spinner
+  then push the view when the data is ready.. implement this everywhere?
+
+
+* schedule edit; "between times" was unset, added some times, didn't say "schedule not saved"
+  work out why and fix
+
+* getSchedules invokes 3 HTTP requests all the time, bit wasteful. could we just do one if scheduleType changed?
+
+* iPhone Search Results: tablecell height could be varied depending if it's upcoming recording or not
+
+
+OUTSTANDING BUGS/ISSUES:
+* SetUpcomingProgram* methods sometimes return 500 "An unknown database error occurred" randomly.
+  Retrying the request works fine though, could be internal Argus bug.
+* Channel logos occasionally disappear. Tracked this down to incorrect contents being written to
+  on-disk image files, but no idea why..
+* UpcomingProgrammeEdit does O(n) lookup on UpcomingProgrammes to get its object
+  this isn't critical (it's low-frequency code) but would be inefficient with big lists
+  we can improve this to O(1) by restoring UpcomingProgrammesKeyedByUpcomingProgramId
+* call cancelLocalNotification after a few minutes so they don't pile up?
+* check that failed connections reduce the networkActivity count properly
+
+
+
+* REPRODUCIBLE CRASH
+  view schedules page so it loads them in (dunno if necessary)
+  view upcoming programmes and change schedule type
+  view schedules again, scroll down to get more rows - crash
+  because the [entries count] isn't updated when the schedule type changes in another screen
+  * fixes?
+    1) each screen has it's own channeltype and scheduletype
+	   .. this would be significantly better than using the ChannelGroup's channeltype
+	2) AppDelegate has a ChannelType and ScheduleType which everything uses
+	   .. when either is changed it sends notification
+
+
+
+LIMITATIONS IN EDIT SCHEDULE TO FIX:
+* advanced boolean queries on ProgramInfo/Description aren't handled properly
+  Even the MMC doesn't handle them properly so probably nobody will ever notice
+  Argus sends multiple ProgramInfoContains args for ANDed queries, and we only handle one
+  If you prefix the query with NOT it won't even handle an OR
+* If DaysOfWeek and OnDate are set, OnDate actually changes to "from date" and is
+  bundled with DaysOfWeek. We don't handle this yet, and we should
+
+
+MUNDANE STUFF THAT COULD BE IMPROVED (not important)
+* Previously Recorded History cell could be a class
+* Improve iOS-feel, make better use of iOS conventions in UI
+  * Delete Schedule could be done in Schedules table (Edit -> Delete)
+* Start converting notifications to block-based where appropriate
+  * Generally selectors that are only ever called from one notification
+
+
+
+PUBLIC ROADMAP:
+* finish schedules (Directed By, Actors, Current Recordings)
+* colour coded EPG according to programme categories
+* light and dark switchable colour schemes
+* improve search to use complete schedule rule engine
+* show notifications when an upcoming programme alert is starting
+* localisation
+
+
+* Browse/delete recordings
+* make better use of iPad screen space (tedious)
+  * probably we don't need to split up edit schedule so much, but this means writing
+    a whole new view controller to handle every element on one page?
+	* improve MVC here, check that view controllers aren't doing too much?
+* In-App Prefs?
+* Debug/Internal Settings
+  * log of connections and responses
+  * forget credentials
+  * refetch schedules/upcoming/channels etc
+* "Submit anonymous crash reports" preference closer to release
+* when rotating on dynamic row height screens (Programme List so far), it'd be nice to re-scroll
+  the visible rows to what they were before. Investigate how..
+* copy % shown progress view from what's on to ProgrammeList?
+* don't pass Argus* objects around so much, especially ones that can change
+  * eg ArgusUpcomingProgramme will be released and remade when the list is updated
+  * look for other instances where I do this and fix to pass an Id that won't change instead
+    * schedule edit - this is worked around because the Schedule object in ScheduleViewController
+	  gets a new originalData when SaveSchedule comes back, but should still pass an Id in really
+	  * or not, when creating a new schedule the Id is 00-00-00 so this will fail to find it in Schedules array
+	    special case this one?
+* Finish Schedule Edit:
+  * Directed By, Actors
+  * Current Recordings
+* Split Previous Recordings into Previous & Current for Edit Schedule
+  * Previous can then call Control/ClearPreviouslyRecordedHistory/{scheduleId}
+* show "no entries" in various tables when there's nothing to display:
+  * search results
+* EPG: if viewing in past, and no programmes are shown, go to Now automatically
+* finish Remove All in View Previously Recorded History
+
+
+Advanced Stuff to consider:
+* when doing a search, don't use LoadingSpinner to block the entire app, just show a searching row
+  * how do we decide which operations pop up LoadingSpinner?
+	* anything that causes app-wide notifications I guess?
+  * user can go to EPG or whatever
+  * when search is done, show a tab bar badge
+
+
+* figure out when a page should refresh
+  on initial load, in LoadingTVC, get enough to render initial pages, like Schedules
+  don't pull in new info when a view appears (iPad now inline with iPhone for viewDidLoad)
+  reload any list that we think has changed, pretty much already doing this
+  like when a schedule changes/deleted
+  leave manual refresh there for fixing up if they edit on another device
+
+
+NEW IN 0.21
+* Renamed to Argus - v0.21+ will not work with ForTheRecord

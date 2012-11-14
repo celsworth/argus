@@ -1,0 +1,1044 @@
+//
+//  ArgusSchedule.m
+//  Argus
+//
+//  Created by Chris Elsworth on 05/03/2012.
+//  Copyright (c) 2012 Elsworth IT Consulting Ltd. All rights reserved.
+//
+
+#import "ArgusSchedule.h"
+#import "ArgusConnection.h"
+#import "ArgusChannel.h"
+#import "ArgusProgramme.h"
+#import "ArgusScheduleRecordedProgram.h"
+#import "Argus.h"
+
+#import "ISO8601DateFormatter.h"
+#import "NSDateFormatter+LocaleAdditions.h"
+
+#import "AppDelegate.h"
+
+#import "SBJson.h"
+#import "JSONKit.h"
+
+@implementation ArgusScheduleRule
+@synthesize Type, Arguments;
+@synthesize SuperType, MatchType;
+@synthesize Modified;
+
+-(id)initWithSuperType:(ArgusScheduleRuleSuperType)_SuperType
+{
+	self = [super init];
+	if (self)
+	{
+		SuperType = _SuperType;
+		
+		// these are defaults but let's be implicit
+		MatchType = 0;
+		Arguments = nil;
+		Modified = [NSNumber numberWithBool:NO];
+	}
+	return self;
+}
+-(id)initWithType:(ArgusScheduleRuleType)_Type
+{
+	self = [super init];
+	if (self)
+	{
+		Type = _Type;
+		
+		// these are defaults but let's be implicit
+		MatchType = 0;
+		Arguments = nil;
+		Modified = [NSNumber numberWithBool:NO];
+	}
+	return self;
+}
+
+-(void)setMatchType:(ArgusScheduleRuleMatchType)_MatchType
+{
+	Modified = [NSNumber numberWithBool:YES];
+	MatchType = _MatchType;
+	
+	if (SuperType)
+		Type = [self typeForMatchType:MatchType andSuperType:SuperType];
+}
+-(void)setArguments:(NSMutableArray *)_Arguments
+{
+	Modified = [NSNumber numberWithBool:YES];
+	Arguments = _Arguments;
+}
+
+-(void)setArgumentAsBoolean:(BOOL)val
+{
+	// Arguments should be an array with one value
+	// @"True" for true
+	// empty for false?
+	if (val)
+		Arguments = [NSArray arrayWithObject:@"True"];
+	else
+		Arguments = nil;
+}
+-(BOOL)getArgumentAsBoolean
+{
+	return [Arguments[0] isEqualToString:@"True"];
+}
+
+-(NSDate *)getArgumentAsDate
+{
+	NSString *tmp = Arguments[0];
+	if (!tmp) return nil;
+	
+	if (Type == ArgusScheduleRuleTypeOnDate)
+	{
+		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
+		return [isodf dateFromString:tmp];
+	}
+	
+	if (Type == ArgusScheduleRuleTypeAroundTime)
+	{
+		NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:ss"];
+		return [df dateFromString:tmp];
+	}
+	return nil;
+}
+-(void)setArgumentAsDate:(NSDate *)val
+{
+	if (Type == ArgusScheduleRuleTypeOnDate)
+	{
+		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
+		Arguments = [NSArray arrayWithObject:[isodf stringFromDate:val]];
+	}
+	
+	if (Type == ArgusScheduleRuleTypeAroundTime)
+	{
+		NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:00"];
+		Arguments = [NSArray arrayWithObject:[df stringFromDate:val]];
+	}
+}
+
+-(void)setArgumentAsFromDate:(NSDate *)fromVal toDate:(NSDate *)toVal
+{
+	NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:00"];
+	NSString *fromString = [df stringFromDate:fromVal];
+	NSString *toString = [df stringFromDate:toVal];
+	Arguments = [NSArray arrayWithObjects:fromString, toString, nil];
+}
+-(NSDate *)getArgumentAsDateAtIndex:(NSInteger)index
+{
+	NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:ss"];
+	return [df dateFromString:Arguments[index]];
+}
+
+-(BOOL)getArgumentAsDayOfWeekSelected:(ArgusScheduleRuleDaysOfWeek)day
+{
+	// Arguments[0] is a bitmask of days of week
+	NSInteger days = [[Arguments objectAtIndex:0] intValue];
+	return (days & day);
+}
+-(void)setArgumentAsDayOfWeek:(ArgusScheduleRuleDaysOfWeek)day selected:(BOOL)selected
+{
+	NSInteger days = [Arguments[0] intValue];
+
+	if (selected)
+		days |= day;
+	else
+		days &= ~day;
+	
+	Arguments = [NSArray arrayWithObject:[NSNumber numberWithInt:days]];
+}
+
+#pragma mark - Output Formats; converting structures back to JSON
+
+-(NSDictionary *)ruleAsDictionary
+{
+	if (Type && Arguments)
+	{
+		NSMutableDictionary *tmp = [NSMutableDictionary new];
+		[tmp setObject:Arguments forKey:kArguments];
+		[tmp setObject:[self typeAsString] forKey:kType];
+	
+		return [NSDictionary dictionaryWithDictionary:tmp];
+	}
+	return nil;
+}
+	 
+// convert Type to an NSString to send back to Argus
+-(NSString *)typeAsString
+{	
+	switch(Type)
+	{		
+		case ArgusScheduleRuleTypeTitleStartsWith:                   return kArgusScheduleRuleTypeTitleStartsWith;
+		case ArgusScheduleRuleTypeTitleEquals:                       return kArgusScheduleRuleTypeTitleEquals;
+		case ArgusScheduleRuleTypeTitleContains:                     return kArgusScheduleRuleTypeTitleContains;
+		case ArgusScheduleRuleTypeTitleDoesNotContain:               return kArgusScheduleRuleTypeTitleDoesNotContain;
+
+		case ArgusScheduleRuleTypeSubTitleStartsWith:                return kArgusScheduleRuleTypeSubTitleStartsWith;
+		case ArgusScheduleRuleTypeSubTitleEquals:                    return kArgusScheduleRuleTypeSubTitleEquals;
+		case ArgusScheduleRuleTypeSubTitleContains:                  return kArgusScheduleRuleTypeSubTitleContains;
+		case ArgusScheduleRuleTypeSubTitleDoesNotContain:            return kArgusScheduleRuleTypeSubTitleDoesNotContain;
+
+		case ArgusScheduleRuleTypeEpisodeNumberStartsWith:           return kArgusScheduleRuleTypeEpisodeNumberStartsWith;
+		case ArgusScheduleRuleTypeEpisodeNumberEquals:               return kArgusScheduleRuleTypeEpisodeNumberEquals;
+		case ArgusScheduleRuleTypeEpisodeNumberContains:             return kArgusScheduleRuleTypeEpisodeNumberContains;
+		case ArgusScheduleRuleTypeEpisodeNumberDoesNotContain:       return kArgusScheduleRuleTypeEpisodeNumberDoesNotContain;
+
+		case ArgusScheduleRuleTypeDescriptionContains:               return kArgusScheduleRuleTypeDescriptionContains;
+		case ArgusScheduleRuleTypeDescriptionDoesNotContain:         return kArgusScheduleRuleTypeDescriptionDoesNotContain;
+
+		case ArgusScheduleRuleTypeProgramInfoContains:               return kArgusScheduleRuleTypeProgramInfoContains;
+		case ArgusScheduleRuleTypeProgramInfoDoesNotContain:         return kArgusScheduleRuleTypeProgramInfoDoesNotContain;
+
+		case ArgusScheduleRuleTypeChannels:                          return kArgusScheduleRuleTypeChannels;
+		case ArgusScheduleRuleTypeNotOnChannels:                     return kArgusScheduleRuleTypeNotOnChannels;
+
+		case ArgusScheduleRuleTypeCategoryEquals:                    return kArgusScheduleRuleTypeCategoryEquals;
+		case ArgusScheduleRuleTypeCategoryDoesNotEqual:              return kArgusScheduleRuleTypeCategoryDoesNotEqual;
+
+			
+		case ArgusScheduleRuleTypeStartingBetween:                   return kArgusScheduleRuleTypeStartingBetween;
+		case ArgusScheduleRuleTypeAroundTime:                        return kArgusScheduleRuleTypeAroundTime;
+
+		case ArgusScheduleRuleTypeOnDate:                            return kArgusScheduleRuleTypeOnDate;
+
+		case ArgusScheduleRuleTypeDaysOfWeek:                        return kArgusScheduleRuleTypeDaysOfWeek;
+
+		case ArgusScheduleRuleTypeSkipRepeats:                       return kArgusScheduleRuleTypeSkipRepeats;
+		case ArgusScheduleRuleTypeNewTitlesOnly:                     return kArgusScheduleRuleTypeNewTitlesOnly;
+		case ArgusScheduleRuleTypeNewEpisodesOnly:                   return kArgusScheduleRuleTypeNewEpisodesOnly;
+
+		case ArgusScheduleRuleTypeDirectedBy:                        return kArgusScheduleRuleTypeDirectedBy;
+		case ArgusScheduleRuleTypeWithActor:                         return kArgusScheduleRuleTypeWithActor;
+
+		case ArgusScheduleRuleTypeManualSchedule:                    return kArgusScheduleRuleTypeManualSchedule;
+	}
+}
+
+// convert SuperType+MatchType back to Type (for sending back to Argus)
+-(ArgusScheduleRuleType)typeForMatchType:(ArgusScheduleRuleMatchType)_MatchType andSuperType:(ArgusScheduleRuleSuperType)_SuperType
+{
+	// based on SuperType and MatchType, set a new Type
+	// ie Title + Equals -> TitleEquals
+	switch (_SuperType)
+	{
+		case ArgusScheduleRuleSuperTypeTitle:
+			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeTitleEquals;
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeTitleContains;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeTitleDoesNotContain;
+			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeTitleStartsWith;
+			break;
+			
+		case ArgusScheduleRuleSuperTypeSubTitle:
+			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeSubTitleEquals;
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeSubTitleContains;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeSubTitleDoesNotContain;
+			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeSubTitleStartsWith;
+			break;
+
+		case ArgusScheduleRuleSuperTypeEpisodeNumber:
+			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeEpisodeNumberEquals;
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeEpisodeNumberContains;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeEpisodeNumberDoesNotContain;
+			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeEpisodeNumberStartsWith;
+			break;
+			
+		case ArgusScheduleRuleSuperTypeProgramInfo:
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeProgramInfoContains;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeProgramInfoDoesNotContain;
+			break;
+
+		case ArgusScheduleRuleSuperTypeDescription:
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeDescriptionContains;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeDescriptionDoesNotContain;
+			break;
+		
+		case ArgusScheduleRuleSuperTypeChannels:
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeChannels;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeNotOnChannels;
+			break;
+			
+		case ArgusScheduleRuleSuperTypeCategories:
+			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeCategoryEquals;
+			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeCategoryDoesNotEqual;
+			break;
+	}
+	return 0;
+}
+
+
+@end
+
+@class ArgusSchedule; // make initWithExistingSchedule build
+@implementation ArgusSchedule
+@synthesize Rules, RulesSuper;
+@synthesize fullDetailsDone;
+@synthesize UpcomingProgrammes, PreviouslyRecordedHistory;
+@synthesize Modified;
+
++(ArgusSchedule *)ScheduleForScheduleId:(ArgusGuid *)ScheduleId
+{
+	return [[[argus Schedules] SchedulesKeyedByScheduleId] objectForKey:ScheduleId];
+}
+
+-(id)init
+{
+	self = [super init];
+	if (self)
+	{
+		UpcomingProgrammes = [[ArgusUpcomingProgrammes alloc] initWithSchedule:self];
+	}
+	return self;
+}
+
+-(id)initEmptyWithChannelType:(ArgusChannelType)ChannelType scheduleType:(ArgusScheduleType)ScheduleType
+{
+	self = [self init];
+	if (self)
+	{
+		// fetch a new empty schedule populated with defaults
+		[self fetchEmptyScheduleOfChannelType:ChannelType scheduleType:ScheduleType];
+
+		// maybe set an editable flag which is true when the schedule is done?
+	}
+	return self;
+}
+
+-(id)initWithScheduleId:(NSString *)_ScheduleId
+{
+	self = [self init];
+	if (self)
+	{
+		// fetch schedule identified by ScheduleId
+		[self fetchScheduleId:_ScheduleId];	
+	}
+	return self;
+}
+
+-(id)initWithDictionary:(NSDictionary *)input
+{
+	self = [self init];
+	if (self)
+	{
+		if (! [self populateSelfFromDictionary:input])
+			return nil;
+		
+	}
+	return self;
+}
+
+-(id)initWithExistingSchedule:(ArgusSchedule *)sched
+{
+	self = [self init];
+	if (self)
+	{
+		// use originalData to copy everything over to ourselves
+		// this does rules too
+		if (! [self populateSelfFromDictionary:[sched originalData]])
+			return nil;
+	}
+	return self;
+}
+-(void)dealloc
+{
+	//NSLog(@"%s", __PRETTY_FUNCTION__);
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)setupForQuickRecord:(ArgusProgramme *)Programme
+{
+	[self setName:[Programme Property:kTitle]];
+	[self setScheduleType:ArgusScheduleTypeRecording];
+	[self setChannelType:[[[Programme Channel] Property:kChannelType] intValue]];
+	
+	// title
+	ArgusScheduleRule *tmprule;
+	tmprule = [Rules objectForKey:kArgusScheduleRuleSuperTypeTitle];
+	[tmprule setMatchType:ArgusScheduleRuleMatchTypeEquals];
+	[tmprule setArguments:[NSMutableArray arrayWithObject:[Programme Property:kTitle]]];
+	
+	// channel
+	tmprule = [Rules objectForKey:kArgusScheduleRuleSuperTypeChannels];
+	[tmprule setMatchType:ArgusScheduleRuleMatchTypeContains];
+	NSString *ChannelId = [[Programme Channel] Property:kChannelId];
+	[tmprule setArguments:[NSMutableArray arrayWithObject:ChannelId]];
+	
+	// date and time 
+	tmprule = [Rules objectForKey:kArgusScheduleRuleTypeOnDate];
+	[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
+	tmprule = [Rules objectForKey:kArgusScheduleRuleTypeAroundTime];
+	[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
+}
+
+-(void)setupEmptyRules
+{
+	// initialise rules
+	Rules = [[NSMutableDictionary alloc] initWithCapacity:32];
+	
+	// set up a bunch of empty placeholder rules that may be filled in later
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeTitle] forKey:kArgusScheduleRuleSuperTypeTitle];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeSubTitle] forKey:kArgusScheduleRuleSuperTypeSubTitle];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeEpisodeNumber] forKey:kArgusScheduleRuleSuperTypeEpisodeNumber];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeDescription] forKey:kArgusScheduleRuleSuperTypeDescription];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeProgramInfo] forKey:kArgusScheduleRuleSuperTypeProgramInfo];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeChannels] forKey:kArgusScheduleRuleSuperTypeChannels];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithSuperType:ArgusScheduleRuleSuperTypeCategories] forKey:kArgusScheduleRuleSuperTypeCategories];
+	
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeOnDate] forKey:kArgusScheduleRuleTypeOnDate];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeDaysOfWeek] forKey:kArgusScheduleRuleTypeDaysOfWeek];
+	
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeAroundTime] forKey:kArgusScheduleRuleTypeAroundTime];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeStartingBetween] forKey:kArgusScheduleRuleTypeStartingBetween];
+	
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeNewEpisodesOnly] forKey:kArgusScheduleRuleTypeNewEpisodesOnly];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeNewTitlesOnly] forKey:kArgusScheduleRuleTypeNewTitlesOnly];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeSkipRepeats] forKey:kArgusScheduleRuleTypeSkipRepeats];
+	
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeDirectedBy] forKey:kArgusScheduleRuleTypeDirectedBy];
+	[Rules setObject:[[ArgusScheduleRule alloc] initWithType:ArgusScheduleRuleTypeWithActor] forKey:kArgusScheduleRuleTypeWithActor];
+}
+
+-(BOOL)populateSelfFromDictionary:(NSDictionary *)input
+{
+	Modified = [NSNumber numberWithBool:NO];
+
+	if ([input isKindOfClass:[NSDictionary class]])
+	{
+
+		// re-initalise rules
+		[self setupEmptyRules];
+
+		// this copies input to originalData
+		if (! [super populateSelfFromDictionary:input])
+			return NO;
+
+		// ProcessingCommands not done yet
+		
+		// Rules
+		if ([[input objectForKey:kRules] isKindOfClass:[NSArray class]])
+			[self populateRulesFromArray:[input objectForKey:kRules]];
+		
+		return YES;
+	}
+	
+	return NO;
+}
+
+// initial loading, takes array and populates into ArgusScheduleRule objects
+-(void)populateRulesFromArray:(NSArray *)input
+{
+	for (NSDictionary *d in input)
+	{
+		ArgusScheduleRule *rp;
+		NSString *tmp = [d objectForKey:kType];
+		
+		// parse string type into enum type via lots of isEqualTo :(	
+		
+		if ([tmp isEqualToString:kArgusScheduleRuleTypeChannels])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeChannels];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeNotOnChannels])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeChannels];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+		
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeCategoryEquals])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeCategories];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeCategoryDoesNotEqual])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeCategories];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+		
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeAroundTime])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeAroundTime];
+
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeStartingBetween])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeStartingBetween];
+
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeOnDate])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeOnDate];
+
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeDaysOfWeek])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeDaysOfWeek];
+			
+		}
+		
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeSubTitleEquals])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeSubTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeEquals;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeSubTitleStartsWith])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeSubTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeStartsWith;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeSubTitleContains])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeSubTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeSubTitleDoesNotContain])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeSubTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+		
+		// EPISODE NUMBER
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeEpisodeNumberEquals])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeEpisodeNumber];
+			rp.MatchType = ArgusScheduleRuleMatchTypeEquals;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeEpisodeNumberStartsWith])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeEpisodeNumber];
+			rp.MatchType = ArgusScheduleRuleMatchTypeStartsWith;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeEpisodeNumberContains])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeEpisodeNumber];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeEpisodeNumberDoesNotContain])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeEpisodeNumber];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+
+		// TITLE
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeTitleEquals])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeEquals;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeTitleStartsWith])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeStartsWith;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeTitleContains])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;		
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeTitleDoesNotContain])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeTitle];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+		
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeDescriptionContains])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeDescription];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeDescriptionDoesNotContain])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeDescription];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+		
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeDirectedBy])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeDirectedBy];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeWithActor])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeWithActor];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeSkipRepeats])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeSkipRepeats];
+
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeNewEpisodesOnly])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeNewEpisodesOnly];
+			
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeNewTitlesOnly])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeNewTitlesOnly];
+
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeManualSchedule])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleTypeManualSchedule];
+
+		}
+
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeProgramInfoContains])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeProgramInfo];
+			rp.MatchType = ArgusScheduleRuleMatchTypeContains;
+		}
+		else if ([tmp isEqualToString:kArgusScheduleRuleTypeProgramInfoDoesNotContain])
+		{
+			rp = [Rules objectForKey:kArgusScheduleRuleSuperTypeProgramInfo];
+			rp.MatchType = ArgusScheduleRuleMatchTypeDoesNotContain;
+		}
+
+		rp.Arguments = [d objectForKey:kArguments];
+		
+		// setArguments will have set Modified=YES, reset that
+		rp.Modified = [NSNumber numberWithBool:NO];
+	}
+}
+// the reverse, takes our Rules dictionary and presents json-ready array
+-(NSMutableArray *)arrayFromRules
+{
+	NSMutableArray *tmp = [NSMutableArray new];
+	for (NSString *key in Rules)
+	{
+		ArgusScheduleRule *t = [Rules objectForKey:key];
+		NSDictionary *d = [t ruleAsDictionary];
+		if (d)
+			[tmp addObject:d];
+	}
+	return tmp;
+}
+
+-(BOOL)isModified
+{
+	// return true if the schedule or any rule is modified
+	if ([Modified boolValue]) return YES;
+		
+	// if not, check all the rules
+	for (NSString *key in Rules)
+	{
+		ArgusScheduleRule *t = [Rules objectForKey:key];
+		if ([[t Modified] boolValue])
+		{
+			// this'll let us return quicker next time
+			Modified = [NSNumber numberWithBool:YES];
+			
+			return YES;
+		}
+	}
+	return NO;
+}
+
+#pragma mark - Get Schedule By Id
+-(void)fetchEmptyScheduleOfChannelType:(ArgusChannelType)ChannelType scheduleType:(ArgusScheduleType)ScheduleType
+{
+	Modified = [NSNumber numberWithBool:NO];
+	
+	NSString *url = [NSString stringWithFormat:@"Scheduler/EmptySchedule/%d/%d", ChannelType, ScheduleType];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
+	
+	// await notification from ArgusConnection that the request has finished
+	// we re-use GetFullDetailsDone for this, it's basically the same as FetchEmptyFinished would be
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(GetFullScheduleDetailsDone:)
+												 name:kArgusConnectionDone
+											   object:c];	
+}
+
+
+-(void)getFullDetails
+{
+	[self getFullDetailsForced:NO];
+}
+-(void)getFullDetailsForced:(BOOL)forced
+{
+	if (!forced && fullDetailsDone)
+		return;
+	
+	Modified = [NSNumber numberWithBool:NO];
+	
+	NSString *url = [NSString stringWithFormat:@"Scheduler/ScheduleById/%@", [self ScheduleId]];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
+	
+	// await notification from ArgusConnection that the request has finished
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(GetFullScheduleDetailsDone:)
+												 name:kArgusConnectionDone
+											   object:c];
+}
+-(void)GetFullScheduleDetailsDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+
+	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	
+	SBJsonParser *jsonParser = [SBJsonParser new];
+	NSDictionary *jsonObject = [jsonParser objectWithData:data];
+	
+	//NSLog(@"%s %@", __PRETTY_FUNCTION__, jsonObject);
+	
+	//self.originalData = [[NSMutableDictionary alloc] initWithDictionary:jsonObject];
+	[self populateSelfFromDictionary:jsonObject];
+	
+	// mark the object as full details fetched so we don't end up looping
+	// if description isn't populated now, there isn't one
+	self.fullDetailsDone = true;
+	
+	//NSLog(@"%s sending kArgusScheduleDone", __PRETTY_FUNCTION__);
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusScheduleDone object:self];
+}
+
+
+#pragma mark - Get Full Details / New Empty Schedule
+
+-(void)fetchScheduleId:(NSString *)_ScheduleId
+{
+	Modified = [NSNumber numberWithBool:NO];
+
+	NSString *url = [NSString stringWithFormat:@"Scheduler/ScheduleById/%@", _ScheduleId];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
+	
+	// await notification from ArgusConnection that the request has finished
+	// we re-use GetFullDetailsDone for this, it's basically the same as fetchScheduleFinished would be
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(GetFullScheduleDetailsDone:)
+												 name:kArgusConnectionDone
+											   object:c];
+}
+
+
+#pragma mark - Get Upcoming Programmes for schedule
+-(void)getUpcomingProgrammes
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
+	// update Rules in originalData
+	[self.originalData setObject:[self arrayFromRules] forKey:kRules];
+
+	[UpcomingProgrammes getUpcomingProgrammesForSchedule];
+	
+	// await notification
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(UpcomingProgrammesDone:)
+												 name:kArgusUpcomingProgrammesDone
+											   object:UpcomingProgrammes];
+
+}
+-(void)UpcomingProgrammesDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kArgusUpcomingProgrammesDone object:[notify object]];
+
+	
+	// post our own notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusUpcomingProgrammesDone object:self];
+
+	// anything else?
+}
+
+#pragma mark - Previously Recorded History
+-(void)getPRH
+{
+	[AppDelegate requestLoadingSpinner];
+	
+	NSString *url = [NSString stringWithFormat:@"Control/PreviouslyRecordedHistory/%@", [self Property:kScheduleId]];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(getPRHDone:)
+												 name:kArgusConnectionDone
+											   object:c];
+}
+-(void)getPRHDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+
+	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSArray *jsonObject = [data objectFromJSONData];
+
+	NSMutableArray *tmpArr = [NSMutableArray new];
+	
+	for (NSDictionary *d in jsonObject)
+	{
+		NSLog(@"%s %@", __PRETTY_FUNCTION__, d);
+		
+		ArgusScheduleRecordedProgram *srp = [[ArgusScheduleRecordedProgram alloc] initWithDictionary:d];
+		
+		[tmpArr addObject:srp];
+	}
+	
+	PreviouslyRecordedHistory = tmpArr;
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusScheduleGetPRHDone object:self];
+
+	[AppDelegate releaseLoadingSpinner];
+}
+
+// deleteFromPRH
+// actually, put this in ArgusScheduleRecordedProgram
+
+
+
+#pragma mark - Schedule Saving
+-(void)save
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	// update Rules in originalData
+	[self.originalData setObject:[self arrayFromRules] forKey:kRules];
+		
+	NSString *url = [NSString stringWithFormat:@"Scheduler/SaveSchedule"];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
+
+	//NSLog(@"%@", url);
+
+	NSString *body = [self.originalData JSONRepresentation];
+
+	NSLog(@"Saving Schedule: %@", body);
+	
+	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	[c enqueue];
+	
+	// await notification from ArgusConnection that the request has finished
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SaveScheduleDone:) name:kArgusConnectionDone object:c];	
+
+}
+-(void)SaveScheduleDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+
+	// after saving, the new schedule is sent back to us in the body, with an incremented Version
+	// we need to fill this new data into our structures or subsequent saves will fail with err500
+	
+	NSInteger statusCode = [[[notify object] httpresponse] statusCode];
+	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	
+	if (statusCode == 200)
+	{
+		SBJsonParser *jsonParser = [SBJsonParser new];
+		NSDictionary *jsonObject = [jsonParser objectWithData:data];
+
+		// populateSelfFromDictionary sets Schedule.Modified=NO
+		[self populateSelfFromDictionary:jsonObject];
+	}
+	else
+	{
+		//NSString *body = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+		//NSLog(@"SaveScheduleDone: %@", body);
+	}
+	
+	/*
+	NSLog(@"sched modified=%d", [Modified boolValue]);
+	for (NSString *k in Rules)
+	{
+		ArgusScheduleRule *r = [Rules objectForKey:k];
+		NSLog(@"r=%@", r);
+		NSLog(@"ruletype=%d mod=%d", [r Type], [[r Modified] boolValue]);
+	}
+	 */
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusSaveScheduleDone object:self];
+}
+
+
+#pragma mark - Schedule Deletion
+
+-(void)delete
+{
+	// delete the schedule from the server
+	NSString *url = [NSString stringWithFormat:@"Scheduler/DeleteSchedule/%@", [self ScheduleId]];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url ];
+	
+	// await notification from ArgusConnection that the request has finished
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(DeleteScheduleDone:)
+												 name:kArgusConnectionDone
+											   object:c];	
+}
+-(void)DeleteScheduleDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusDeleteScheduleDone object:self];
+}
+
+
+#pragma mark - Object Getters/Setters
+
+-(NSString *)ScheduleId
+{
+	return [[self originalData] objectForKey:kScheduleId];
+}
+
+-(void)setName:(NSString *)val
+{
+	[[self originalData] setValue:val forKey:kName];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSString *)Name
+{
+	return [[self originalData] objectForKey:kName];
+}
+
+-(void)setSchedulePriority:(NSNumber *)val
+{
+	[[self originalData] setValue:val forKey:kSchedulePriority];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSNumber *)SchedulePriority
+{
+	return [[self originalData] objectForKey:kSchedulePriority];
+}
+
+-(void)setIsActive:(BOOL)val
+{
+	NSNumber *n = [NSNumber numberWithBool:val];
+	[[self originalData] setValue:n forKey:kIsActive];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(BOOL)IsActive
+{
+	return [[[self originalData] objectForKey:kIsActive] boolValue];
+}
+
+-(void)setChannelType:(ArgusChannelType)val
+{
+	[[self originalData] setValue:[NSNumber numberWithInt:val] forKey:kChannelType];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(ArgusChannelType)ChannelType
+{
+	return [[[self originalData] objectForKey:kChannelType] intValue];
+}
+-(void)setScheduleType:(ArgusScheduleType)val
+{
+	[[self originalData] setValue:[NSNumber numberWithInt:val] forKey:kScheduleType];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(ArgusScheduleType)ScheduleType
+{
+	return [[[self originalData] objectForKey:kScheduleType] intValue];
+}
+
+
+-(void)setPreRecordSeconds:(NSNumber *)val
+{
+	[[self originalData] setValue:val forKey:kPreRecordSeconds];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSNumber *)PreRecordSeconds
+{
+	return [[self originalData] objectForKey:kPreRecordSeconds];
+}
+
+-(void)setPostRecordSeconds:(NSNumber *)val
+{
+	[[self originalData] setValue:val forKey:kPostRecordSeconds];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSNumber *)PostRecordSeconds
+{
+	return [[self originalData] objectForKey:kPostRecordSeconds];
+}
+
+-(void)setKeepUntilMode:(NSNumber *)val
+{
+	[[self originalData] setValue:val forKey:kKeepUntilMode];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSNumber *)KeepUntilMode
+{
+	return [[self originalData] objectForKey:kKeepUntilMode];
+}
+
+-(void)setKeepUntilValue:(NSNumber *)val
+{
+	[[self originalData] setValue:val forKey:kKeepUntilValue];
+	Modified = [NSNumber numberWithBool:YES];
+}
+-(NSNumber *)KeepUntilValue
+{
+	return [[self originalData] objectForKey:kKeepUntilValue];
+}
+
+-(void)setRecordingFileFormatId:(ArgusGuid *)val
+{
+	[[self originalData] setValue:val forKey:kRecordingFileFormatId];
+	
+	Modified = [NSNumber numberWithBool:YES];
+}
+
+
+
+#pragma mark - Helper Methods
+
+
++(NSString *)stringForPriority:(ArgusPriority)priority
+{
+	switch (priority)
+	{
+		case ArgusPriorityVeryLow:
+			return NSLocalizedString(@"very low", @"priority rating");
+
+		case ArgusPriorityLow:
+			return NSLocalizedString(@"low", @"priority rating");
+
+		case ArgusPriorityNormal:
+			return NSLocalizedString(@"normal", @"priority rating");
+
+		case ArgusPriorityHigh:
+			return NSLocalizedString(@"high", @"priority rating");
+
+		case ArgusPriorityVeryHigh:
+			return NSLocalizedString(@"very high", @"priority rating");
+	}
+}
+
++(NSString *)stringForKeepUntilMode:(ArgusKeepUntilMode)keepUntilMode
+{
+	switch (keepUntilMode)
+	{
+		case ArgusKeepUntilModeUntilSpaceIsNeeded:
+			return NSLocalizedString(@"until space is needed", @"keep until mode description");
+			
+		case ArgusKeepUntilModeForever:
+			return NSLocalizedString(@"forever", @"keep until mode description");
+			
+		case ArgusKeepUntilModeNumberOfDays:
+			return NSLocalizedString(@"days", @"keep until mode description");
+			
+		case ArgusKeepUntilModeNumberOfEpisodes:
+			return NSLocalizedString(@"recordings", @"keep until mode description");
+			
+		case ArgusKeepUntilModeNumberOfWatchedEpisodes:
+			return NSLocalizedString(@"watched recordings", @"keep until mode description");
+	}
+}
+
+@end
