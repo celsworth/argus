@@ -148,12 +148,14 @@ typedef struct JKParseState JKParseState; // Opaque internal, private type.
 - (id)initWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
 - (void)clearCache;
 
+#if 0
 // The parse... methods were deprecated in v1.4 in favor of the v1.4 objectWith... methods.
 - (id)parseUTF8String:(const unsigned char *)string length:(size_t)length                         JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length:        instead.
 - (id)parseUTF8String:(const unsigned char *)string length:(size_t)length error:(NSError **)error JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length:error:  instead.
 // The NSData MUST be UTF8 encoded JSON.
 - (id)parseJSONData:(NSData *)jsonData                                                            JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithData:                     instead.
 - (id)parseJSONData:(NSData *)jsonData error:(NSError **)error                                    JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithData:error:               instead.
+#endif
 
 // Methods that return immutable collection objects.
 - (id)objectWithUTF8String:(const unsigned char *)string length:(NSUInteger)length;

@@ -677,7 +677,7 @@ static JKArray *_JKArrayCreate(id *objects, NSUInteger count, BOOL mutableCollec
   NSCParameterAssert((objects != NULL) && (_JKArrayClass != NULL) && (_JKArrayInstanceSize > 0UL));
   JKArray *array = NULL;
   if(JK_EXPECT_T((array = (JKArray *)calloc(1UL, _JKArrayInstanceSize)) != NULL)) { // Directly allocate the JKArray instance via calloc.
-    array->isa      = _JKArrayClass;
+    object_setClass(array, _JKArrayClass);;
     if((array = [array init]) == NULL) { return(NULL); }
     array->capacity = count;
     array->count    = count;
@@ -744,7 +744,9 @@ static void _JKArrayRemoveObjectAtIndex(JKArray *array, NSUInteger objectIndex) 
   NSParameterAssert((objects != NULL) && (count <= capacity));
   if((objectsPtr     == NULL)  && (NSMaxRange(range) > 0UL))   { [NSException raise:NSRangeException format:@"*** -[%@ %@]: pointer to objects array is NULL but range length is %lu", NSStringFromClass([self class]), NSStringFromSelector(_cmd), (unsigned long)NSMaxRange(range)];        }
   if((range.location >  count) || (NSMaxRange(range) > count)) { [NSException raise:NSRangeException format:@"*** -[%@ %@]: index (%lu) beyond bounds (%lu)",                          NSStringFromClass([self class]), NSStringFromSelector(_cmd), (unsigned long)NSMaxRange(range), (unsigned long)count]; }
+#ifndef __clang_analyzer__
   memcpy(objectsPtr, objects + range.location, range.length * sizeof(id));
+#endif
 }
 
 - (id)objectAtIndex:(NSUInteger)objectIndex
@@ -926,7 +928,7 @@ static JKDictionary *_JKDictionaryCreate(id *keys, NSUInteger *keyHashes, id *ob
   NSCParameterAssert((keys != NULL) && (keyHashes != NULL) && (objects != NULL) && (_JKDictionaryClass != NULL) && (_JKDictionaryInstanceSize > 0UL));
   JKDictionary *dictionary = NULL;
   if(JK_EXPECT_T((dictionary = (JKDictionary *)calloc(1UL, _JKDictionaryInstanceSize)) != NULL)) { // Directly allocate the JKDictionary instance via calloc.
-    dictionary->isa      = _JKDictionaryClass;
+    object_setClass(dictionary, _JKDictionaryClass);
     if((dictionary = [dictionary init]) == NULL) { return(NULL); }
     dictionary->capacity = _JKDictionaryCapacityForCount(count);
     dictionary->count    = 0UL;
@@ -2201,6 +2203,7 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
 #pragma mark Deprecated as of v1.4
 ////////////
 
+#if 0
 // Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length: instead.
 - (id)parseUTF8String:(const unsigned char *)string length:(size_t)length
 {
@@ -2224,6 +2227,7 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
 {
   return([self objectWithData:jsonData error:error]);
 }
+#endif
 
 ////////////
 #pragma mark Methods that return immutable collection objects
