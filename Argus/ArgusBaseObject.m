@@ -61,16 +61,16 @@
 	// if they are asking for a date, return an NSDate, not an NSString
 	// note these == only work because we're comparing against constants whose addresses never change
 	// its a lot faster than isEqualToString and achieves the same thing
-	if (what == kStartTime || what == kStopTime)
+	if ([what isEqual:kStartTime] || [what isEqual:kStopTime])
 		return [ret getDateFromJSON];
 
-	if (what == kActualStartTime || what == kActualStopTime || what == kRecordingStartTime)
+	if ([what isEqual:kActualStartTime] || [what isEqual:kActualStopTime] || [what isEqual:kRecordingStartTime])
 		return [ret getDateFromJSON];
 	
-	if (what == kStreamStartedTime || what == kStreamLastAliveTime)
+	if ([what isEqual:kStreamStartedTime] || [what isEqual:kStreamLastAliveTime])
 		return [ret getDateFromJSON];
 	
-	if (what == kRecordedOn)
+	if ([what isEqual:kRecordedOn])
 		return [ret getDateFromJSON];
 
 	return ret;
