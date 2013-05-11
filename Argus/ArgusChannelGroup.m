@@ -42,7 +42,7 @@
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
 
-		ChannelGroupId = [input objectForKey:kChannelGroupId];
+		ChannelGroupId = input[kChannelGroupId];
 		
 		// channels within the channel group, once we know them
 		// pointer to an NSMutableArray
@@ -89,7 +89,7 @@
 
 	// parse the data into Channels
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	//SBJsonParser *jsonParser = [SBJsonParser new];
 	//NSArray *jsonObject = [jsonParser objectWithData:data];
@@ -130,7 +130,7 @@
 
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	NSString *body = [[NSDictionary dictionaryWithObject:ChannelGroupId forKey:kChannelGroupId] JSONString];
+	NSString *body = [@{kChannelGroupId: ChannelGroupId} JSONString];
 
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
 	
@@ -154,7 +154,7 @@
 
 	// parse the data into CurrentAndNext
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 
 	//NSString *r = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 	//NSLog(@"%@", r);
@@ -173,9 +173,9 @@
 	{
 		//NSLog(@"%@", jsonObject);
 		
-		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:[d objectForKey:kChannel]];
+		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:d[kChannel]];
 		
-		tmp = [d objectForKey:kCurrent];
+		tmp = d[kCurrent];
 		if (tmp && tmp != (NSDictionary *)[NSNull null]) // avoid ArgusBaseObject nil error when no programme is on
 		{
 			p = [[ArgusProgramme alloc] initWithDictionary:tmp];
@@ -192,7 +192,7 @@
 			}
 		}
 		
-		tmp = [d objectForKey:kNext];
+		tmp = d[kNext];
 		if (tmp && tmp != (NSDictionary *)[NSNull null])
 		{
 			p = [[ArgusProgramme alloc] initWithDictionary:tmp];
@@ -250,9 +250,9 @@
 	}
 	
 	NSMutableDictionary *bodyDict = [NSMutableDictionary new];
-	[bodyDict setObject:GuideChannelIds forKey:@"GuideChannelIds"];
-	[bodyDict setObject:fromX forKey:@"LowerTime"];
-	[bodyDict setObject:toX forKey:@"UpperTime"];
+	bodyDict[@"GuideChannelIds"] = GuideChannelIds;
+	bodyDict[@"LowerTime"] = fromX;
+	bodyDict[@"UpperTime"] = toX;
 	
 	//NSLog(@"%@", bodyDict);
 	
@@ -295,7 +295,7 @@
 	
 	//NSDate *start = [NSDate date];
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	NSArray *jsonObject = [data objectFromJSONData];
 
@@ -303,19 +303,19 @@
 	
 	for (NSDictionary *d in jsonObject)
 	{
-		NSString *GuideChannelId = [d objectForKey:kGuideChannelId];
+		NSString *GuideChannelId = d[kGuideChannelId];
 		
 		// look up all ChannelIds that use this GuideChannelId, noting there could be multiple
-		for (ArgusChannel *c in [[argus ChannelsKeyedByGuideChannelId] objectForKey:GuideChannelId])
+		for (ArgusChannel *c in [argus ChannelsKeyedByGuideChannelId][GuideChannelId])
 		{
 			NSString *ChannelId = [c Property:kChannelId];
 			
 			// find the array to add this programme into (one array per GuideChannelId)
-			NSMutableArray *tmpArr = [tmpDict objectForKey:ChannelId];
+			NSMutableArray *tmpArr = tmpDict[ChannelId];
 			if (!tmpArr)
 			{
 				tmpArr = [NSMutableArray new];
-				[tmpDict setObject:tmpArr forKey:ChannelId];
+				tmpDict[ChannelId] = tmpArr;
 			}
 			
 			ArgusProgramme *p = [[ArgusProgramme alloc] initWithDictionary:d];

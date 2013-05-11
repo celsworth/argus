@@ -57,7 +57,7 @@
 							 target:self
 							 action:@selector(newSchedule:)];
 
-	[[self navigationItem] setRightBarButtonItems:[NSArray arrayWithObjects:btn, btn2, nil]];
+	[[self navigationItem] setRightBarButtonItems:@[btn, btn2]];
 	
 	// this allows Type to co-exist with Menu (back) on iPad
 	// on iPhone it just has no effect as there is no Back button
@@ -163,7 +163,7 @@
 	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ScheduleCell"];
 
-	ArgusSchedule *s = [entries objectAtIndex:indexPath.row];
+	ArgusSchedule *s = entries[indexPath.row];
 	
 	cell.textLabel.text = [s Property:kName];
 	
@@ -195,7 +195,7 @@
         // tell dvc which entry has been tapped on
 		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 		NSMutableArray *entries = [[argus Schedules] schedulesForChannelType:[[argus ChannelGroups] SelectedChannelType] scheduleType:[argus SelectedScheduleType]];
-		dvc.Schedule = [entries objectAtIndex:indexPath.row];
+		dvc.Schedule = entries[indexPath.row];
 		
 		// additionally, trigger getting full details
 		// don't do it in the view as that leads to complications:

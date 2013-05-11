@@ -45,7 +45,7 @@
 		NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithCapacity: 32];
 		
 		// fill in RecordingDiskInfos array with each individual disk
-		for (NSDictionary *d in [input objectForKey:kRecordingDiskInfos])
+		for (NSDictionary *d in input[kRecordingDiskInfos])
 		{
 			ArgusRecordingDiskInfo *t = [[ArgusRecordingDiskInfo alloc] initWithDictionary:d];
 			[tmpArr addObject:t];

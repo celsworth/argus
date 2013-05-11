@@ -45,7 +45,7 @@
 	// (which it often is when we save changes etc), we still get the right data instead of looking at an old object
 	for (NSString *uniqId in [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier])
 	{
-		ArgusUpcomingProgramme *t = [[[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier] objectForKey:uniqId];
+		ArgusUpcomingProgramme *t = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][uniqId];
 		if ([[t Property:kUpcomingProgramId] isEqualToString:UpcomingProgramId])
 		{
 			Programme = t;
@@ -176,7 +176,7 @@
 		// UpcomingProgramme objects have a Channel sub-object
 		// rChannel is alloced and retained in an UpcomingProgramme, then linked to
 		// Programme.Channel weakly so uniqueIdentifier works (amongst other things)
-		rChannel = [[ArgusChannel alloc] initWithDictionary:[input objectForKey:kChannel]];
+		rChannel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		self.Channel = rChannel;
 		
 		return YES;
@@ -479,7 +479,7 @@
 	
 	//NSLog(@"%s %@", __PRETTY_FUNCTION__, upcomingProgramId);
 	
-	return [[[argus UpcomingRecordings] UpcomingRecordingsKeyedByUpcomingProgramId] objectForKey:upcomingProgramId];
+	return [[argus UpcomingRecordings] UpcomingRecordingsKeyedByUpcomingProgramId][upcomingProgramId];
 }
 
 

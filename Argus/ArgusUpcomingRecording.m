@@ -22,10 +22,10 @@
 	{
 		NSDictionary *tmp;
 		
-		if ((tmp = [input objectForKey:kProgram]))
+		if ((tmp = input[kProgram]))
 			self.UpcomingProgramme = [[ArgusUpcomingProgramme alloc] initWithDictionary:tmp ScheduleType:ArgusScheduleTypeRecording];
 		
-		if ((tmp = [input objectForKey:kCardChannelAllocation]))
+		if ((tmp = input[kCardChannelAllocation]))
 			self.CardChannelAllocation = [[ArgusCardChannelAllocation alloc] initWithDictionary:tmp];
 		
 		// ConflictingPrograms?

@@ -119,7 +119,7 @@
 		// avoid spamming console too much by only printing this when we're going to do something
 		NSLog(@"%s q=%d a=%d", __PRETTY_FUNCTION__, [queuedConnections count], activeConnectionCount);
 		
-		ArgusConnection *c = [queuedConnections objectAtIndex:0];
+		ArgusConnection *c = queuedConnections[0];
 		
 		BOOL r = [c start];
 		if (r)
@@ -212,7 +212,7 @@
 				break;
 				
 			default:
-				tmp = [[NSString alloc] initWithData:[[notify userInfo] objectForKey:@"data"] encoding:NSASCIIStringEncoding];
+				tmp = [[NSString alloc] initWithData:[notify userInfo][@"data"] encoding:NSASCIIStringEncoding];
 				NSLog(@"HTTP Error %d: %@", [[c httpresponse] statusCode], tmp);
 				break;
 		}
@@ -270,7 +270,7 @@
 	
 	// pre-fill username if we have it, but not password
 	NSDictionary *auth = [SimpleKeychain load:@"Argus_Credentials"];
-	[[authDetailsAlertView textFieldAtIndex:0] setText:[auth objectForKey:@"user"]];
+	[[authDetailsAlertView textFieldAtIndex:0] setText:auth[@"user"]];
 	
 	visibleConnection = c;
 	
@@ -412,8 +412,8 @@
 		if (user && pass)
 		{
 			NSMutableDictionary *d = [NSMutableDictionary new];
-			[d setObject:user forKey:@"user"];
-			[d setObject:pass forKey:@"pass"];
+			d[@"user"] = user;
+			d[@"pass"] = pass;
 			[SimpleKeychain save:@"Argus_Credentials" data:d];
 		}
 		

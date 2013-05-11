@@ -146,7 +146,7 @@
 	if ([[Schedule PreviouslyRecordedHistory] count] == 0)
 		return NO;
 	
-	ArgusScheduleRecordedProgram *srp = [[Schedule PreviouslyRecordedHistory] objectAtIndex:indexPath.row];
+	ArgusScheduleRecordedProgram *srp = [Schedule PreviouslyRecordedHistory][indexPath.row];
 	
 	// row being acted on not editable
 	if ([srp IsRemovingFromPRH])
@@ -163,7 +163,7 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:ScheduleId];
-	ArgusScheduleRecordedProgram *srp = [[Schedule PreviouslyRecordedHistory] objectAtIndex:indexPath.row];
+	ArgusScheduleRecordedProgram *srp = [Schedule PreviouslyRecordedHistory][indexPath.row];
 
 	[srp removeFromPRH];
 	

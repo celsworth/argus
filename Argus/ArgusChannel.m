@@ -71,11 +71,11 @@
 	
 	localtime_r(&fromTimeT, &timeStruct);
 	strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timeStruct);
-	NSString *fromAsStr = [NSString stringWithCString:buffer encoding:NSASCIIStringEncoding];
+	NSString *fromAsStr = @(buffer);
 
 	localtime_r(&toTimeT, &timeStruct);
 	strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timeStruct);
-	NSString *toAsStr = [NSString stringWithCString:buffer encoding:NSASCIIStringEncoding];
+	NSString *toAsStr = @(buffer);
 
 	NSString *url = [NSString stringWithFormat:@"Guide/FullPrograms/%@/%@/%@/false", GuideChannelId, fromAsStr, toAsStr];
 	
@@ -105,7 +105,7 @@
 	
 	// parse the data, which is an array of ArgusProgramme objects?
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	//SBJsonParser *jsonParser = [SBJsonParser new];
 	//NSArray *jsonObject = [jsonParser objectWithData:data];

@@ -103,7 +103,7 @@
 	lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressOnLabel:)];
 	[lpgr setMinimumPressDuration:0.5];
 	
-	label.gestureRecognizers = [NSArray arrayWithObjects:tgr, lpgr, nil];
+	label.gestureRecognizers = @[tgr, lpgr];
 
 	[view addSubview:label];
 	

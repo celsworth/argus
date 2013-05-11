@@ -81,9 +81,9 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	NSInteger rv = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] intValue];
-	NSDictionary *r = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:rv] forKey:@"ApiVersion"];
+	NSDictionary *r = @{@"ApiVersion": @(rv)};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusApiVersionDone object:self userInfo:r];
 }
 
@@ -101,7 +101,7 @@
 -(void)VersionDone:(NSNotification *)notify
 {
 	// notify userInfo now needs parsing into a string
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
@@ -140,7 +140,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSArray *jsonObject = [jsonParser objectWithData:data];
@@ -151,10 +151,10 @@
 	{
 		ArgusProgramme *p = [[ArgusProgramme alloc] initWithDictionary:d];
 		
-		NSString *ChannelId = [[d objectForKey:kChannel] objectForKey:kChannelId];
+		NSString *ChannelId = d[kChannel][kChannelId];
 		assert(ChannelId);
 		
-		ArgusChannel *c = [[argus ChannelsKeyedByChannelId] objectForKey:ChannelId];
+		ArgusChannel *c = [argus ChannelsKeyedByChannelId][ChannelId];
 		assert(c);
 		
 		[p setChannel:c];
@@ -194,7 +194,7 @@
 -(void)ChannelsDone:(NSNotification *)notify
 {
 	// notify userInfo now needs parsing into ChannelGroups
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
@@ -206,7 +206,7 @@
 	for (NSDictionary *d in jsonObject)
 	{
 		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:d];
-		[NewChannelsKeyedByChannelId setObject:c forKey:[c Property:kChannelId]];
+		NewChannelsKeyedByChannelId[[c Property:kChannelId]] = c;
 			
 		// same for GuideChannelId. However this dictionary has arrays in it
 		// because there could be more than one Channel with a given GuideChannelId
@@ -215,11 +215,11 @@
 		if (!GuideChannelId)
 			continue;
 		
-		NSMutableArray *tmpArr = [NewChannelsKeyedByGuideChannelId objectForKey:GuideChannelId];
+		NSMutableArray *tmpArr = NewChannelsKeyedByGuideChannelId[GuideChannelId];
 		if (!tmpArr)
 		{
 			tmpArr = [NSMutableArray new];
-			[NewChannelsKeyedByGuideChannelId setObject:tmpArr forKey:GuideChannelId];
+			NewChannelsKeyedByGuideChannelId[GuideChannelId] = tmpArr;
 		}
 		[tmpArr addObject:c];
 	}
@@ -274,7 +274,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
 	// notify userInfo now needs parsing into ChannelGroups
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSArray *jsonObject = [jsonParser objectWithData:data];
@@ -317,7 +317,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
 	// notify userInfo now needs parsing into ChannelGroups
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSArray *jsonObject = [jsonParser objectWithData:data];
@@ -360,7 +360,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSDictionary *jsonObject = [jsonParser objectWithData:data];

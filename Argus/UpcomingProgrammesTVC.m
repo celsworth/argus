@@ -148,7 +148,7 @@
 	if ([[self upcomingProgrammesForUPCDS] count] == 0)
 		return [tableView dequeueReusableCellWithIdentifier:@"NoUpcomingProgrammeCell"];
 	
-	ArgusUpcomingProgramme *p = [[self upcomingProgrammesForUPCDS] objectAtIndex:indexPath.row];
+	ArgusUpcomingProgramme *p = [self upcomingProgrammesForUPCDS][indexPath.row];
 	ProgrammeSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UpcomingProgrammeCell"];
 	[cell populateCellWithUpcomingProgramme:p];
 	return cell;
@@ -187,7 +187,7 @@
 	{
 		NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
 		NSArray *tmp = [[upcds UpcomingProgrammes] upcomingProgrammesForScheduleType:[argus SelectedScheduleType]];
-		ArgusProgramme *p = [tmp objectAtIndex:indexPath.row];
+		ArgusProgramme *p = tmp[indexPath.row];
 		
 		ProgrammeDetailsViewController *dvc = [segue destinationViewController];
 		dvc.Programme = p;

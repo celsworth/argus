@@ -46,9 +46,9 @@
 	if (arg)
 	{
 		NSArray *hms = [arg hmsArray];
-		[picker selectRow:[[hms objectAtIndex:0] intValue] inComponent:0 animated:NO];
-		[picker selectRow:[[hms objectAtIndex:1] intValue] inComponent:1 animated:NO];
-		[picker selectRow:[[hms objectAtIndex:2] intValue] inComponent:2 animated:NO];
+		[picker selectRow:[hms[0] intValue] inComponent:0 animated:NO];
+		[picker selectRow:[hms[1] intValue] inComponent:1 animated:NO];
+		[picker selectRow:[hms[2] intValue] inComponent:2 animated:NO];
 	}
 	else
 		[active setOn:NO animated:NO];
@@ -102,9 +102,8 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
 	// this could probably be cleaner, we just get the int of each selected row and add up the seconds
-	NSNumber *secs = [NSNumber numberWithInt:([picker selectedRowInComponent:0] * 3600)
-					  + ([picker selectedRowInComponent:1] * 60) + [picker selectedRowInComponent:2]
-					  ];
+	NSNumber *secs = @(([picker selectedRowInComponent:0] * 3600)
+					  + ([picker selectedRowInComponent:1] * 60) + [picker selectedRowInComponent:2]);
 	
 	switch (editType)
 	{
@@ -128,9 +127,8 @@
 {
 	if ([active isOn])
 	{
-		NSNumber *secs = [NSNumber numberWithInt:([picker selectedRowInComponent:0] * 3600)
-						  + ([picker selectedRowInComponent:1] * 60) + [picker selectedRowInComponent:2]
-						  ];
+		NSNumber *secs = @(([picker selectedRowInComponent:0] * 3600)
+						  + ([picker selectedRowInComponent:1] * 60) + [picker selectedRowInComponent:2]);
 		
 		switch (editType)
 		{

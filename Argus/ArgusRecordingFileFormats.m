@@ -61,7 +61,7 @@
 			ArgusRecordingFileFormat *r = [[ArgusRecordingFileFormat alloc] initWithDictionary:t];
 			
 			[tmpArr addObject:r];
-			[tmpDict setObject:r forKey:[r Property:kRecordingFileFormatId]];
+			tmpDict[[r Property:kRecordingFileFormatId]] = r;
 		}
 		
 		RecordingFileFormats = tmpArr;

@@ -63,7 +63,7 @@
 	// if the channel has some Programmes present already, use those and just set fetchedUpTo
 	if ([Channel Programmes] && [[Channel Programmes] count])
 	{
-		fetchStart = [[[Channel Programmes] objectAtIndex:0] Property:kStartTime];
+		fetchStart = [[Channel Programmes][0] Property:kStartTime];
 		fetchEnd = [[[Channel Programmes] lastObject] Property:kStopTime];
 	}
 	else
@@ -165,7 +165,7 @@
 		return 50.0f;
 	
 	ArgusProgramme *p;
-	if ((p = [[Channel Programmes] objectAtIndex:indexPath.row]))
+	if ((p = [Channel Programmes][indexPath.row]))
 	{
 		// work out our optimal height
 		if ([p Property:kDescription])
@@ -228,7 +228,7 @@
 	else
 	{
 		ProgrammeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProgrammeCell"];
-		ArgusProgramme *p = [[Channel Programmes] objectAtIndex:indexPath.row];
+		ArgusProgramme *p = [Channel Programmes][indexPath.row];
 		[cell populateCellWithProgramme:p];
 		return cell;
 	}
@@ -247,7 +247,7 @@
 		return;
 	}
 	
-	ArgusProgramme *p = [[Channel Programmes] objectAtIndex:indexPath.row];
+	ArgusProgramme *p = [Channel Programmes][indexPath.row];
 
 	// start off with standard table odd/even colour
 	UIColor *colourToSet = (indexPath.row % 2) ? [ArgusProgramme bgColourStdOdd] : [ArgusProgramme bgColourStdEven];
@@ -321,7 +321,7 @@
         
         // tell dvc which programme has been tapped on
 		NSInteger r = [self.tableView indexPathForSelectedRow].row;
-		dvc.Programme = [[Channel Programmes] objectAtIndex:r];
+		dvc.Programme = [Channel Programmes][r];
 	}
 }
 

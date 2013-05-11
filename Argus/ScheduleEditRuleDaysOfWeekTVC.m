@@ -34,7 +34,7 @@
 	weekdays = [NSMutableArray arrayWithArray:[[NSDateFormatter alloc] weekdaySymbols]];
 	
 	// shuffle first object (Sunday) to the end
-	[weekdays addObject:[weekdays objectAtIndex:0]];
+	[weekdays addObject:weekdays[0]];
 	[weekdays removeObjectAtIndex:0];
 
 }
@@ -74,7 +74,7 @@
 
     // Configure the cell...
 	
-	cell.textLabel.text = [weekdays objectAtIndex:indexPath.row];
+	cell.textLabel.text = weekdays[indexPath.row];
 	
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
@@ -98,7 +98,7 @@
 	else
 		[Rule setArgumentAsDayOfWeek:day selected:YES];
 
-	[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+	[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 -(ArgusScheduleRuleDaysOfWeek)dayOfWeekForIndexPath:(NSIndexPath *)indexPath
@@ -124,12 +124,12 @@
 -(IBAction)buttonPressedWDays:(id)sender
 {
 	// yes, magic numbers, but it's easy and they're unlikely to change :P
-	[Rule setArguments:[NSArray arrayWithObject:[NSNumber numberWithInt:62]]];
+	[Rule setArguments:[@[@62] mutableCopy]];
 	[[self tableView] reloadData];
 }
 -(IBAction)buttonPressedWEnds:(id)sender
 {
-	[Rule setArguments:[NSArray arrayWithObject:[NSNumber numberWithInt:65]]];
+	[Rule setArguments:[@[@65] mutableCopy]];
 	[[self tableView] reloadData];
 }
 

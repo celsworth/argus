@@ -90,7 +90,7 @@
 		
 		localtime_r(&modTimeT, &timeStruct);
 		strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timeStruct);
-		modTimeStr = [NSString stringWithCString:buffer encoding:NSASCIIStringEncoding];
+		modTimeStr = @(buffer);
 	}
 	else
 	{
@@ -142,7 +142,7 @@
 	}
 	
 	// logo is in here
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 
 	UIImage *image = [[UIImage alloc] initWithData:data];
 	if (!image)
@@ -204,7 +204,7 @@
 {
 	NSFileManager *fm = [[NSFileManager alloc] init];
 
-	[fm setAttributes:[NSDictionary dictionaryWithObject:[NSDate date] forKey:NSFileModificationDate]
+	[fm setAttributes:@{NSFileModificationDate: [NSDate date]}
 		 ofItemAtPath:[self absoluteFileForLogo]
 				error:nil];
 }

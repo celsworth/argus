@@ -99,7 +99,7 @@
 		case ArgusScheduleEditFileFormatTableSectionList:
 			cell = [tableView dequeueReusableCellWithIdentifier:@"RecordingFileFormatCell"];
 			
-			ArgusRecordingFileFormat *rff = [[[argus RecordingFileFormats] RecordingFileFormats] objectAtIndex:indexPath.row];
+			ArgusRecordingFileFormat *rff = [[argus RecordingFileFormats] RecordingFileFormats][indexPath.row];
 			
 			cell.textLabel.text = [rff Property:kName];
 			cell.detailTextLabel.text = [rff Property:kFormat];
@@ -135,7 +135,7 @@
 			
 		case ArgusScheduleEditFileFormatTableSectionList:
 		{
-			ArgusRecordingFileFormat *rff = [[[argus RecordingFileFormats] RecordingFileFormats] objectAtIndex:indexPath.row];
+			ArgusRecordingFileFormat *rff = [[argus RecordingFileFormats] RecordingFileFormats][indexPath.row];
 			if (![RecordingFileFormatId isEqualToString:[rff Property:kRecordingFileFormatId]])
 				[Schedule setRecordingFileFormatId:[rff Property:kRecordingFileFormatId]];
 			break;

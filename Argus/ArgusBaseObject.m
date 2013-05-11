@@ -52,7 +52,7 @@
 
 -(id)Property:(NSString *)what
 {
-	id ret = [_originalData objectForKey:what];
+	id ret = _originalData[what];
 	
 	// return nil if the object is null or NSNull, to avoid having this check everywhere in code
 	if (!ret || ret == [NSNull null])

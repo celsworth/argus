@@ -187,7 +187,7 @@
 				return [tableView dequeueReusableCellWithIdentifier:(LoadingDiskUsage ? @"LoadingCell" : @"NoDataCell")];
 			
 			DiskUsageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DiskUsageCell"];
-			ArgusRecordingDiskInfo *r = [[[argus RecordingDisksInfo] RecordingDiskInfos] objectAtIndex:indexPath.row];
+			ArgusRecordingDiskInfo *r = [[argus RecordingDisksInfo] RecordingDiskInfos][indexPath.row];
 			[cell populateCellWithRecordingDiskInfo:r];
 			return cell;
 			break;
@@ -200,7 +200,7 @@
 				return [tableView dequeueReusableCellWithIdentifier:(LoadingActiveRecordings ? @"LoadingCell" : @"NoDataCell")];
 
 			ProgrammeSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ActiveRecordingCell"];
-			ArgusActiveRecording *ar = [[argus ActiveRecordings] objectAtIndex:indexPath.row];
+			ArgusActiveRecording *ar = [argus ActiveRecordings][indexPath.row];
 			[cell populateCellWithActiveRecording:ar];
 			return cell;
 			break;
@@ -213,7 +213,7 @@
 				return [tableView dequeueReusableCellWithIdentifier:(LoadingLiveStreams ? @"LoadingCell" : @"NoDataCell")];
 
 			LiveStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveStreamCell"];
-			ArgusLiveStream *ls = [[argus LiveStreams] objectAtIndex:indexPath.row];
+			ArgusLiveStream *ls = [argus LiveStreams][indexPath.row];
 			[cell populateCellWithLiveStream:ls];
 			return cell;
 			break;
@@ -236,7 +236,7 @@
 			// loading or no results row
 			if ([[argus ActiveRecordings] count] == 0) return NO;
 			
-			ArgusActiveRecording *ar = [[argus ActiveRecordings] objectAtIndex:indexPath.row];
+			ArgusActiveRecording *ar = [argus ActiveRecordings][indexPath.row];
 			
 			// don't let them mess with the row when the recording is stopping
 			return [ar Stopping] ? NO : YES;
@@ -247,7 +247,7 @@
 			// loading or no results row
 			if ([[argus LiveStreams] count] == 0) return NO;
 
-			ArgusLiveStream *ls = [[argus LiveStreams] objectAtIndex:indexPath.row];
+			ArgusLiveStream *ls = [argus LiveStreams][indexPath.row];
 			
 			// don't let them mess with the row when the stream is stopping
 			return [ls Stopping] ? NO : YES;
@@ -309,11 +309,11 @@
 		{
 			// send command
 			// the Done callback will refresh ActiveRecordings array
-			ArgusActiveRecording *ar = [[argus ActiveRecordings] objectAtIndex:indexPath.row];
+			ArgusActiveRecording *ar = [argus ActiveRecordings][indexPath.row];
 			[ar AbortActiveRecording];
 			
 			// reload the row, which removes the edit elements and adds a spinner
-			[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 			break;
 		}
@@ -321,13 +321,13 @@
 		{
 			// send StopLiveStream command or whatever it is
 			// the Done callback should then refresh LiveStreams?
-			ArgusLiveStream *ls = [[argus LiveStreams] objectAtIndex:indexPath.row];
+			ArgusLiveStream *ls = [argus LiveStreams][indexPath.row];
 			[ls StopLiveStream];
 			
 			// do not delete the row yet. The ArgusLiveStream object will trigger a getLiveStreams by itself, and we'll be reloaded
 			
 			// reload the row, which removes the edit elements and adds a spinner
-			[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 			break;
 		}
@@ -342,7 +342,7 @@
 	if ([[segue identifier] isEqualToString:@"ActiveRecording"])
 	{
 		NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
-		ArgusActiveRecording *ar = [[argus ActiveRecordings] objectAtIndex:indexPath.row];
+		ArgusActiveRecording *ar = [argus ActiveRecordings][indexPath.row];
 		ArgusProgramme *p = [ar UpcomingProgramme];
 		
 		ProgrammeDetailsViewController *dvc = [segue destinationViewController];

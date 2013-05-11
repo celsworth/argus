@@ -139,7 +139,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
 	// notify userInfo now needs parsing into Schedules
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSArray *jsonObject = [jsonParser objectWithData:data];
@@ -152,7 +152,7 @@
 		
 		ArgusSchedule *t = [[ArgusSchedule alloc] initWithDictionary:d];
 		[tmpArr addObject:t];
-		[tmpSchedulesKeyedByScheduleId setObject:t forKey:[t Property:kScheduleId]];
+		tmpSchedulesKeyedByScheduleId[[t Property:kScheduleId]] = t;
 	}
 	
 	return tmpArr;
@@ -184,7 +184,7 @@
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	
-	return [tD objectForKey:[NSNumber numberWithInt:scheduleType]];	
+	return tD[[NSNumber numberWithInt:scheduleType]];	
 }
 
 -(void)setSchedules:(NSArray *)arr forChannelType:(ArgusChannelType)channelType scheduleType:(ArgusScheduleType)scheduleType
@@ -198,7 +198,7 @@
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	
-	[tD setObject:arr forKey:[NSNumber numberWithInt:scheduleType]];
+	tD[[NSNumber numberWithInt:scheduleType]] = arr;
 }
 
 

@@ -90,7 +90,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	//SBJsonParser *jsonParser = [SBJsonParser new];
 	//	NSDictionary *jsonObject = [jsonParser objectWithData:data];
@@ -105,7 +105,7 @@
 		
 		ArgusUpcomingRecording *upr = [[ArgusUpcomingRecording alloc] initWithDictionary:t];
 		
-		[tmpDict setObject:upr forKey:[[upr UpcomingProgramme] Property:kUpcomingProgramId]];
+		tmpDict[[[upr UpcomingProgramme] Property:kUpcomingProgramId]] = upr;
 		[tmpArr addObject:upr];
 	}
 	

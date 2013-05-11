@@ -72,7 +72,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CategoryCell"];
     
-	NSString *Category = [[[argus Categories] Categories] objectAtIndex:indexPath.row];
+	NSString *Category = [[argus Categories] Categories][indexPath.row];
 	cell.textLabel.text = Category;
     
 	// is the category selected?
@@ -95,7 +95,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *Category = [[[argus Categories] Categories] objectAtIndex:indexPath.row];
+	NSString *Category = [[argus Categories] Categories][indexPath.row];
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	
 	NSMutableArray *selectedCategories = [Rule Arguments];

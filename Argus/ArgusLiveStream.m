@@ -27,10 +27,10 @@
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
 
-		Channel = [[ArgusChannel alloc] initWithDictionary:[input objectForKey:kChannel]];
+		Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		
 		// our own metadata
-		StoppingAsNumber = [NSNumber numberWithBool:NO];
+		StoppingAsNumber = @NO;
 	}
 	
 	return self;
@@ -43,7 +43,7 @@
 
 -(void)setStopping:(BOOL)val
 {
-	StoppingAsNumber = [NSNumber numberWithBool:val];
+	StoppingAsNumber = @(val);
 }
 -(BOOL)Stopping
 {
@@ -63,7 +63,7 @@
 	
 	[c enqueue];
 	
-	StoppingAsNumber = [NSNumber numberWithBool:YES];
+	StoppingAsNumber = @YES;
 	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -79,7 +79,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	StoppingAsNumber = [NSNumber numberWithBool:NO];
+	StoppingAsNumber = @NO;
 
 	// now update our LiveStreams list
 	[argus getLiveStreams];

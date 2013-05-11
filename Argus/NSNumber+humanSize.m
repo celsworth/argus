@@ -32,7 +32,7 @@
 	[formatter setNumberStyle: NSNumberFormatterDecimalStyle];
 
     // Beware of reusing this format string. -[NSString stringWithFormat] ignores \0, *printf does not.
-    return [NSString stringWithFormat:@"%@ %ciB", [formatter stringFromNumber: [NSNumber numberWithDouble: bytes]], units[exponent]];
+    return [NSString stringWithFormat:@"%@ %ciB", [formatter stringFromNumber: @(bytes)], units[exponent]];
 }
 
 -(NSArray *)hmsArray
@@ -48,9 +48,8 @@
 		m = s / 60;
 		s -= m * 60;
 	}
-	return [NSArray arrayWithObjects: [NSNumber numberWithInt:h],
-			[NSNumber numberWithInt:m], [NSNumber numberWithInt:s],
-			nil];
+	return @[@(h),
+			@(m), @(s)];
 }
 
 -(NSString *)hmsString
@@ -58,9 +57,9 @@
 	NSArray *hms = [self hmsArray];
 	
 	return [NSString stringWithFormat:@"%d:%02d:%02d",
-	 [[hms objectAtIndex:0] intValue],
-	 [[hms objectAtIndex:1] intValue],
-	 [[hms objectAtIndex:2] intValue]];
+	 [hms[0] intValue],
+	 [hms[1] intValue],
+	 [hms[2] intValue]];
 }
 
 -(NSString *)hmsStringReadable

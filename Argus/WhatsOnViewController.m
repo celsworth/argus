@@ -146,7 +146,7 @@
 	
 	ArgusChannelGroup *scg = [[argus ChannelGroups] SelectedChannelGroup];
 	ArgusChannel *channel;
-    if ((channel = [[scg CurrentAndNext] objectAtIndex:indexPath.row]))
+    if ((channel = [scg CurrentAndNext][indexPath.row]))
     {
 		UIImage *img = [[channel Logo] image];
 		UIImageView *logo = (UIImageView *)[cell viewWithTag:0];
@@ -262,7 +262,7 @@
         // tell dvc which channel has been tapped on
 		NSInteger r = [[[self tableView] indexPathForSelectedRow] row];
 		ArgusChannelGroup *scg = [[argus ChannelGroups] SelectedChannelGroup];
-		[dvc setChannel:[[scg CurrentAndNext] objectAtIndex:r]];
+		[dvc setChannel:[scg CurrentAndNext][r]];
     }
 	
     if ([[segue identifier] isEqualToString:@"SelectChannelGroup"])

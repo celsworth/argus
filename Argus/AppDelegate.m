@@ -45,7 +45,7 @@
 	autoReloadDataOn3G = YES;
 	notifyForUpcomingAlerts = [defaults integerForKey:kArgusPreferenceNotifyForAlert];
 
-	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+	UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 	if (localNotification)
 	{
 		

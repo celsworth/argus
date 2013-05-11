@@ -85,7 +85,7 @@
 }
 -(void)ApiVersionDone:(NSNotification *)notify
 {
-	NSInteger returnCode = [[[notify userInfo] objectForKey:@"ApiVersion"] intValue];
+	NSInteger returnCode = [[notify userInfo][@"ApiVersion"] intValue];
 	
 	[(UIActivityIndicatorView *)([apiVersionCell viewWithTag:1]) stopAnimating];
 

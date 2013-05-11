@@ -46,7 +46,7 @@
 	[view setUserInteractionEnabled:YES];
 	
 	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnView:)];
-	[view setGestureRecognizers:[NSArray arrayWithObject:tgr]];
+	[view setGestureRecognizers:@[tgr]];
 	
 	return view;
 }

@@ -14,7 +14,6 @@
 		8304E8B7158CC4E100173888 /* ScheduleEditRuleCategoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8304E8B6158CC4E000173888 /* ScheduleEditRuleCategoryTVC.m */; };
 		8304E8BA158CD0F400173888 /* ArgusCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 8304E8B9158CD0F400173888 /* ArgusCategories.m */; };
 		830681AC15054D1B007455FC /* Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 830681AB15054D1B007455FC /* Defaults.plist */; };
-		830681B3150581CF007455FC /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 830681B2150581CF007455FC /* SFHFKeychainUtils.m */; };
 		830681B615058323007455FC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830681B4150582F9007455FC /* Security.framework */; };
 		830704611653D1BB0098AABA /* argus_logo_57.png in Resources */ = {isa = PBXBuildFile; fileRef = 8307045D1653D1BB0098AABA /* argus_logo_57.png */; };
 		830704621653D1BB0098AABA /* argus_logo_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 8307045E1653D1BB0098AABA /* argus_logo_72.png */; };
@@ -116,9 +115,6 @@
 		83E3666315544023005C5BC1 /* ProgrammeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3666215544023005C5BC1 /* ProgrammeCell.m */; };
 		83E3666615549CC8005C5BC1 /* ProgrammeSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3666515549CC8005C5BC1 /* ProgrammeSummaryCell.m */; };
 		83E366691554D0B3005C5BC1 /* ArgusColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E366681554D0B0005C5BC1 /* ArgusColours.m */; };
-		83E38BC01559FE7F00D90E93 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E38BB81559FE7F00D90E93 /* MGSplitCornersView.m */; };
-		83E38BC11559FE7F00D90E93 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E38BBB1559FE7F00D90E93 /* MGSplitDividerView.m */; };
-		83E38BC31559FE7F00D90E93 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E38BBF1559FE7F00D90E93 /* MGSplitViewController.m */; };
 		83EF4D08150D1E57007A483B /* ScheduleEditKeepTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EF4D07150D1E57007A483B /* ScheduleEditKeepTVC.m */; };
 		83EF4D10150E8483007A483B /* ArgusRecordingDiskInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EF4D0F150E8483007A483B /* ArgusRecordingDiskInfo.m */; };
 		83EF4D13150EC6F3007A483B /* NSNumber+humanSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EF4D12150EC6F3007A483B /* NSNumber+humanSize.m */; };
@@ -208,8 +204,6 @@
 		8304E8B8158CD0F300173888 /* ArgusCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusCategories.h; sourceTree = "<group>"; };
 		8304E8B9158CD0F400173888 /* ArgusCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusCategories.m; sourceTree = "<group>"; };
 		830681AB15054D1B007455FC /* Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Defaults.plist; path = ../Defaults.plist; sourceTree = "<group>"; };
-		830681B1150581CF007455FC /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		830681B2150581CF007455FC /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		830681B4150582F9007455FC /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8307045D1653D1BB0098AABA /* argus_logo_57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = argus_logo_57.png; sourceTree = "<group>"; };
 		8307045E1653D1BB0098AABA /* argus_logo_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = argus_logo_72.png; sourceTree = "<group>"; };
@@ -394,13 +388,6 @@
 		83E366671554D0AD005C5BC1 /* ArgusColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusColours.h; sourceTree = "<group>"; };
 		83E366681554D0B0005C5BC1 /* ArgusColours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusColours.m; sourceTree = "<group>"; };
 		83E38BAD1558141100D90E93 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		83E38BB71559FE7F00D90E93 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
-		83E38BB81559FE7F00D90E93 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
-		83E38BB91559FE7F00D90E93 /* MGSplitCornersView+protectedMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MGSplitCornersView+protectedMethods.h"; sourceTree = "<group>"; };
-		83E38BBA1559FE7F00D90E93 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitDividerView.h; sourceTree = "<group>"; };
-		83E38BBB1559FE7F00D90E93 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
-		83E38BBE1559FE7F00D90E93 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
-		83E38BBF1559FE7F00D90E93 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
 		83EF4D06150D1E57007A483B /* ScheduleEditKeepTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditKeepTVC.h; sourceTree = "<group>"; };
 		83EF4D07150D1E57007A483B /* ScheduleEditKeepTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEditKeepTVC.m; sourceTree = "<group>"; };
 		83EF4D0E150E8483007A483B /* ArgusRecordingDiskInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusRecordingDiskInfo.h; sourceTree = "<group>"; };
@@ -488,13 +475,10 @@
 		830681AD15057E6C007455FC /* 3rd Party Imports */ = {
 			isa = PBXGroup;
 			children = (
-				83E38BB61559FE6700D90E93 /* MGSplitViewController */,
 				83EF4F75151278EC007A483B /* TPKeyboardAvoidingScrollView.h */,
 				83EF4F76151278EC007A483B /* TPKeyboardAvoidingScrollView.m */,
 				83EF4D1A151038AD007A483B /* Reachability.h */,
 				83EF4D1B151038AD007A483B /* Reachability.m */,
-				830681B1150581CF007455FC /* SFHFKeychainUtils.h */,
-				830681B2150581CF007455FC /* SFHFKeychainUtils.m */,
 				836C9324150665FD003A5D8F /* SimpleKeychain.h */,
 				836C9325150665FE003A5D8F /* SimpleKeychain.m */,
 				83E38BAD1558141100D90E93 /* JSONKit.h */,
@@ -847,20 +831,6 @@
 			name = TableCells;
 			sourceTree = "<group>";
 		};
-		83E38BB61559FE6700D90E93 /* MGSplitViewController */ = {
-			isa = PBXGroup;
-			children = (
-				83E38BB71559FE7F00D90E93 /* MGSplitCornersView.h */,
-				83E38BB81559FE7F00D90E93 /* MGSplitCornersView.m */,
-				83E38BB91559FE7F00D90E93 /* MGSplitCornersView+protectedMethods.h */,
-				83E38BBA1559FE7F00D90E93 /* MGSplitDividerView.h */,
-				83E38BBB1559FE7F00D90E93 /* MGSplitDividerView.m */,
-				83E38BBE1559FE7F00D90E93 /* MGSplitViewController.h */,
-				83E38BBF1559FE7F00D90E93 /* MGSplitViewController.m */,
-			);
-			name = MGSplitViewController;
-			sourceTree = "<group>";
-		};
 		83EF4F851512D6C4007A483B /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -1157,7 +1127,6 @@
 				8339734815043DC7008BE5B6 /* ArgusSchedule.m in Sources */,
 				834FE55E15044690003E427E /* SchedulesViewController.m in Sources */,
 				834FE562150468A1003E427E /* ScheduleViewController.m in Sources */,
-				830681B3150581CF007455FC /* SFHFKeychainUtils.m in Sources */,
 				836C9326150665FF003A5D8F /* SimpleKeychain.m in Sources */,
 				83AA3B08150AE61B0042BA96 /* ScheduleTypeTVC.m in Sources */,
 				833654CD150BCD9F00C9E2E9 /* ArgusLiveStream.m in Sources */,
@@ -1206,9 +1175,6 @@
 				834E32EA1555C02D008AA855 /* StatusTVC.m in Sources */,
 				834E32ED1555C192008AA855 /* DiskUsageCell.m in Sources */,
 				834E32F01555C540008AA855 /* LiveStreamCell.m in Sources */,
-				83E38BC01559FE7F00D90E93 /* MGSplitCornersView.m in Sources */,
-				83E38BC11559FE7F00D90E93 /* MGSplitDividerView.m in Sources */,
-				83E38BC31559FE7F00D90E93 /* MGSplitViewController.m in Sources */,
 				83033758155EB70500605903 /* ArgusScheduleIcons.m in Sources */,
 				835B7518157065CB00029F2A /* ArgusChannelGroups.m in Sources */,
 				835B751B1570F44000029F2A /* ArgusGlobalDefinitions.m in Sources */,

@@ -203,7 +203,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	NSArray *jsonObject = [data objectFromJSONData];
 	
@@ -217,7 +217,7 @@
 		
 		[tmpArr addObject:p];
 		
-		[tmpUpcomingProgrammesKeyedByUniqueIdentifier setObject:p forKey:[p uniqueIdentifier]];
+		tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
 		//[tmpUpcomingProgrammesKeyedByUpcomingProgramId setObject:p forKey:[p Property:kUpcomingProgramId]];
 	}
 	
@@ -313,8 +313,8 @@
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	NSMutableDictionary *tmp = [NSMutableDictionary new];
-	[tmp setObject:[IsForSchedule originalData] forKey:@"Schedule"];
-	[tmp setObject:[NSNumber numberWithBool:YES] forKey:@"IncludeCancelled"];
+	tmp[@"Schedule"] = [IsForSchedule originalData];
+	tmp[@"IncludeCancelled"] = @YES;
 	
 	NSString *body = [tmp JSONString];
 	
@@ -338,7 +338,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	NSDictionary *jsonObject = [data objectFromJSONData];
 	//NSLog(@"%@", jsonObject);
@@ -352,7 +352,7 @@
 		NSLog(@"%@", p);
 		
 		[tmpArr addObject:p];
-		[tmpUpcomingProgrammesKeyedByUniqueIdentifier setObject:p forKey:[p uniqueIdentifier]];
+		tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
 		//[tmpUpcomingProgrammesKeyedByUpcomingProgramId setObject:p forKey:[p Property:kUpcomingProgramId]];
 	}
 	

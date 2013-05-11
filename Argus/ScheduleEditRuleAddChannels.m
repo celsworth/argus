@@ -67,11 +67,11 @@
 	{
 		default:
 		case ArgusChannelTypeTelevision:
-			[self didSelectChannelGroup:[[[localArgus ChannelGroups] TvEntries] objectAtIndex:0]];
+			[self didSelectChannelGroup:[[localArgus ChannelGroups] TvEntries][0]];
 			break;
 			
 		case ArgusChannelTypeRadio:
-			[self didSelectChannelGroup:[[[localArgus ChannelGroups] RadioEntries] objectAtIndex:0]];
+			[self didSelectChannelGroup:[[localArgus ChannelGroups] RadioEntries][0]];
 			break;
 	}
 	//[self didSelectChannelGroup:[[[localArgus ChannelGroups] Entries] objectAtIndex:0]];
@@ -130,7 +130,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     // Configure the cell...
-    ArgusChannel *c = [[[[localArgus ChannelGroups] SelectedChannelGroup] Channels] objectAtIndex:indexPath.row];
+    ArgusChannel *c = [[[localArgus ChannelGroups] SelectedChannelGroup] Channels][indexPath.row];
 	
 	cell.textLabel.text = [c Property:kDisplayName];
 	
@@ -169,11 +169,11 @@
 	// just one channel to worry about then
 	
 	// selected channel
-	ArgusChannel *c = [[cg Channels] objectAtIndex:indexPath.row];
+	ArgusChannel *c = [cg Channels][indexPath.row];
 	
 	[self updateChannel:c addOnly:NO];
 	
-	[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+	[tableView reloadRowsAtIndexPaths:@[indexPath]
 					 withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -222,7 +222,7 @@
     if ([[segue identifier] isEqualToString:@"SelectChannelGroup"])
 	{
 		UINavigationController *navC = [segue destinationViewController];
-		SelectChannelGroupViewController *dvc = [[navC viewControllers] objectAtIndex:0];
+		SelectChannelGroupViewController *dvc = [navC viewControllers][0];
 		
 		// a link back to us from the SelectChannelGroup controller, so it can tell us what they selected.
 		dvc.delegate = self;

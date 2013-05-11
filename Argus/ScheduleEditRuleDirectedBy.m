@@ -97,7 +97,7 @@
 	else
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:@"DirectorCell"];
-		cell.textLabel.text = [[Rule Arguments] objectAtIndex:indexPath.row];
+		cell.textLabel.text = [Rule Arguments][indexPath.row];
     }
     
     return cell;
@@ -136,7 +136,7 @@
 			[Rule setMatchType:0];
 		}
 		
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert)
 	{

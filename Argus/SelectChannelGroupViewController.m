@@ -145,7 +145,7 @@
 	
 	
     // Configure the cell...
-	ArgusChannelGroup *cg = [cgs objectAtIndex:indexPath.row];
+	ArgusChannelGroup *cg = cgs[indexPath.row];
 	cell.textLabel.text = [cg Property:kGroupName];
 	
 	if ([[SelectedChannelGroup ChannelGroupId] isEqualToString:[cg ChannelGroupId]])
@@ -187,7 +187,7 @@
 		case 1: cgs = [[myArgus ChannelGroups] RadioEntries]; break;
 	}
 		
-	ArgusChannelGroup *ncg = [cgs objectAtIndex:indexPath.row];
+	ArgusChannelGroup *ncg = cgs[indexPath.row];
 	if (SelectedChannelGroup == ncg) return; // avoid doing useless work
 	SelectedChannelGroup = ncg;
 	

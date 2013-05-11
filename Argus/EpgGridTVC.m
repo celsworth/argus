@@ -98,7 +98,7 @@
 															 target:self
 															 action:@selector(nowPressed:)];
 	
-	[[self navigationItem] setRightBarButtonItems:[NSArray arrayWithObjects:rbtn, rbtn2, nil]];
+	[[self navigationItem] setRightBarButtonItems:@[rbtn, rbtn2]];
 
     
     // setting height arbitrarily low stops the scrollview doing vertical scroll
@@ -444,7 +444,7 @@
 				[subview removeFromSuperview];
 		}
 		
-		EpgGridChannel *egc = [viewsByChannelId objectForKey:[c Property:kChannelId]];
+		EpgGridChannel *egc = viewsByChannelId[[c Property:kChannelId]];
 
 		if (egc)
 			// and add the new one
@@ -465,7 +465,7 @@
 	}
 
 	
-	NSArray *arr = [labelsByIndexPath objectForKey:[NSNumber numberWithInt:indexPath.row]];
+	NSArray *arr = labelsByIndexPath[@(indexPath.row)];
 
 	if (arr)
 	{
@@ -543,7 +543,7 @@
 	for (NSIndexPath *indexPath in [tv indexPathsForVisibleRows])
 	{
 		// each EpgGridLabel in that row
-		for (EpgGridLabel *egl in [labelsByIndexPath objectForKey:[NSNumber numberWithInt:indexPath.row]])
+		for (EpgGridLabel *egl in labelsByIndexPath[@(indexPath.row)])
 		{
 			// ignore if the cell is completely invisible
 			CGRect viewFrame = [[egl view] frame];
@@ -910,20 +910,20 @@
 		EpgGridChannel *egc;
 		NSString *ChannelId = [c Property:kChannelId];
 		
-		if (! (egc = [viewsByChannelId objectForKey:ChannelId]))
+		if (! (egc = viewsByChannelId[ChannelId]))
 		{
 			egc = [[EpgGridChannel alloc] initWithRowHeight:rowHeight channel:c delegate:self];
 			
 			[egc makeView];
 			
 			// retain the object so cellForRowAtIndexPath can use it shortly..
-			[viewsByChannelId setObject:egc forKey:ChannelId];
+			viewsByChannelId[ChannelId] = egc;
 		}
 	
 		// EpgGridLabel objects
 		
 		// programme data for that channel..
-		NSMutableArray *Programmes = [[cg ProgrammeArraysKeyedByChannelId] objectForKey:ChannelId];
+		NSMutableArray *Programmes = [cg ProgrammeArraysKeyedByChannelId][ChannelId];
 
 		NSMutableArray *tmpArr = [NSMutableArray new];
 
@@ -933,7 +933,7 @@
 			// caching optimisation
 			NSString *UniqueIdentifier = [p uniqueIdentifier];
 			
-			if (! (egl = [labelsByProgrammeUniqueIdentifier objectForKey:UniqueIdentifier]) )
+			if (! (egl = labelsByProgrammeUniqueIdentifier[UniqueIdentifier]) )
 			{
 				egl = [[EpgGridLabel alloc] initWithRowHeight:rowHeight
 													 midnight:epgStartTime
@@ -942,7 +942,7 @@
 				[egl makeView];
 				
 				//	[labelsByTGR setObject:egl forKey:egl.label.gestureRecognizers];
-				[labelsByProgrammeUniqueIdentifier setObject:egl forKey:UniqueIdentifier];
+				labelsByProgrammeUniqueIdentifier[UniqueIdentifier] = egl;
 			}
 			
 			[tmpArr addObject:egl];
@@ -952,7 +952,7 @@
 		}
 		
 		NSUInteger row = [[cg Channels] indexOfObjectIdenticalTo:c];
-		[labelsByIndexPath setObject:tmpArr forKey:[NSNumber numberWithInt:row]];
+		labelsByIndexPath[[NSNumber numberWithInt:row]] = tmpArr;
 	}
 	
 	[tv_chanlogos reloadData]; [tv reloadData];
@@ -1019,14 +1019,14 @@
 	// CHANNEL LOGOS TABLE
 	EpgGridChannel *egc;
 
-	if (! (egc = [viewsByChannelId objectForKey:[c Property:kChannelId]]))
+	if (! (egc = viewsByChannelId[[c Property:kChannelId]]))
 	{
 		egc = [[EpgGridChannel alloc] initWithRowHeight:rowHeight channel:c delegate:self];
 	
 		[egc makeView];
 	
 		// retain the object so cellForRowAtIndexPath can use it shortly..
-		[viewsByChannelId setObject:egc forKey:[c Property:kChannelId]];
+		viewsByChannelId[[c Property:kChannelId]] = egc;
 	}
 	
 	// MAIN TABLE
@@ -1046,7 +1046,7 @@
 		// caching optimisation
 		NSString *UniqueIdentifier = [p uniqueIdentifier];
 		
-		if (! (egl = [labelsByProgrammeUniqueIdentifier objectForKey:UniqueIdentifier]) )
+		if (! (egl = labelsByProgrammeUniqueIdentifier[UniqueIdentifier]) )
 		{
 			egl = [[EpgGridLabel alloc] initWithRowHeight:rowHeight
 												 midnight:epgStartTime
@@ -1055,7 +1055,7 @@
 			[egl makeView];
 			
 			//	[labelsByTGR setObject:egl forKey:egl.label.gestureRecognizers];
-			[labelsByProgrammeUniqueIdentifier setObject:egl forKey:UniqueIdentifier];
+			labelsByProgrammeUniqueIdentifier[UniqueIdentifier] = egl;
 		}
 		
 		[tmpArr addObject:egl];
@@ -1065,7 +1065,7 @@
 	}
 
 	// used in cellForRowAtIndexPath to actually draw them in
-	[labelsByIndexPath setObject:tmpArr forKey:[NSNumber numberWithInt:row]];
+	labelsByIndexPath[[NSNumber numberWithInt:row]] = tmpArr;
 	
 	[tv_chanlogos reloadData]; [tv reloadData];
 }

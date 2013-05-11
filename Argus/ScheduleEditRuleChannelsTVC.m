@@ -93,9 +93,9 @@
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:@"ChannelCell"];
 
-		NSString *ChannelId = [[Rule Arguments] objectAtIndex:indexPath.row];
+		NSString *ChannelId = [Rule Arguments][indexPath.row];
     
-		ArgusChannel *c = [[argus ChannelsKeyedByChannelId] objectForKey:ChannelId];
+		ArgusChannel *c = [argus ChannelsKeyedByChannelId][ChannelId];
 		if (!c || ![c Property:kDisplayName])
 		{
 			// seen this crop up a few times but I don't know why, could be that a channel
@@ -151,7 +151,7 @@
 			[self updateMatchTypeDisplay];
 		}
 
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert)
 	{

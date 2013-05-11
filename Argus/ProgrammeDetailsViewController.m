@@ -266,10 +266,10 @@
 	else if (stopTimeSinceNow > 0 && startTimeSinceNow < 0)
 	{
 		airDateSubDescription = NSLocalizedString(@"started", @"prepended to a time period when a programme is showing");
-		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@" %@ ", [[NSNumber numberWithInt:abs(startTimeSinceNow)] hmsStringReadable]];
+		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@" %@ ", [@(abs(startTimeSinceNow)) hmsStringReadable]];
 		airDateSubDescription = [airDateSubDescription stringByAppendingString:NSLocalizedString(@"ago", @"appended to a time period when a programme is showing")];
 		airDateSubDescription = [airDateSubDescription stringByAppendingString:@", "];
-		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@"%@ ", [[NSNumber numberWithInt:abs(stopTimeSinceNow)] hmsStringReadable]];
+		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@"%@ ", [@(abs(stopTimeSinceNow)) hmsStringReadable]];
 		airDateSubDescription = [airDateSubDescription stringByAppendingString:NSLocalizedString(@"remaining", @"appended to a time period when a programme is showing")];
 	}
 	else
@@ -387,11 +387,11 @@
 
 	// title and channel are always set
 	ArgusScheduleRule *tmprule;
-	tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleSuperTypeTitle];
+	tmprule = [newSchedule Rules][kArgusScheduleRuleSuperTypeTitle];
 	[tmprule setMatchType:ArgusScheduleRuleMatchTypeEquals];
 	[tmprule setArguments:[NSMutableArray arrayWithObject:[Programme Property:kTitle]]];
 	
-	tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleSuperTypeChannels];
+	tmprule = [newSchedule Rules][kArgusScheduleRuleSuperTypeChannels];
 	[tmprule setMatchType:ArgusScheduleRuleMatchTypeContains];
 	NSString *ChannelId = [[Programme Channel] Property:kChannelId];
 	[tmprule setArguments:[NSMutableArray arrayWithObject:ChannelId]];
@@ -401,9 +401,9 @@
 		[newSchedule setName:[Programme Property:kTitle]];
 		
 		// set the date and time of this programme
-		tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleTypeOnDate];
+		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeOnDate];
 		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
-		tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleTypeAroundTime];
+		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeAroundTime];
 		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
 	}
 	if (buttonIndex == 1)
@@ -412,7 +412,7 @@
 		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [Programme Property:kTitle], t]];
 		
 		// set just the time
-		tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleTypeAroundTime];
+		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeAroundTime];
 		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
 	}
 	if (buttonIndex == 2)
@@ -423,7 +423,7 @@
 		// set the day of week
 		NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *cmp = [cal components:NSWeekdayCalendarUnit fromDate:[Programme Property:kStartTime]];
-		tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleTypeDaysOfWeek];
+		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeDaysOfWeek];
 		// Sunday = 1 .. Saturday = 7
 		switch ([cmp weekday])
 		{
@@ -442,7 +442,7 @@
 		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [Programme Property:kTitle], t]];
 
 		// no special time params, but set New Episodes
-		tmprule = [[newSchedule Rules] objectForKey:kArgusScheduleRuleTypeNewEpisodesOnly];
+		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeNewEpisodesOnly];
 		[tmprule setArgumentAsBoolean:YES];
 	}
 	

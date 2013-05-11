@@ -277,7 +277,7 @@
 {
 	ArgusUpcomingProgramme *Programme = [ArgusUpcomingProgramme UpcomingProgrammeForUpcomingProgramId:UpcomingProgramId];
 	NSInteger value = [sender value];
-	[Programme setPriority:[NSNumber numberWithInt:value]];
+	[Programme setPriority:@(value)];
 	[self redraw];
 }
 

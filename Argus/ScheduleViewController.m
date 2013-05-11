@@ -214,7 +214,7 @@
 	ArgusGuid *RecordingFileFormatId = [Schedule Property:kRecordingFileFormatId];
 	if (RecordingFileFormatId)
 	{
-		ArgusRecordingFileFormat *rff = [[[argus RecordingFileFormats] RecordingFileFormatsKeyedById] objectForKey:RecordingFileFormatId];
+		ArgusRecordingFileFormat *rff = [[argus RecordingFileFormats] RecordingFileFormatsKeyedById][RecordingFileFormatId];
 		fileformat.detailTextLabel.text = [rff Property:kName];
 	}
 	else
@@ -313,7 +313,7 @@
 -(IBAction)stepperChanged:(UIStepper *)sender
 {
 	NSInteger value = [sender value];
-	[Schedule setSchedulePriority:[NSNumber numberWithInt:value]];
+	[Schedule setSchedulePriority:@(value)];
 	[self redraw];
 }
 

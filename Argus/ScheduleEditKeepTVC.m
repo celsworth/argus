@@ -91,30 +91,30 @@
 	{
 		if (indexPath.row == 0)
 		{
-			[Schedule setKeepUntilMode:[NSNumber numberWithInt:ArgusKeepUntilModeUntilSpaceIsNeeded]];
+			[Schedule setKeepUntilMode:@(ArgusKeepUntilModeUntilSpaceIsNeeded)];
 			[Schedule setKeepUntilValue:(NSNumber *)[NSNull null]];
 		}
 		if (indexPath.row == 1)
 		{
-			[Schedule setKeepUntilMode:[NSNumber numberWithInt:ArgusKeepUntilModeNumberOfDays]];
+			[Schedule setKeepUntilMode:@(ArgusKeepUntilModeNumberOfDays)];
 			if (! [Schedule Property:kKeepUntilValue])
-				[Schedule setKeepUntilValue:[NSNumber numberWithInt:7]];
+				[Schedule setKeepUntilValue:@7];
 		}
 		if (indexPath.row == 2)
 		{
-			[Schedule setKeepUntilMode:[NSNumber numberWithInt:ArgusKeepUntilModeNumberOfEpisodes]];
+			[Schedule setKeepUntilMode:@(ArgusKeepUntilModeNumberOfEpisodes)];
 			if (! [Schedule Property:kKeepUntilValue])
-				[Schedule setKeepUntilValue:[NSNumber numberWithInt:10]];
+				[Schedule setKeepUntilValue:@10];
 		}
 		if (indexPath.row == 3)
 		{
-			[Schedule setKeepUntilMode:[NSNumber numberWithInt:ArgusKeepUntilModeNumberOfWatchedEpisodes]];
+			[Schedule setKeepUntilMode:@(ArgusKeepUntilModeNumberOfWatchedEpisodes)];
 			if (! [Schedule Property:kKeepUntilValue])
-				[Schedule setKeepUntilValue:[NSNumber numberWithInt:10]];
+				[Schedule setKeepUntilValue:@10];
 		}
 		if (indexPath.row == 4)
 		{
-			[Schedule setKeepUntilMode:[NSNumber numberWithInt:ArgusKeepUntilModeForever]];
+			[Schedule setKeepUntilMode:@(ArgusKeepUntilModeForever)];
 			[Schedule setKeepUntilValue:(NSNumber *)[NSNull null]];
 		}
 	}
@@ -127,7 +127,7 @@
 -(IBAction)stepperChanged:(UIStepper *)sender
 {
 	NSInteger value = [sender value];
-	[Schedule setKeepUntilValue:[NSNumber numberWithInt:value]];
+	[Schedule setKeepUntilValue:@(value)];
 
 	[KeepUntilValueStepper setValue:value];
 	[KeepUntilValueStepperTen setValue:value];

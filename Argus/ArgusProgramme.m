@@ -141,7 +141,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	NSData *data = [[notify userInfo] objectForKey:@"data"];
+	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
 	NSDictionary *jsonObject = [jsonParser objectWithData:data];
@@ -218,7 +218,7 @@
 	
 	// cache the upcoming programme, it's expensive to calculate.
 	// this cache is nuked when ArgusUpcomingProgrammesDone is seen (new upcoming programmes list)
-	UpcomingProgrammeCached = [[[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier] objectForKey:[self uniqueIdentifier]];
+	UpcomingProgrammeCached = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
 	UpcomingProgrammeHaveCached = YES;
 	return UpcomingProgrammeCached;
 }

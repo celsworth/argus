@@ -49,7 +49,7 @@
 	//size.textColor = [ArgusProgramme fgColourStd];
 
 	used.text = [NSString stringWithFormat:@"%@ used",
-				 [[NSNumber numberWithDouble:([[RecordingDiskInfo Property:kTotalSizeBytes] doubleValue] - [[RecordingDiskInfo Property:kFreeSpaceBytes] doubleValue])] humanSize]];
+				 [@([[RecordingDiskInfo Property:kTotalSizeBytes] doubleValue] - [[RecordingDiskInfo Property:kFreeSpaceBytes] doubleValue]) humanSize]];
 	//used.textColor = [ArgusProgramme fgColourStd];
 
 	free.text = [NSString stringWithFormat:@"%@ free", [[RecordingDiskInfo Property:kFreeSpaceBytes] humanSize]];
