@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E36" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="CzG-sD-Jn9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="13A497d" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="CzG-sD-Jn9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -2466,7 +2466,7 @@
                                             <rect key="frame" x="45" y="0.0" width="658" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="New Episodes Only" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="VzR-QS-AEh">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="First Runs Only" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="VzR-QS-AEh">
                                                     <rect key="frame" x="20" y="19" width="557" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -2484,7 +2484,7 @@
                                             <rect key="frame" x="45" y="0.0" width="658" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Unique Titles Only" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="hmd-dW-74M">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Unique Titles" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="hmd-dW-74M">
                                                     <rect key="frame" x="20" y="19" width="557" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -2502,7 +2502,7 @@
                                             <rect key="frame" x="45" y="0.0" width="658" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Skip Repeats" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="5GD-Dp-6JW">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Episodes Once" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="5GD-Dp-6JW">
                                                     <rect key="frame" x="20" y="19" width="557" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -4007,6 +4007,339 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="video_play.png" width="30" height="30"/>
         <image name="video_rec.png" width="30" height="30"/>
     </resources>
+    <classes>
+        <class className="DiskUsageCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiskUsageCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="free" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="hd_free" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="sd_free" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="size" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="used" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="usedProgressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="EpgGridCalendarPickerVC" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpgGridCalendarPickerVC.h"/>
+        </class>
+        <class className="EpgGridLongPressPopupTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpgGridLongPressPopupTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="didPressDone:"/>
+                <relationship kind="outlet" name="oneTouchRecordCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="searchIMDbCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="searchTvComCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="EpgGridTVC" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpgGridTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="curDayPressed:"/>
+                <relationship kind="action" name="nextDayPressed:"/>
+                <relationship kind="action" name="nowPressed:"/>
+                <relationship kind="action" name="prevDayPressed:"/>
+                <relationship kind="action" name="refreshPressed:"/>
+                <relationship kind="outlet" name="curDay" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="sv2" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="toolBar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="tv" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="tv_chanlogos" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="LiveStreamCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LiveStreamCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="cardId" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="channel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="rtspURL" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="startTime" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="stoppingActivityIndicator" candidateClass="UIActivityIndicatorView"/>
+            </relationships>
+        </class>
+        <class className="MasterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MasterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hideShowPressed:"/>
+                <relationship kind="outlet" name="hideShowMaster" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="versionCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="ProgrammeCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProgrammeCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="desc" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="icon" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="time" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="title" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ProgrammeDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProgrammeDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="recordPressed:"/>
+                <relationship kind="action" name="searchIMDbPressed:"/>
+                <relationship kind="action" name="searchPressed:"/>
+                <relationship kind="action" name="searchTvComPressed:"/>
+                <relationship kind="outlet" name="airChannel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="airChannelLogo" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="date" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="dateSubtext" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="description" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="detailsLoading" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="editProgrammeButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="editScheduleButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="pctDone" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="progtitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="recordButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="recordButtons" candidateClass="UIView"/>
+                <relationship kind="outlet" name="searchButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchIMDbButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchTvComButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="subtitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="sv" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="timeDuration" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="timeEnd" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="timeStart" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="upcomingIcon" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="ProgrammeListViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProgrammeListViewController.h"/>
+        </class>
+        <class className="ProgrammeSummaryCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProgrammeSummaryCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activity" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="card" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="chan" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="chan_image" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="icon" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="priority" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="time" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="title" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="RotatingTabBarController" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RotatingTabBarController.h"/>
+        </class>
+        <class className="ScheduleEditFileFormatTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditFileFormatTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshPressed:"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditKeepTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditKeepTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="stepperChanged:" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="KeepUntilValue" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="KeepUntilValueStepper" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="KeepUntilValueStepperTen" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="days" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="forever" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="recent" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="space" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="watched" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditPreRecordTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditPreRecordTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="picker" candidateClass="UIPickerView"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRuleAddChannels" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleAddChannels.h"/>
+        </class>
+        <class className="ScheduleEditRuleAroundTimeTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleAroundTimeTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="action" name="datePickerValueChanged:"/>
+                <relationship kind="action" name="fromToChanged:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="datepicker" candidateClass="UIDatePicker"/>
+                <relationship kind="outlet" name="from_to_picker" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRuleCategoryTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleCategoryTVC.h"/>
+        </class>
+        <class className="ScheduleEditRuleChannelsTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleChannelsTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="matchTypeChanged:"/>
+                <relationship kind="outlet" name="matchtype" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRuleDaysOfWeekTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleDaysOfWeekTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="buttonPressedNone:"/>
+                <relationship kind="action" name="buttonPressedWDays:"/>
+                <relationship kind="action" name="buttonPressedWEnds:"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRuleOnDateTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleOnDateTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="action" name="datePickerValueChanged:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="cell" candidateClass="UIView"/>
+                <relationship kind="outlet" name="datepicker" candidateClass="UIDatePicker"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRuleTitleTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRuleTitleTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="action" name="matchTypeChanged:"/>
+                <relationship kind="action" name="textFieldChanged:"/>
+                <relationship kind="action" name="titleReturn:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="matchtype" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="matchwhat" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="textfield" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="ScheduleEditRulesTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleEditRulesTVC.h"/>
+            <relationships>
+                <relationship kind="outlet" name="around_time" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="categories" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="channels" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="days_of_week" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="description" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="directed_by" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="episode_number" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="neew_episodes" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="on_date" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="program_info" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="skip_repeats" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="starts_between" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="subtitle" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="title" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="unique_titles" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="with_actor" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="ScheduleTypeTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleTypeTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="didPressDone:"/>
+                <relationship kind="outlet" name="alerts" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="radio" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="recordings" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="suggestions" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="tv" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="ScheduleViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="action" name="saveButtonPressed:"/>
+                <relationship kind="action" name="scheduleTypeSegmentChanged:"/>
+                <relationship kind="action" name="stepperChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="titleReturn:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="del" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="fileformat" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="keep" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="postrec" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="prerec" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="priority" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="priorityStepper" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="rules" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="title" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="type" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="ScheduleViewPRHTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleViewPRHTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshPressed:"/>
+                <relationship kind="action" name="removeAllPressed:"/>
+            </relationships>
+        </class>
+        <class className="SchedulesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SchedulesViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="newSchedule:"/>
+                <relationship kind="action" name="refreshSchedules:"/>
+            </relationships>
+        </class>
+        <class className="SearchEpgTVC" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchEpgTVC.h"/>
+            <relationships>
+                <relationship kind="outlet" name="search" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="SelectChannelGroupViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SelectChannelGroupViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="didPressDone:"/>
+                <relationship kind="action" name="refreshChannelGroups:"/>
+            </relationships>
+        </class>
+        <class className="SelectUpcomingTypeTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SelectUpcomingTypeTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="didPressDone:"/>
+                <relationship kind="outlet" name="alerts" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="recordings" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="suggestions" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="StatusTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StatusTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshPressed:"/>
+            </relationships>
+        </class>
+        <class className="UpcomingProgrammeEditPreRecordTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UpcomingProgrammeEditPreRecordTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="activeChanged:"/>
+                <relationship kind="outlet" name="active" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="picker" candidateClass="UIPickerView"/>
+            </relationships>
+        </class>
+        <class className="UpcomingProgrammeEditTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UpcomingProgrammeEditTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="priorityChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="savePressed:"/>
+                <relationship kind="outlet" name="cancelCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="cancelSpinner" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="cancelText" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="postrec" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="prerec" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="prhCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="prhSpinner" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="prhText" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="priority" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="priorityStepper" candidateClass="UIStepper"/>
+            </relationships>
+        </class>
+        <class className="UpcomingProgrammesTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UpcomingProgrammesTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshPressed:"/>
+            </relationships>
+        </class>
+        <class className="WhatsOnViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WhatsOnViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshWhatsOn:"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
