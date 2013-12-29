@@ -187,7 +187,7 @@
 
 -(void)setDaysOfWeekCell
 {
-	NSMutableArray *weekdays = [NSMutableArray arrayWithArray:[[NSDateFormatter alloc] shortWeekdaySymbols]];
+	NSMutableArray *weekdays = [NSMutableArray arrayWithArray:[[NSDateFormatter new] shortWeekdaySymbols]];
 	
 	// shuffle first object (Sunday) to the end, so we're Mon=0 - Sun=6
 	[weekdays addObject:weekdays[0]];
