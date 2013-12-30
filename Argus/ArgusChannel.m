@@ -128,7 +128,7 @@
 		else
 		{
 			dumpData = YES;
-			TFLog(@"%s: t is nil for %@", __PRETTY_FUNCTION__, d);
+			NSLog(@"%s: t is nil for %@", __PRETTY_FUNCTION__, d);
 		}
 	}
 	
@@ -136,7 +136,7 @@
 	
 	if (dumpData)
 	{
-		TFLog(@"%s: got a nil ArgusProgramme out of %@", __PRETTY_FUNCTION__, data);
+		NSLog(@"%s: got a nil ArgusProgramme out of %@", __PRETTY_FUNCTION__, data);
 	}
 	
 	// back to foreground for notify
