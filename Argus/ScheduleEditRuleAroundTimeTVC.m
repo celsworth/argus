@@ -81,7 +81,6 @@
 		[from_to_picker setSelectedSegmentIndex:0];
 		if (editType == ArgusScheduleEditTypeAroundTime)
 		{
-			NSLog(@"%s saving %@", [datepicker date]);
 			[Rule setArgumentAsDate:[datepicker date]];
 		}
 		if (editType == ArgusScheduleEditTypeStartingBetween)
