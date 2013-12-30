@@ -458,7 +458,7 @@
     cell = [tableView dequeueReusableCellWithIdentifier:@"epg_chan"];
 	
 	// remove all the old labels first
-	for (UIView *subview in cell.subviews)
+	for (UIView *subview in [[cell contentView] subviews])
 	{
 		if ([subview isKindOfClass:[UIView class]])
 			[subview removeFromSuperview];
@@ -471,24 +471,21 @@
 	{
 		for (EpgGridLabel *egl in arr)
 		{
-			egl.tableViewCell = cell;
-			
 			// these are done here so as time moves along, the colours stay correct
 			// though they could move into an EpgGridLabel selector
 			[egl updateColours];
 			
-			[cell addSubview:egl.view];
+			[[cell contentView] addSubview:egl.view];
 		}
 	}
     return cell;
 }
 
-#if 0
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// no cell background colour in the EPG
+	// needed in iOS7?
+	[cell setBackgroundColor:[UIColor clearColor]];
 }
-#endif
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {	

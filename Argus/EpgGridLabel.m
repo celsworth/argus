@@ -16,7 +16,7 @@
 @synthesize delegate;
 @synthesize Programme;
 @synthesize rowHeight, midnight;
-@synthesize view, label, iconView, tableViewCell, origFrameRect;
+@synthesize view, label, iconView, origFrameRect;
 @synthesize viewPadding;
 
 -(id)initWithRowHeight:(NSInteger)_rowHeight midnight:(NSDate *)_midnight programme:(ArgusProgramme *)_Programme delegate:(id <EpgGridLabelDelegate>)_delegate
