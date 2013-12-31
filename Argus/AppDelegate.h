@@ -16,7 +16,8 @@
 // ChannelsPrograms needs 50 (1.7.0.0?, optional so far, for EPG Grid)
 // ChannelsProgramsDetails needs 51 (not used)
 #define REQUIRED_API_VERSION 45
-#define REQUIRED_Argus_VERSION @"1.6.0.2"
+
+#define REQUIRED_ARGUS_VERSION @"1.6.0.2"
 
 // preference keys
 #define kArgusPreferenceNotifyForAlert @"notify_alert_preference"

@@ -113,7 +113,7 @@
 		
 		// server is too old
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"API Version Error", nil)
-														message:[NSString stringWithFormat:tmp, REQUIRED_Argus_VERSION]
+														message:[NSString stringWithFormat:tmp, REQUIRED_ARGUS_VERSION]
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", nil)
 											  otherButtonTitles:nil];
