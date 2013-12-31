@@ -175,31 +175,49 @@
 			// work out how wide our description label will be
 			if (iPad())
 			{
-				// on iPad, the table is 703px wide in IB, and the UILabel is 574
-				// so to work it out dynamically (coping with rotation and sidebar) take table-(703-574);
-				width = tableView.frame.size.width - 129.0;
+				// try to work out how wide the description box is.
+				// this uses the widths we know in portrait
+				// This is 768px (table width) minus 636px (desc box width)
+				// take that off actual table width and hopefully we cope with landscape too
+				width = tableView.frame.size.width - (768-636);
 				fontSize = 15.0;
 			}
 			else
 			{
-				// on iPhone, the numbers are 320 and 212
-				width = tableView.frame.size.width - 108.0;
+				// on iPhone, the numbers are 320 and 228
+				width = tableView.frame.size.width - (320-228);
 				fontSize = 13.0;
 			}
+			
 			CGSize constrain = CGSizeMake(width, MAXFLOAT);
 			// this sucks, I don't want to specify the font here :(
-			CGSize test = [[p Property:kDescription] sizeWithFont:[UIFont systemFontOfSize:fontSize]
-												constrainedToSize:constrain
-													lineBreakMode:UILineBreakModeWordWrap];
+			UIFont *font = [UIFont systemFontOfSize:fontSize];
 			
-			if (iPad())
-				return 40.0f + test.height;
+			if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+			{
+				// iOS6 and below; we know this is deprecated so ignore the warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+				CGSize tmp = [[p Property:kDescription] sizeWithFont:font
+												   constrainedToSize:constrain
+													   lineBreakMode:UILineBreakModeWordWrap];
+#pragma clang diagnostic pop
+				return (iPad() ? 40.0f : 30.0f) + ceil(tmp.height);
+			}
 			else
-				return 30.0f + test.height;
+			{
+				// iOS7+
+				CGRect tmp = [[p Property:kDescription] boundingRectWithSize:constrain
+																	 options:NSStringDrawingUsesLineFragmentOrigin
+																  attributes:@{NSFontAttributeName:font}
+																	 context:nil];
+				return (iPad() ? 40.0f : 30.0f) + ceil(tmp.size.height);
+			}
 		}
 	}
 	
 	// failsafe ;)
+	NSLog(@"%s: no programme details for row %d", __PRETTY_FUNCTION__, indexPath.row);
 	return 50.0f;
 }
 

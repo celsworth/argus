@@ -73,11 +73,7 @@
 	desc.text = [Programme Property:kDescription];
 	desc.textColor = textColor;
 	
-	// debugging assistance ;)
-	//	desc.backgroundColor = [UIColor redColor];
-	
-	// note this magic number is in heightForRow too
-	[desc topAlignUsingWidth:self.frame.size.width -  (iPad() ? 129.0 : 108.0) ];
+	[desc topAlign];
 }
 
 
