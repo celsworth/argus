@@ -68,6 +68,7 @@
 		834E402015C1C176004521F5 /* ArgusCardChannelAllocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 834E401F15C1C176004521F5 /* ArgusCardChannelAllocation.m */; };
 		834FE55E15044690003E427E /* SchedulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE55D15044690003E427E /* SchedulesViewController.m */; };
 		834FE562150468A1003E427E /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE561150468A1003E427E /* ScheduleViewController.m */; };
+		83510E5D187321580022BE1F /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83510E5C187321580022BE1F /* Reveal.framework */; };
 		83544B82158D7F1600C7ADDE /* ScheduleViewPRHTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */; };
 		83544B85158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B84158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m */; };
 		835B7518157065CB00029F2A /* ArgusChannelGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 835B7517157065CB00029F2A /* ArgusChannelGroups.m */; };
@@ -76,9 +77,9 @@
 		83697849160B89A600972686 /* LoadingSpinner_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83697848160B89A600972686 /* LoadingSpinner_iPhone.storyboard */; };
 		8369784B160B8AF900972686 /* LoadingSpinner_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8369784A160B8AF900972686 /* LoadingSpinner_iPad.storyboard */; };
 		8369784D160B90E200972686 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8369784C160B90E200972686 /* Default-568h@2x.png */; };
+		836B93E918719216000D7A7E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 837DD1A8153628A000DF0911 /* libTestFlight.a */; };
 		836C9326150665FF003A5D8F /* SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C9325150665FE003A5D8F /* SimpleKeychain.m */; };
 		83795C5D152BF42700BD995A /* EpgGridLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83795C5C152BF42700BD995A /* EpgGridLabel.m */; };
-		837DD1AA153628A100DF0911 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 837DD1A8153628A000DF0911 /* libTestFlight.a */; };
 		837DD1AD1536291400DF0911 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 837DD1AC1536291400DF0911 /* libz.dylib */; };
 		838894171529E2B6008E8D78 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 838894161529E2B6008E8D78 /* LoadingSpinner.m */; };
 		83889420152A29B0008E8D78 /* EpgGridTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388941F152A29AF008E8D78 /* EpgGridTVC.m */; };
@@ -211,8 +212,8 @@
 		830704601653D1BB0098AABA /* argus_logo_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = argus_logo_144.png; sourceTree = "<group>"; };
 		83139B1A152011240084B77D /* UpcomingProgrammesTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingProgrammesTVC.h; sourceTree = "<group>"; };
 		83139B1B152011240084B77D /* UpcomingProgrammesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingProgrammesTVC.m; sourceTree = "<group>"; };
-		83139B1D152138140084B77D /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
-		83139B1E152138140084B77D /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		83139B1D152138140084B77D /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ISO8601DateFormatter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		83139B1E152138140084B77D /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ISO8601DateFormatter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83139B21152147E80084B77D /* ScheduleEditRuleOnDateTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditRuleOnDateTVC.h; sourceTree = "<group>"; };
 		83139B22152147E80084B77D /* ScheduleEditRuleOnDateTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEditRuleOnDateTVC.m; sourceTree = "<group>"; };
 		83139B241521509E0084B77D /* ScheduleEditRuleDaysOfWeekTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditRuleDaysOfWeekTVC.h; sourceTree = "<group>"; };
@@ -302,6 +303,7 @@
 		834FE55D15044690003E427E /* SchedulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchedulesViewController.m; sourceTree = "<group>"; };
 		834FE560150468A1003E427E /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
 		834FE561150468A1003E427E /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
+		83510E5C187321580022BE1F /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		83544B80158D7F1600C7ADDE /* ScheduleViewPRHTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewPRHTVC.h; sourceTree = "<group>"; };
 		83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewPRHTVC.m; sourceTree = "<group>"; };
 		83544B83158D837900C7ADDE /* ArgusScheduleRecordedProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusScheduleRecordedProgram.h; sourceTree = "<group>"; };
@@ -348,11 +350,11 @@
 		839D035E1550AF9A0064D88D /* ArgusSchedules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusSchedules.h; sourceTree = "<group>"; };
 		839D035F1550AF9A0064D88D /* ArgusSchedules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusSchedules.m; sourceTree = "<group>"; };
 		839D03621550C3CE0064D88D /* ArgusUpcomingProgrammes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusUpcomingProgrammes.h; sourceTree = "<group>"; };
-		839D03631550C3CE0064D88D /* ArgusUpcomingProgrammes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusUpcomingProgrammes.m; sourceTree = "<group>"; };
+		839D03631550C3CE0064D88D /* ArgusUpcomingProgrammes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArgusUpcomingProgrammes.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		839E984C14FF0D210019BB38 /* WhatsOnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhatsOnViewController.h; sourceTree = "<group>"; };
 		839E984F14FF140C0019BB38 /* ProgrammeListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgrammeListViewController.h; sourceTree = "<group>"; };
 		839E985014FF140C0019BB38 /* ProgrammeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgrammeListViewController.m; sourceTree = "<group>"; };
-		839FFF271597F9D600170D78 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		839FFF271597F9D600170D78 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JSONKit.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83A1E42D152D32DE00C12278 /* ArgusConnectionQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusConnectionQueue.h; sourceTree = "<group>"; };
 		83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusConnectionQueue.m; sourceTree = "<group>"; };
 		83AA3B06150AE61B0042BA96 /* ScheduleTypeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleTypeTVC.h; sourceTree = "<group>"; };
@@ -387,7 +389,7 @@
 		83E3666515549CC8005C5BC1 /* ProgrammeSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgrammeSummaryCell.m; sourceTree = "<group>"; };
 		83E366671554D0AD005C5BC1 /* ArgusColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusColours.h; sourceTree = "<group>"; };
 		83E366681554D0B0005C5BC1 /* ArgusColours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusColours.m; sourceTree = "<group>"; };
-		83E38BAD1558141100D90E93 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		83E38BAD1558141100D90E93 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JSONKit.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		83EF4D06150D1E57007A483B /* ScheduleEditKeepTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditKeepTVC.h; sourceTree = "<group>"; };
 		83EF4D07150D1E57007A483B /* ScheduleEditKeepTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEditKeepTVC.m; sourceTree = "<group>"; };
 		83EF4D0E150E8483007A483B /* ArgusRecordingDiskInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusRecordingDiskInfo.h; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				837DD1AD1536291400DF0911 /* libz.dylib in Frameworks */,
+				83510E5D187321580022BE1F /* Reveal.framework in Frameworks */,
 				83452B14152F4DC200CC358A /* QuartzCore.framework in Frameworks */,
 				83452B12152F4DBE00CC358A /* MapKit.framework in Frameworks */,
 				83452B0F152F4CF200CC358A /* libTapkuLibrary.a in Frameworks */,
@@ -465,7 +468,7 @@
 				8330717A14FF009C0042F7D5 /* UIKit.framework in Frameworks */,
 				8330717C14FF009C0042F7D5 /* Foundation.framework in Frameworks */,
 				8330717E14FF009C0042F7D5 /* CoreGraphics.framework in Frameworks */,
-				837DD1AA153628A100DF0911 /* libTestFlight.a in Frameworks */,
+				836B93E918719216000D7A7E /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +491,7 @@
 			name = "3rd Party Imports";
 			sourceTree = "<group>";
 		};
-		83139B18152010D30084B77D /* Schedules View Controller */ = {
+		83139B18152010D30084B77D /* Schedules */ = {
 			isa = PBXGroup;
 			children = (
 				83AA3B06150AE61B0042BA96 /* ScheduleTypeTVC.h */,
@@ -526,7 +529,7 @@
 				83E11BA415260F87007BBB4F /* ScheduleEditRuleAddDirector.h */,
 				83E11BA515260F88007BBB4F /* ScheduleEditRuleAddDirector.m */,
 			);
-			name = "Schedules View Controller";
+			path = Schedules;
 			sourceTree = "<group>";
 		};
 		831E8445150005FD00160D03 /* SBJSON */ = {
@@ -595,6 +598,7 @@
 				8330717914FF009C0042F7D5 /* UIKit.framework */,
 				8330717B14FF009C0042F7D5 /* Foundation.framework */,
 				8330717D14FF009C0042F7D5 /* CoreGraphics.framework */,
+				83510E5C187321580022BE1F /* Reveal.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -603,13 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				839C524A150266B800232E38 /* Argus API Classes */,
-				8331192E1528C7DB0022FB2A /* What's On View Controllers */,
-				83795C5A152BF3DB00BD995A /* EpgGrid View Controllers */,
-				833119321528CDA40022FB2A /* Search EPG View Controllers */,
-				83139B18152010D30084B77D /* Schedules View Controller */,
-				8331192D1528C7AA0022FB2A /* Recordings View Controllers */,
-				833654D7150C369B00C9E2E9 /* Status View Controllers */,
-				83F32ADA1533DBA50090F553 /* Upcoming Programmes */,
+				83510E5E187536960022BE1F /* View Controllers */,
 				8330718814FF009C0042F7D5 /* AppDelegate.h */,
 				8330718914FF009C0042F7D5 /* AppDelegate.m */,
 				831E84901500421200160D03 /* Argus.h */,
@@ -662,16 +660,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8331192D1528C7AA0022FB2A /* Recordings View Controllers */ = {
+		8331192D1528C7AA0022FB2A /* Recordings */ = {
 			isa = PBXGroup;
 			children = (
 				8331192F1528C81C0022FB2A /* RecordingsTVC.h */,
 				833119301528C81C0022FB2A /* RecordingsTVC.m */,
 			);
-			name = "Recordings View Controllers";
+			path = Recordings;
 			sourceTree = "<group>";
 		};
-		8331192E1528C7DB0022FB2A /* What's On View Controllers */ = {
+		8331192E1528C7DB0022FB2A /* What's On */ = {
 			isa = PBXGroup;
 			children = (
 				839E984C14FF0D210019BB38 /* WhatsOnViewController.h */,
@@ -681,25 +679,27 @@
 				833777471500774300EDFE50 /* ProgrammeDetailsViewController.h */,
 				833777481500774400EDFE50 /* ProgrammeDetailsViewController.m */,
 			);
-			name = "What's On View Controllers";
+			name = "What's On";
+			path = WhatsOn;
 			sourceTree = "<group>";
 		};
-		833119321528CDA40022FB2A /* Search EPG View Controllers */ = {
+		833119321528CDA40022FB2A /* Search EPG */ = {
 			isa = PBXGroup;
 			children = (
 				833119331528CDCC0022FB2A /* SearchEpgTVC.h */,
 				833119341528CDCC0022FB2A /* SearchEpgTVC.m */,
 			);
-			name = "Search EPG View Controllers";
+			name = "Search EPG";
+			path = SearchEpg;
 			sourceTree = "<group>";
 		};
-		833654D7150C369B00C9E2E9 /* Status View Controllers */ = {
+		833654D7150C369B00C9E2E9 /* Status */ = {
 			isa = PBXGroup;
 			children = (
 				834E32E81555C02D008AA855 /* StatusTVC.h */,
 				834E32E91555C02D008AA855 /* StatusTVC.m */,
 			);
-			name = "Status View Controllers";
+			path = Status;
 			sourceTree = "<group>";
 		};
 		83452B02152F4CC300CC358A /* Products */ = {
@@ -711,7 +711,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		83795C5A152BF3DB00BD995A /* EpgGrid View Controllers */ = {
+		83510E5E187536960022BE1F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				83795C5A152BF3DB00BD995A /* EpgGrid */,
+				8331192D1528C7AA0022FB2A /* Recordings */,
+				83139B18152010D30084B77D /* Schedules */,
+				833119321528CDA40022FB2A /* Search EPG */,
+				833654D7150C369B00C9E2E9 /* Status */,
+				83F32ADA1533DBA50090F553 /* Upcoming Programmes */,
+				8331192E1528C7DB0022FB2A /* What's On */,
+			);
+			name = "View Controllers";
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		83795C5A152BF3DB00BD995A /* EpgGrid */ = {
 			isa = PBXGroup;
 			children = (
 				83452B18152F6AF100CC358A /* EpgGridDefines.h */,
@@ -726,7 +741,7 @@
 				83F32AE1153597280090F553 /* EpgGridLongPressPopupTVC.h */,
 				83F32AE2153597280090F553 /* EpgGridLongPressPopupTVC.m */,
 			);
-			name = "EpgGrid View Controllers";
+			path = EpgGrid;
 			sourceTree = "<group>";
 		};
 		837DD1AB153628A900DF0911 /* TestFlight */ = {
@@ -791,6 +806,7 @@
 				83E3665B15534628005C5BC1 /* ArgusUpcomingRecording.m */,
 			);
 			name = "Argus API Classes";
+			path = API;
 			sourceTree = "<group>";
 		};
 		839D03611550C2340064D88D /* Other Containers */ = {
@@ -814,6 +830,7 @@
 				83033757155EB70400605903 /* ArgusScheduleIcons.m */,
 			);
 			name = "Other Containers";
+			path = Other;
 			sourceTree = "<group>";
 		};
 		83E3666015544007005C5BC1 /* TableCells */ = {
@@ -828,7 +845,7 @@
 				834E32EE1555C540008AA855 /* LiveStreamCell.h */,
 				834E32EF1555C540008AA855 /* LiveStreamCell.m */,
 			);
-			name = TableCells;
+			path = TableCells;
 			sourceTree = "<group>";
 		};
 		83EF4F851512D6C4007A483B /* Utility */ = {
@@ -853,6 +870,7 @@
 				83F32ADF1534FFC70090F553 /* UpcomingProgrammeEditPreRecordTVC.m */,
 			);
 			name = "Upcoming Programmes";
+			path = Upcoming;
 			sourceTree = "<group>";
 		};
 		83FC4DDA155A0A7C005AF86D /* Resources */ = {
@@ -966,7 +984,7 @@
 		8330716C14FF009C0042F7D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Elsworth IT Consulting Ltd";
 			};
 			buildConfigurationList = 8330716F14FF009C0042F7D5 /* Build configuration list for PBXProject "Argus" */;
@@ -1206,7 +1224,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -1223,7 +1240,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -1237,7 +1255,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -1247,7 +1264,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1264,14 +1281,20 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Argus-Prefix.pch";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Argus-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1289,15 +1312,21 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Argus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=0";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Argus-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
