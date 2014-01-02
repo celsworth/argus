@@ -55,7 +55,6 @@
 		833777491500774400EDFE50 /* ProgrammeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833777481500774400EDFE50 /* ProgrammeDetailsViewController.m */; };
 		8339734815043DC7008BE5B6 /* ArgusSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8339734715043DC7008BE5B6 /* ArgusSchedule.m */; };
 		83452AFF152F4CA500CC358A /* TapkuLibrary.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83452AFE152F4CA500CC358A /* TapkuLibrary.bundle */; };
-		83452B0F152F4CF200CC358A /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
 		83452B12152F4DBE00CC358A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B11152F4DBD00CC358A /* MapKit.framework */; };
 		83452B14152F4DC200CC358A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B13152F4DC200CC358A /* QuartzCore.framework */; };
 		83452B17152F669E00CC358A /* EpgGridChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83452B16152F669E00CC358A /* EpgGridChannel.m */; };
@@ -68,7 +67,8 @@
 		834E402015C1C176004521F5 /* ArgusCardChannelAllocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 834E401F15C1C176004521F5 /* ArgusCardChannelAllocation.m */; };
 		834FE55E15044690003E427E /* SchedulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE55D15044690003E427E /* SchedulesViewController.m */; };
 		834FE562150468A1003E427E /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE561150468A1003E427E /* ScheduleViewController.m */; };
-		83510E5D187321580022BE1F /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83510E5C187321580022BE1F /* Reveal.framework */; };
+		83510E5F1875B6620022BE1F /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
+		83510E601875B66D0022BE1F /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83510E5C187321580022BE1F /* Reveal.framework */; };
 		83544B82158D7F1600C7ADDE /* ScheduleViewPRHTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */; };
 		83544B85158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B84158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m */; };
 		835B7518157065CB00029F2A /* ArgusChannelGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 835B7517157065CB00029F2A /* ArgusChannelGroups.m */; };
@@ -458,11 +458,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83510E601875B66D0022BE1F /* Reveal.framework in Frameworks */,
+				83510E5F1875B6620022BE1F /* libTapkuLibrary.a in Frameworks */,
 				837DD1AD1536291400DF0911 /* libz.dylib in Frameworks */,
-				83510E5D187321580022BE1F /* Reveal.framework in Frameworks */,
 				83452B14152F4DC200CC358A /* QuartzCore.framework in Frameworks */,
 				83452B12152F4DBE00CC358A /* MapKit.framework in Frameworks */,
-				83452B0F152F4CF200CC358A /* libTapkuLibrary.a in Frameworks */,
 				83EF4D1E151038FF007A483B /* SystemConfiguration.framework in Frameworks */,
 				830681B615058323007455FC /* Security.framework in Frameworks */,
 				8330717A14FF009C0042F7D5 /* UIKit.framework in Frameworks */,
@@ -1285,18 +1285,20 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+					"$(SRCROOT)",
+					"$(SRCROOT)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
+				HEADER_SEARCH_PATHS = Frameworks/tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+					"$(SRCROOT)/Argus",
+					"$(SRCROOT)/Frameworks/TestFlight",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1316,19 +1318,21 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+					"$(SRCROOT)",
+					"$(SRCROOT)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=0";
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
+				HEADER_SEARCH_PATHS = Frameworks/tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
+					"$(SRCROOT)/Argus",
+					"$(SRCROOT)/Frameworks/TestFlight",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
