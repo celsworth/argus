@@ -12,9 +12,13 @@
 #import "ArgusConnectionQueue.h"
 #import "LoadingSpinner.h"
 
-// GetRecordings* needs 49 (1.6.1.0, not used)
-// ChannelsPrograms needs 50 (1.7.0.0?, optional so far, for EPG Grid)
-// ChannelsProgramsDetails needs 51 (not used)
+/* API VERSION DETAILS
+	49: GetRecordings* (unused)
+	50: ChannelsProgams (optionally used in EPG Grid)
+	51: ChannelsProgramsDetails (unused)
+	??: SetRecordingFullyWatchedCount (Argus 2.0)
+	60: RESTful overhaul (Argus 2.2)
+ */
 #define REQUIRED_API_VERSION 45
 
 #define REQUIRED_ARGUS_VERSION @"1.6.0.2"
