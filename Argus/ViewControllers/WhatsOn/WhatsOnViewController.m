@@ -149,7 +149,7 @@
     if ((channel = [scg CurrentAndNext][indexPath.row]))
     {
 		UIImage *img = [[channel Logo] image];
-		UIImageView *logo = (UIImageView *)[cell viewWithTag:0];
+		UIImageView *logo = (UIImageView *)[cell viewWithTag:6];
 		if (img)
 		{
 			logo.image = img;

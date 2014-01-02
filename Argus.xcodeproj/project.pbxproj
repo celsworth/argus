@@ -988,6 +988,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Elsworth IT Consulting Ltd";
+				TargetAttributes = {
+					8330717414FF009C0042F7D5 = {
+						DevelopmentTeam = 5L62727F42;
+					};
+				};
 			};
 			buildConfigurationList = 8330716F14FF009C0042F7D5 /* Build configuration list for PBXProject "Argus" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1281,7 +1286,7 @@
 		8330719A14FF009C0042F7D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1314,7 +1319,7 @@
 		8330719B14FF009C0042F7D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -18,24 +18,9 @@
 #import "NSDate+Formatter.h"
 #import "NSNumber+humanSize.h"
 
-#import "ArgusChannel.h"
-
 #import "AppDelegate.h"
 
 @implementation ProgrammeDetailsViewController
-@synthesize Programme;
-@synthesize sv;
-@synthesize progtitle, subtitle, description;
-@synthesize date, dateSubtext, timeStart, timeDuration, timeEnd, pctDone;
-@synthesize airChannel, airChannelLogo;
-@synthesize recordButton;
-@synthesize searchButton, searchIMDbButton, searchTvComButton;
-@synthesize editScheduleButton, editProgrammeButton;
-@synthesize recordButtons;
-@synthesize recordActionSheet, searchActionSheet;
-@synthesize UpcomingProgramme, upcomingIcon;
-@synthesize detailsLoading;
-@synthesize autoRedrawTimer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,55 +51,14 @@
 {
     [super viewDidLoad];
 	
-	// show/hide the relevant buttons when our list of upcoming programmes changes
-	// eg if our programme was set to record and now isn't, we'll show the Record buttons
+	// refresh when upcoming programmes returns, just to make sure we're accurate
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redraw)
 												 name:kArgusUpcomingProgrammesDone
 											   object:[argus UpcomingProgrammes]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redraw)
 												 name:kArgusProgrammeDone
-											   object:Programme];
-
-		
-	UIImage *redStretchImg = [UIImage imageNamed:@"chris_stretchable_button_red.png"];
-	//	UIImage *yellowStretchImg = [UIImage imageNamed:@"chris_stretchable_button_yellow.png"];
-	UIImage *greenStretchImg = [UIImage imageNamed:@"chris_stretchable_button_green.png"];
-
-	UIImage *redStretch = [redStretchImg stretchableImageWithLeftCapWidth:redStretchImg.size.width/2	
-															 topCapHeight:redStretchImg.size.height/2];
-
-	//	UIImage *yellowStretch = [yellowStretchImg stretchableImageWithLeftCapWidth:yellowStretchImg.size.width/2
-	//																   topCapHeight:yellowStretchImg.size.height/2];
-	//
-	
-	UIImage *greenStretch = [greenStretchImg stretchableImageWithLeftCapWidth:greenStretchImg.size.width/2
-																   topCapHeight:greenStretchImg.size.height/2];
-
-	// add UTF8 red circle
-	[recordButton setTitle:[NSString stringWithFormat:@"\U0001F534 %@", recordButton.titleLabel.text] forState:UIControlStateNormal];
-	
-	[recordButton setBackgroundImage:redStretch forState:UIControlStateNormal];
-	
-	// iPhone only, but just a nil-op on iPad
-	[searchButton setBackgroundImage:greenStretch forState:UIControlStateNormal];
-	
-	// iPad only, but just a nil-op on iPhone
-	[searchIMDbButton setBackgroundImage:greenStretch forState:UIControlStateNormal];
-	[searchTvComButton setBackgroundImage:greenStretch forState:UIControlStateNormal];
-	
-	[editScheduleButton setBackgroundImage:redStretch forState:UIControlStateNormal];
-	[[editScheduleButton titleLabel] setLineBreakMode:UILineBreakModeWordWrap];
-	[[editScheduleButton titleLabel] setTextAlignment:UITextAlignmentCenter];
-	[[editScheduleButton titleLabel] setNumberOfLines:0];
-	//[editScheduleButton setTitle:@"Edit\nSchedule" forState:UIControlStateNormal];
-	
-	[editProgrammeButton setBackgroundImage:redStretch forState:UIControlStateNormal];
-	[[editProgrammeButton titleLabel] setLineBreakMode:UILineBreakModeWordWrap];
-	[[editProgrammeButton titleLabel] setTextAlignment:UITextAlignmentCenter];
-	[[editProgrammeButton titleLabel] setNumberOfLines:0];
-	//[editProgrammeButton setTitle:@"Edit\nProgramme" forState:UIControlStateNormal];
-
+											   object:self.Programme];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -130,15 +74,13 @@
 	// it must match original scrollview frame size in the storyboard
 	// tried sv.contentSize = sv.frame.size but doesn't work, gets 389 instead of 296?
 	if (iPad())
-		sv.contentSize = CGSizeMake(description.frame.size.width, 642);
+		self.sv.contentSize = CGSizeMake(self.description.frame.size.width, 642);
 	else
-		sv.contentSize = CGSizeMake(description.frame.size.width, 296);
+		self.sv.contentSize = CGSizeMake(self.description.frame.size.width, 296);
 	
 	//	NSLog(@"sv is %f x %f", sv.contentSize.width, sv.contentSize.height);
 	
-	
-	
-	autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(redraw) userInfo:nil repeats:YES];
+	self.autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(redraw) userInfo:nil repeats:YES];
 
 	[self redraw];
 }
@@ -152,7 +94,7 @@
 {
 	[super viewDidDisappear:animated];
 	
-	[autoRedrawTimer invalidate];
+	[self.autoRedrawTimer invalidate];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -173,128 +115,114 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 
-	assert(Programme);
+	assert(self.Programme);
 	
-	//NSLog(@"%@", Programme.originalData);
+	//NSLog(@"%@", self.Programme.originalData);
 	
-	UpcomingProgramme = [Programme upcomingProgramme];
-	if (UpcomingProgramme)
+	self.UpcomingProgramme = [self.Programme upcomingProgramme];
+	if (self.UpcomingProgramme)
 	{
-		recordButton.hidden = YES;
-		editScheduleButton.hidden = NO;
-		editProgrammeButton.hidden = NO;
-		
-		upcomingIcon.image = [UpcomingProgramme iconImage];
+		self.upcomingIcon.image = [self.UpcomingProgramme iconImage];
 	}
 	else
 	{
-		editScheduleButton.hidden = YES;
-		editProgrammeButton.hidden = YES;
-		recordButton.hidden = NO;
-		
-		upcomingIcon.image = nil;
+		self.upcomingIcon.image = nil;
 	}
 
-	progtitle.text = [Programme Property:kTitle];
-	subtitle.text = [Programme Property:kSubTitle];
+	self.progtitle.text = [self.Programme Property:kTitle];
+	self.subtitle.text = [self.Programme Property:kSubTitle];
 	
-	//NSLog(@"desc is %@", [Programme Property:kDescription]);
-	
-	if ([Programme Property:kDescription])
+	if ([self.Programme Property:kDescription])
 	{
-		[detailsLoading stopAnimating];
-		description.text = [Programme Property:kDescription];	
+		[self.detailsLoading stopAnimating];
+		self.description.text = [self.Programme Property:kDescription];
 	}
 	else
 	{
-		if ([Programme Property:kGuideProgramId])
+		if ([self.Programme Property:kGuideProgramId])
 		{
-			description.text = nil;
+			self.description.text = nil;
 
 			// no description, if we didn't try to fetch it already, do so
-			if (! [Programme fullDetailsDone])
+			if (! [self.Programme fullDetailsDone])
 			{
-				[detailsLoading startAnimating];
+				[self.detailsLoading startAnimating];
 				
 				// send a Guide/Program/{GuideProgramId} request to get description.
-				[Programme getFullDetails];
+				[self.Programme getFullDetails];
 			}
 		}
 		else
 		{
 			// do not attempt to fetch descriptions if GuideProgramId is nil
 			// this signifies a manual recording
-			description.text = NSLocalizedString(@"<manual recording, no details available>", @"details of a manual recording");
+			self.description.text = NSLocalizedString(@"<manual recording, no details available>", nil);
 		}
 	}
 	
 	// top-align the description text
+	[self.description topAlign];
 	
-	CGSize tmp = CGSizeMake(description.frame.size.width, MAXFLOAT);
-	CGSize test = [[description text] sizeWithFont:[description font] constrainedToSize:tmp lineBreakMode:UILineBreakModeWordWrap];
+#if 0
+	CGSize tmp = CGSizeMake(self.description.frame.size.width, MAXFLOAT);
+	CGSize test = [[self.description text] sizeWithFont:[self.description font] constrainedToSize:tmp lineBreakMode:UILineBreakModeWordWrap];
 	//NSLog(@"sizeWithFont: %f", test.height);
 	
 	// change description height to the new test.height
 	// diff will be negative if new one is shorter
-	CGFloat diff = test.height - description.frame.size.height;
+	CGFloat diff = test.height - self.description.frame.size.height;
 	
-	CGRect newDescRect = description.frame;
-	newDescRect.size.height = description.frame.size.height + diff;
-	description.frame = newDescRect;
+	CGRect newDescRect = self.description.frame;
+	newDescRect.size.height = self.description.frame.size.height + diff;
+	self.description.frame = newDescRect;
 	
 	//NSLog(@"sv was %f x %f", sv.contentSize.width, sv.contentSize.height);
 	
 	// and change sv.contentSize by the same amount?
-	CGSize newSvSize = CGSizeMake(description.frame.size.width, sv.contentSize.height + diff);
-	sv.contentSize = newSvSize;
+	CGSize newSvSize = CGSizeMake(self.description.frame.size.width, self.sv.contentSize.height + diff);
+	self.sv.contentSize = newSvSize;
 	//NSLog(@"sv is %f x %f", sv.contentSize.width, sv.contentSize.height);
-	
+#endif
 
-
-	
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	[df setDateStyle:NSDateFormatterFullStyle];
 	
 	// some descriptive text about when the programme will be on
 	NSString *airDateSubDescription;
-	NSTimeInterval startTimeSinceNow = [[Programme Property:kStartTime] timeIntervalSinceNow];
-	NSTimeInterval stopTimeSinceNow = [[Programme Property:kStopTime] timeIntervalSinceNow];
+	NSTimeInterval startTimeSinceNow = [[self.Programme Property:kStartTime] timeIntervalSinceNow];
+	NSTimeInterval stopTimeSinceNow = [[self.Programme Property:kStopTime] timeIntervalSinceNow];
 	if (stopTimeSinceNow < 0)
 	{
-		airDateSubDescription = NSLocalizedString(@"already shown", @"programme end time has passed");
+		airDateSubDescription = NSLocalizedString(@"already shown", @"displayed when programme has finished");
 	}
 	else if (stopTimeSinceNow > 0 && startTimeSinceNow < 0)
 	{
-		airDateSubDescription = NSLocalizedString(@"started", @"prepended to a time period when a programme is showing");
-		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@" %@ ", [@(abs(startTimeSinceNow)) hmsStringReadable]];
-		airDateSubDescription = [airDateSubDescription stringByAppendingString:NSLocalizedString(@"ago", @"appended to a time period when a programme is showing")];
-		airDateSubDescription = [airDateSubDescription stringByAppendingString:@", "];
-		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@"%@ ", [@(abs(stopTimeSinceNow)) hmsStringReadable]];
-		airDateSubDescription = [airDateSubDescription stringByAppendingString:NSLocalizedString(@"remaining", @"appended to a time period when a programme is showing")];
+		airDateSubDescription = [NSString stringWithFormat:NSLocalizedString(@"started %@ ago, %@ remaining", nil),
+								 [@(abs(startTimeSinceNow)) hmsStringReadable], [@(abs(stopTimeSinceNow)) hmsStringReadable]];
 	}
 	else
 	{
-		airDateSubDescription = NSLocalizedString(@"starts in", @"prepended to a time period when a programme has not yet started");
-		airDateSubDescription = [airDateSubDescription stringByAppendingFormat:@" %@", [[NSNumber numberWithInt:startTimeSinceNow] hmsStringReadable]];
+		airDateSubDescription = [NSString stringWithFormat:NSLocalizedString(@"starts in %@", @"displayed when programme hasn't started"),
+								 [@(startTimeSinceNow) hmsStringReadable]];
 	}
 	
 	if (iPad())
-		date.text = [NSString stringWithFormat:@"%@ (%@)", [df stringFromDate:[Programme Property:kStartTime]], airDateSubDescription];
+		self.date.text = [NSString stringWithFormat:@"%@ (%@)", [df stringFromDate:[self.Programme Property:kStartTime]], airDateSubDescription];
 	else
 	{
 		// iPhone has separate field for date Subtext
-		date.text = [df stringFromDate:[Programme Property:kStartTime]];
-		dateSubtext.text = airDateSubDescription;
+		self.date.text = [df stringFromDate:[self.Programme Property:kStartTime]];
+		self.dateSubtext.text = airDateSubDescription;
 	}
 
 	
-	timeStart.text = [[Programme Property:kStartTime] asFormat:@"HH:mm"];
-	timeEnd.text = [[Programme Property:kStopTime] asFormat:@"HH:mm"];
+	self.timeStart.text = [[self.Programme Property:kStartTime] asFormat:@"HH:mm"];
+	self.timeEnd.text = [[self.Programme Property:kStopTime] asFormat:@"HH:mm"];
 	
 	NSTimeInterval duration = stopTimeSinceNow - startTimeSinceNow;
-	timeDuration.text = [NSString stringWithFormat:@"(%@)", [[NSNumber numberWithInt:duration] hmsStringReadable]];
+	self.timeDuration.text = [NSString stringWithFormat:@"(%@)", [@(duration) hmsStringReadable]];
 	
-	NSDate *StartTime = [Programme Property:kStartTime];
+	NSDate *StartTime = [self.Programme Property:kStartTime];
 
 	// calculate how far through we are for the progressbar
 	NSTimeInterval secondsIn = [[NSDate date] timeIntervalSinceDate:StartTime];
@@ -302,128 +230,143 @@
 	if (secondsIn < 0)
 	{
 		// programme hasn't started
-		pctDone.progress = 0;
+		self.pctDone.progress = 0;
 	}
 	else
 	{
-		NSTimeInterval duration = [[Programme Property:kStopTime] timeIntervalSinceDate:StartTime];
+		NSTimeInterval duration = [[self.Programme Property:kStopTime] timeIntervalSinceDate:StartTime];
 		// we have started, and we are secondsIn/duration done.
 		double done = secondsIn/duration;
-		pctDone.progress = done;
+		self.pctDone.progress = done;
 	}
 	
-	ArgusChannel *c = [Programme Channel];
+	ArgusChannel *c = [self.Programme Channel];
 	
-	airChannel.text = [c Property:kDisplayName];
+	self.airChannel.text = [c Property:kDisplayName];
 	
 	// FIXME: cope with logo not existing yet, and being fetched later?
-	airChannelLogo.image = [[c Logo] image];
+	self.airChannelLogo.image = [[c Logo] image];
 	
 }
 
-
-// hmm, perhaps this should be in a segue?
--(IBAction)recordPressed:(id)sender
+-(void)showOptionsActionSheet
 {
-	recordActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Record", @"title of popup on Programme Details")
+	// start with generic action sheet with no buttons
+	UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Recording Options", nil)
 													delegate:self
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+										   cancelButtonTitle:iPad() ? nil : NSLocalizedString(@"Cancel", nil)
 									  destructiveButtonTitle:nil
-										   otherButtonTitles:
-						 NSLocalizedString(@"Once", @"record once"),
-						 NSLocalizedString(@"Daily", @"record daily"),
-						 NSLocalizedString(@"Weekly", @"record weekly"),
-						 NSLocalizedString(@"Any Time", @"record anytime"),
-						 nil];
+										   otherButtonTitles:nil];
 	
-	if (iPad())
+	// add titles depending on state
+	self.UpcomingProgramme = [self.Programme upcomingProgramme];
+	if (self.UpcomingProgramme)
 	{
-		UIButton *btn = sender;
-		[recordActionSheet showFromRect:btn.frame inView:recordButtons animated:YES];
+		actionSheetEditScheduleIndex = [as addButtonWithTitle:NSLocalizedString(@"Edit Schedule", nil)];
+		actionSheetEditProgrammeIndex = [as addButtonWithTitle:NSLocalizedString(@"Edit Programme", nil)];
+		
+		self.editActionSheet = as;
 	}
 	else
-		[recordActionSheet showFromTabBar:self.tabBarController.tabBar];
+	{
+		// TODO: add Reminders/Suggestions?
+		
+		actionSheetRecordOnceIndex = [as addButtonWithTitle:NSLocalizedString(@"Record Once", nil)];
+		actionSheetRecordDailyIndex = [as addButtonWithTitle:NSLocalizedString(@"Record Daily", nil)];
+		actionSheetRecordWeeklyIndex = [as addButtonWithTitle:NSLocalizedString(@"Record Weekly", nil)];
+		actionSheetRecordAnyTimeIndex = [as addButtonWithTitle:NSLocalizedString(@"Record AnyTime", nil)];
+		
+		self.recordActionSheet = as;
+	}
+	
+	if (iPad())
+		[as showFromBarButtonItem:self.optionsButtonItem animated:YES];
+	else
+		[as showFromTabBar:self.tabBarController.tabBar];
+	
 }
-// iPhone only
--(IBAction)searchPressed:(id)sender
+-(void)showSearchActionSheet
 {
-	searchActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Search", @"title of popup on Programme Details")
+	UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Search", @"title of popup on Programme Details")
 													delegate:self
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+										   cancelButtonTitle:iPad() ? nil : NSLocalizedString(@"Cancel", nil)
 									  destructiveButtonTitle:nil
-										   otherButtonTitles:
-						 NSLocalizedString(@"Search IMDb", nil),
-						 NSLocalizedString(@"Search tv.com", nil),
-						 nil];
+										   otherButtonTitles:nil];
+	
+	actionSheetSearchImdbIndex = [as addButtonWithTitle:NSLocalizedString(@"Search IMDb", nil)];
+	actionSheetSearchTvcomIndex = [as addButtonWithTitle:NSLocalizedString(@"Search tv.com", nil)];
+	
+	self.searchActionSheet = as;
 	
 	if (iPad())
-	{
-		UIButton *btn = sender;
-		[searchActionSheet showFromRect:btn.frame inView:recordButtons animated:YES];
-	}
+		[as showFromBarButtonItem:self.searchButtonItem animated:YES];
 	else
-		[searchActionSheet showFromTabBar:self.tabBarController.tabBar];
+		[as showFromTabBar:self.tabBarController.tabBar];
 }
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if (actionSheet == recordActionSheet)
+	if (actionSheet == self.recordActionSheet)
 		[self processRecordActionSheetClickAtIndex:buttonIndex];
 	
-	else if (actionSheet == searchActionSheet)
+	else if (actionSheet == self.editActionSheet)
+		[self processEditActionSheetClickAtIndex:buttonIndex];
+
+	else if (actionSheet == self.searchActionSheet)
 		[self processSearchActionSheetClickAtIndex:buttonIndex];
 }
 
+
 -(void)processRecordActionSheetClickAtIndex:(NSInteger)buttonIndex
 {
-	// cancel button
-	if (buttonIndex == 4)
-		return;
+	NSLog(@"%s: %d", __PRETTY_FUNCTION__, buttonIndex);
 	
 	// take a copy of EmptySchedule so we can mess with it
 	ArgusSchedule *newSchedule = [[ArgusSchedule alloc] initWithExistingSchedule:[argus EmptySchedule]];
 	[newSchedule setScheduleType:ArgusScheduleTypeRecording];
 
-	// title and channel are always set
 	ArgusScheduleRule *tmprule;
-	tmprule = [newSchedule Rules][kArgusScheduleRuleSuperTypeTitle];
-	[tmprule setMatchType:ArgusScheduleRuleMatchTypeEquals];
-	[tmprule setArguments:[NSMutableArray arrayWithObject:[Programme Property:kTitle]]];
+	NSMutableDictionary *rules = [newSchedule Rules];
 	
-	tmprule = [newSchedule Rules][kArgusScheduleRuleSuperTypeChannels];
+	// title and channel are always set
+	tmprule = rules[kArgusScheduleRuleSuperTypeTitle];
+	[tmprule setMatchType:ArgusScheduleRuleMatchTypeEquals];
+	[tmprule setArguments:[NSMutableArray arrayWithObject:[self.Programme Property:kTitle]]];
+	
+	tmprule = rules[kArgusScheduleRuleSuperTypeChannels];
 	[tmprule setMatchType:ArgusScheduleRuleMatchTypeContains];
-	NSString *ChannelId = [[Programme Channel] Property:kChannelId];
+	NSString *ChannelId = [[self.Programme Channel] Property:kChannelId];
 	[tmprule setArguments:[NSMutableArray arrayWithObject:ChannelId]];
 		
-	if (buttonIndex == 0) // Once
+	if (buttonIndex == actionSheetRecordOnceIndex) // Once
 	{	
-		[newSchedule setName:[Programme Property:kTitle]];
+		[newSchedule setName:[self.Programme Property:kTitle]];
 		
 		// set the date and time of this programme
-		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeOnDate];
-		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
-		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeAroundTime];
-		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
+		tmprule = rules[kArgusScheduleRuleTypeOnDate];
+		[tmprule setArgumentAsDate:[self.Programme Property:kStartTime]];
+		tmprule = rules[kArgusScheduleRuleTypeAroundTime];
+		[tmprule setArgumentAsDate:[self.Programme Property:kStartTime]];
 	}
-	if (buttonIndex == 1)
+	else if (buttonIndex == actionSheetRecordDailyIndex)
 	{
 		NSString *t = NSLocalizedString(@"Daily", @"record daily");
-		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [Programme Property:kTitle], t]];
+		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [self.Programme Property:kTitle], t]];
 		
 		// set just the time
-		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeAroundTime];
-		[tmprule setArgumentAsDate:[Programme Property:kStartTime]];
+		tmprule = rules[kArgusScheduleRuleTypeAroundTime];
+		[tmprule setArgumentAsDate:[self.Programme Property:kStartTime]];
 	}
-	if (buttonIndex == 2)
+	else if (buttonIndex == actionSheetRecordWeeklyIndex)
 	{
 		NSString *t = NSLocalizedString(@"Weekly", @"record weekly");
-		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [Programme Property:kTitle], t]];
+		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [self.Programme Property:kTitle], t]];
 
 		// set the day of week
 		NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *cmp = [cal components:NSWeekdayCalendarUnit fromDate:[Programme Property:kStartTime]];
-		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeDaysOfWeek];
+		NSDateComponents *cmp = [cal components:NSWeekdayCalendarUnit fromDate:[self.Programme Property:kStartTime]];
+		tmprule = rules[kArgusScheduleRuleTypeDaysOfWeek];
 		// Sunday = 1 .. Saturday = 7
 		switch ([cmp weekday])
 		{
@@ -436,14 +379,18 @@
 			case 7: [tmprule setArgumentAsDayOfWeek:ArgusScheduleRuleDayOfWeekSaturday  selected:YES]; break;
 		}
 	}
-	if (buttonIndex == 3)
+	else if (buttonIndex == actionSheetRecordAnyTimeIndex)
 	{
 		NSString *t = NSLocalizedString(@"Any Time", @"record anytime");
-		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [Programme Property:kTitle], t]];
+		[newSchedule setName:[NSString stringWithFormat:@"%@ (%@)", [self.Programme Property:kTitle], t]];
 
 		// no special time params, but set New Episodes
-		tmprule = [newSchedule Rules][kArgusScheduleRuleTypeNewEpisodesOnly];
+		tmprule = rules[kArgusScheduleRuleTypeNewEpisodesOnly];
 		[tmprule setArgumentAsBoolean:YES];
+	}
+	else
+	{
+		return; // cancel?
 	}
 	
 	// now shunt them over to schedule edit screen to fine-tune and save
@@ -453,26 +400,29 @@
 	
 	[[self navigationController] pushViewController:dvc animated:YES];
 }
+-(void)processEditActionSheetClickAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex == actionSheetEditScheduleIndex)
+		[self performSegueWithIdentifier:@"ScheduleEdit" sender:self];
+	
+	else if (buttonIndex == actionSheetEditProgrammeIndex)
+		[self performSegueWithIdentifier:@"ProgrammeEdit" sender:self];
+}
 -(void)processSearchActionSheetClickAtIndex:(NSInteger)buttonIndex
 {
-	// cancel
-	if (buttonIndex == 2)
-		return;
-	
-	if (buttonIndex == 0)
+	if (buttonIndex == actionSheetSearchImdbIndex)
 		[self searchIMDbPressed:nil];
-	if (buttonIndex == 1)
+	
+	else if (buttonIndex == actionSheetSearchTvcomIndex)
 		[self searchTvComPressed:nil];
-
 }
 
 -(IBAction)searchIMDbPressed:(id)sender
 {
-	
 	NSString *url = [NSString stringWithFormat:@"http://www.imdb.com/find?q=%@&s=tt",
-					 [[Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-
-	//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+					 [[self.Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+	return;
 	
 	UINavigationController *nc = [self navigationController];
 	WebViewVC *vc = [[WebViewVC alloc] initWithFrame:nc.visibleViewController.view.frame];
@@ -482,14 +432,24 @@
 -(IBAction)searchTvComPressed:(id)sender
 {
 	NSString *url = [NSString stringWithFormat:@"http://www.tv.com/search?q=%@",
-					 [[Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
-	
+					 [[self.Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+	return;
 	
 	UINavigationController *nc = [self navigationController];
 	WebViewVC *vc = [[WebViewVC alloc] initWithFrame:nc.visibleViewController.view.frame];
 	[vc loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
-	[nc pushViewController:vc animated:YES];	
+	[nc pushViewController:vc animated:YES];
+}
+
+- (IBAction)optionsButtonPressed:(id)sender
+{
+	[self showOptionsActionSheet];
+}
+
+- (IBAction)searchButtonPressed:(id)sender
+{
+	[self showSearchActionSheet];
 }
 
 
@@ -502,11 +462,11 @@
         
 		// we need to look up and pull in ScheduleId?
 		
-		assert(UpcomingProgramme != nil);
-		assert([UpcomingProgramme Property:kScheduleId] != nil);
+		assert(self.UpcomingProgramme);
+		assert([self.UpcomingProgramme Property:kScheduleId]);
 		
 		// fetch the ArgusSchedule for ScheduleId, then pass it to dvc..
-		dvc.Schedule = [[ArgusSchedule alloc] initWithScheduleId:[UpcomingProgramme Property:kScheduleId]];
+		dvc.Schedule = [[ArgusSchedule alloc] initWithScheduleId:[self.UpcomingProgramme Property:kScheduleId]];
 	}
 	
 	// edit upcoming programme details
@@ -514,10 +474,10 @@
 	{
 		UpcomingProgrammeEditTVC *dvc = (UpcomingProgrammeEditTVC *)[segue destinationViewController];
 		
-		assert(UpcomingProgramme);
+		assert(self.UpcomingProgramme);
 		
 		// pass the Id rather than the programme object, so if the object is reloaded, things don't break
-		dvc.UpcomingProgramId = [UpcomingProgramme Property:kUpcomingProgramId];
+		dvc.UpcomingProgramId = [self.UpcomingProgramme Property:kUpcomingProgramId];
 	}
 }
 

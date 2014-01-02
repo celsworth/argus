@@ -13,6 +13,21 @@
 #include "ArgusSchedule.h"
 
 @interface ProgrammeDetailsViewController : UIViewController <UIActionSheetDelegate> {
+	// this records which index position various actionsheet buttons are in
+	
+	// record AS
+	NSInteger actionSheetRecordOnceIndex;
+	NSInteger actionSheetRecordDailyIndex;
+	NSInteger actionSheetRecordWeeklyIndex;
+	NSInteger actionSheetRecordAnyTimeIndex;
+	
+	// options AS
+	NSInteger actionSheetEditScheduleIndex;
+	NSInteger actionSheetEditProgrammeIndex;
+	
+	// search AS
+	NSInteger actionSheetSearchImdbIndex;
+	NSInteger actionSheetSearchTvcomIndex;
 }
 
 @property (nonatomic, weak) IBOutlet UIScrollView *sv;
@@ -35,21 +50,14 @@
 
 @property (nonatomic, weak) IBOutlet UIProgressView *pctDone;
 
-@property (nonatomic, weak) IBOutlet UIButton *recordButton;
-@property (nonatomic, weak) IBOutlet UIButton *searchButton; // iPhone only
-
 // keep track of which actionsheet is showing, so our delegate function works properly
 @property (nonatomic, retain) UIActionSheet *recordActionSheet;
+@property (nonatomic, retain) UIActionSheet *editActionSheet;
 @property (nonatomic, retain) UIActionSheet *searchActionSheet;
 
-//@property (nonatomic, weak) IBOutlet UIButton *alertButton;
-@property (nonatomic, weak) IBOutlet UIButton *searchIMDbButton; // iPad only
-@property (nonatomic, weak) IBOutlet UIButton *searchTvComButton; // iPad only
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *optionsButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchButtonItem;
 
-@property (nonatomic, weak) IBOutlet UIButton *editScheduleButton;
-@property (nonatomic, weak) IBOutlet UIButton *editProgrammeButton;
-
-@property (nonatomic, weak) IBOutlet UIView *recordButtons;
 
 @property (nonatomic, retain) ArgusProgramme *Programme;
 
@@ -58,9 +66,8 @@
 
 @property (nonatomic, retain) NSTimer *autoRedrawTimer;
 
--(IBAction)recordPressed:(id)sender;
--(IBAction)searchPressed:(id)sender;
--(IBAction)searchIMDbPressed:(id)sender;
--(IBAction)searchTvComPressed:(id)sender;
+
+- (IBAction)optionsButtonPressed:(id)sender;
+- (IBAction)searchButtonPressed:(id)sender;
 
 @end
