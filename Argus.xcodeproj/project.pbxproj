@@ -489,6 +489,7 @@
 				831E8445150005FD00160D03 /* SBJSON */,
 			);
 			name = "3rd Party Imports";
+			path = 3rdParty;
 			sourceTree = "<group>";
 		};
 		83139B18152010D30084B77D /* Schedules */ = {
@@ -561,7 +562,7 @@
 				831E84821500064500160D03 /* SBJsonWriter.h */,
 				831E84831500064500160D03 /* SBJsonWriter.m */,
 			);
-			name = SBJSON;
+			path = SBJSON;
 			sourceTree = "<group>";
 		};
 		8330716A14FF009C0042F7D5 = {
@@ -587,20 +588,20 @@
 		8330717814FF009C0042F7D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83452AFE152F4CA500CC358A /* TapkuLibrary.bundle */,
-				837DD1AB153628A900DF0911 /* TestFlight */,
-				83452B01152F4CC300CC358A /* TapkuLibrary.xcodeproj */,
-				837DD1AC1536291400DF0911 /* libz.dylib */,
-				83452B13152F4DC200CC358A /* QuartzCore.framework */,
-				83452B11152F4DBD00CC358A /* MapKit.framework */,
-				83EF4D1D151038FE007A483B /* SystemConfiguration.framework */,
-				830681B4150582F9007455FC /* Security.framework */,
-				8330717914FF009C0042F7D5 /* UIKit.framework */,
-				8330717B14FF009C0042F7D5 /* Foundation.framework */,
 				8330717D14FF009C0042F7D5 /* CoreGraphics.framework */,
+				8330717B14FF009C0042F7D5 /* Foundation.framework */,
+				837DD1AC1536291400DF0911 /* libz.dylib */,
+				83452B11152F4DBD00CC358A /* MapKit.framework */,
+				83452B13152F4DC200CC358A /* QuartzCore.framework */,
 				83510E5C187321580022BE1F /* Reveal.framework */,
+				830681B4150582F9007455FC /* Security.framework */,
+				83EF4D1D151038FE007A483B /* SystemConfiguration.framework */,
+				83452AFE152F4CA500CC358A /* TapkuLibrary.bundle */,
+				83452B01152F4CC300CC358A /* TapkuLibrary.xcodeproj */,
+				837DD1AB153628A900DF0911 /* TestFlight */,
+				8330717914FF009C0042F7D5 /* UIKit.framework */,
 			);
-			name = Frameworks;
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		8330717F14FF009C0042F7D5 /* Argus */ = {
@@ -658,6 +659,7 @@
 				8330718714FF009C0042F7D5 /* Argus-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = Support;
 			sourceTree = "<group>";
 		};
 		8331192D1528C7AA0022FB2A /* Recordings */ = {
@@ -750,7 +752,7 @@
 				837DD1A8153628A000DF0911 /* libTestFlight.a */,
 				837DD1A9153628A100DF0911 /* TestFlight.h */,
 			);
-			name = TestFlight;
+			path = TestFlight;
 			sourceTree = "<group>";
 		};
 		839C523A150122D300232E38 /* Categories */ = {
@@ -769,7 +771,7 @@
 				83452B1F1532103E00CC358A /* NSDate+Formatter.h */,
 				83452B201532103E00CC358A /* NSDate+Formatter.m */,
 			);
-			name = Categories;
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		839C524A150266B800232E38 /* Argus API Classes */ = {
@@ -1286,10 +1288,10 @@
 					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Argus/Argus-Prefix.pch";
+				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
-				INFOPLIST_FILE = "$(SRCROOT)/Argus/Argus-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1317,11 +1319,11 @@
 					"/Users/chris/Dropbox/src/Xcode\\ Projects/Argus",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Argus/Argus-Prefix.pch";
+				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=0";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = tapkulibrary/src/TapkuLibrary;
-				INFOPLIST_FILE = "$(SRCROOT)/Argus/Argus-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
