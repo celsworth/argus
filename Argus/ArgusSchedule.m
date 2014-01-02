@@ -929,7 +929,7 @@
 
 -(void)setChannelType:(ArgusChannelType)val
 {
-	[[self originalData] setValue:[NSNumber numberWithInt:val] forKey:kChannelType];
+	[[self originalData] setValue:@(val) forKey:kChannelType];
 	Modified = @YES;
 }
 -(ArgusChannelType)ChannelType
@@ -938,7 +938,7 @@
 }
 -(void)setScheduleType:(ArgusScheduleType)val
 {
-	[[self originalData] setValue:[NSNumber numberWithInt:val] forKey:kScheduleType];
+	[[self originalData] setValue:@(val) forKey:kScheduleType];
 	Modified = @YES;
 }
 -(ArgusScheduleType)ScheduleType

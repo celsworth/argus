@@ -184,7 +184,7 @@
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	
-	return tD[[NSNumber numberWithInt:scheduleType]];	
+	return tD[@(scheduleType)];
 }
 
 -(void)setSchedules:(NSArray *)arr forChannelType:(ArgusChannelType)channelType scheduleType:(ArgusScheduleType)scheduleType
@@ -198,7 +198,7 @@
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	
-	tD[[NSNumber numberWithInt:scheduleType]] = arr;
+	tD[@(scheduleType)] = arr;
 }
 
 

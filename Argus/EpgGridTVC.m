@@ -949,7 +949,7 @@
 		}
 		
 		NSUInteger row = [[cg Channels] indexOfObjectIdenticalTo:c];
-		labelsByIndexPath[[NSNumber numberWithInt:row]] = tmpArr;
+		labelsByIndexPath[@(row)] = tmpArr;
 	}
 	
 	[tv_chanlogos reloadData]; [tv reloadData];
@@ -1062,7 +1062,7 @@
 	}
 
 	// used in cellForRowAtIndexPath to actually draw them in
-	labelsByIndexPath[[NSNumber numberWithInt:row]] = tmpArr;
+	labelsByIndexPath[@(row)] = tmpArr;
 	
 	[tv_chanlogos reloadData]; [tv reloadData];
 }
