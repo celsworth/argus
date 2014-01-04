@@ -21,16 +21,14 @@
 #import "JSONKit.h"
 
 @implementation ArgusUpcomingRecordings
-@synthesize UpcomingRecordings;
-@synthesize UpcomingRecordingsKeyedByUpcomingProgramId;
 
 -(id)init
 {
 	self = [super init];
 	if (self)
 	{
-		UpcomingRecordings = [NSMutableArray new];
-		UpcomingRecordingsKeyedByUpcomingProgramId = [NSMutableDictionary new];
+		_UpcomingRecordings = [NSMutableArray new];
+		_UpcomingRecordingsKeyedByUpcomingProgramId = [NSMutableDictionary new];
 		
 		// when any upcoming programme changes, refresh our lists
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -109,8 +107,8 @@
 		[tmpArr addObject:upr];
 	}
 	
-	UpcomingRecordings = tmpArr;
-	UpcomingRecordingsKeyedByUpcomingProgramId = tmpDict;
+	self.UpcomingRecordings = tmpArr;
+	self.UpcomingRecordingsKeyedByUpcomingProgramId = tmpDict;
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusUpcomingRecordingsDone object:self userInfo:nil];
 	

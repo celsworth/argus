@@ -19,19 +19,14 @@
 #import "SBJson.h"
 
 @implementation ArgusSchedules
-@synthesize TvSchedules, RadioSchedules;
-@synthesize SchedulesKeyedByScheduleId, tmpSchedulesKeyedByScheduleId;
-
-@synthesize fetchingChannelType;
-@synthesize RecordingsDone, AlertsDone, SuggestionsDone;
 
 -(id)init
 {
 	self = [super init];
 	if (self)
 	{
-		TvSchedules = [NSMutableDictionary new];
-		RadioSchedules = [NSMutableDictionary new];
+		_TvSchedules = [NSMutableDictionary new];
+		_RadioSchedules = [NSMutableDictionary new];
 	
 		// when anything deletes a schedule, we should refresh our list to ensure it's up to date
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -62,10 +57,10 @@
 -(void)getSchedulesForChannelType:(ArgusChannelType)channelType
 {
 	// we use these to check when to send the notification out
-	RecordingsDone = AlertsDone = SuggestionsDone = NO;
+	self.RecordingsDone = self.AlertsDone = self.SuggestionsDone = NO;
 	
-	fetchingChannelType = channelType;
-	tmpSchedulesKeyedByScheduleId = [NSMutableDictionary new];
+	self.fetchingChannelType = channelType;
+	self.tmpSchedulesKeyedByScheduleId = [NSMutableDictionary new];
 
 	[self getSchedulesForChannelType:channelType scheduleType:ArgusScheduleTypeRecording];
 	[self getSchedulesForChannelType:channelType scheduleType:ArgusScheduleTypeAlert];
@@ -109,24 +104,24 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 
-	RecordingsDone = YES;
-	[self setSchedules:[self SchedulesDone:notify] forChannelType:fetchingChannelType scheduleType:ArgusScheduleTypeRecording];
+	self.RecordingsDone = YES;
+	[self setSchedules:[self SchedulesDone:notify] forChannelType:self.fetchingChannelType scheduleType:ArgusScheduleTypeRecording];
 	[self sendNotifyIfAllDone];
 }
 -(void)AlertsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	AlertsDone = YES;
-	[self setSchedules:[self SchedulesDone:notify] forChannelType:fetchingChannelType scheduleType:ArgusScheduleTypeAlert];
+	self.AlertsDone = YES;
+	[self setSchedules:[self SchedulesDone:notify] forChannelType:self.fetchingChannelType scheduleType:ArgusScheduleTypeAlert];
 	[self sendNotifyIfAllDone];
 }
 -(void)SuggestionsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 
-	SuggestionsDone = YES;
-	[self setSchedules:[self SchedulesDone:notify] forChannelType:fetchingChannelType scheduleType:ArgusScheduleTypeSuggestion];
+	self.SuggestionsDone = YES;
+	[self setSchedules:[self SchedulesDone:notify] forChannelType:self.fetchingChannelType scheduleType:ArgusScheduleTypeSuggestion];
 	[self sendNotifyIfAllDone];
 }
 
@@ -152,18 +147,18 @@
 		
 		ArgusSchedule *t = [[ArgusSchedule alloc] initWithDictionary:d];
 		[tmpArr addObject:t];
-		tmpSchedulesKeyedByScheduleId[[t Property:kScheduleId]] = t;
+		self.tmpSchedulesKeyedByScheduleId[[t Property:kScheduleId]] = t;
 	}
 	
 	return tmpArr;
 }
 -(void)sendNotifyIfAllDone
 {
-	NSLog(@"%s %d %d %d", __PRETTY_FUNCTION__, RecordingsDone, AlertsDone, SuggestionsDone);
-	if (RecordingsDone && AlertsDone && SuggestionsDone)
+	NSLog(@"%s %d %d %d", __PRETTY_FUNCTION__, self.RecordingsDone, self.AlertsDone, self.SuggestionsDone);
+	if (self.RecordingsDone && self.AlertsDone && self.SuggestionsDone)
 	{
 		// update SchedulesKeyedByScheduleId as well (used to tie up UpcomingProgrammes to a schedule details)
-		SchedulesKeyedByScheduleId = tmpSchedulesKeyedByScheduleId;
+		self.SchedulesKeyedByScheduleId = self.tmpSchedulesKeyedByScheduleId;
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusSchedulesDone object:self userInfo:nil];
 		
@@ -179,8 +174,8 @@
 	
 	switch (channelType)
 	{
-		case ArgusChannelTypeTelevision: tD = TvSchedules;    break;
-		case ArgusChannelTypeRadio:      tD = RadioSchedules; break;
+		case ArgusChannelTypeTelevision: tD = self.TvSchedules;    break;
+		case ArgusChannelTypeRadio:      tD = self.RadioSchedules; break;
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	
@@ -193,8 +188,8 @@
 	
 	switch (channelType)
 	{
-		case ArgusChannelTypeTelevision: tD = TvSchedules;    break;
-		case ArgusChannelTypeRadio:      tD = RadioSchedules; break;
+		case ArgusChannelTypeTelevision: tD = self.TvSchedules;    break;
+		case ArgusChannelTypeRadio:      tD = self.RadioSchedules; break;
 		case ArgusChannelTypeAny: assert(0); // cannot pass ArgusChannelTypeAny
 	}
 	

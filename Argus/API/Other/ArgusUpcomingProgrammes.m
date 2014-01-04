@@ -15,19 +15,9 @@
 #import "ArgusConnection.h"
 #import "AppDelegate.h"
 
-//#import "SBJson.h"
 #import "JSONKit.h"
 
 @implementation ArgusUpcomingProgrammes
-@synthesize UpcomingRecordings, UpcomingAlerts, UpcomingSuggestions;
-@synthesize IsForSchedule;
-@synthesize IsForScheduleType;
-@synthesize UpcomingProgrammesKeyedByUniqueIdentifier, tmpUpcomingProgrammesKeyedByUniqueIdentifier;
-//@synthesize UpcomingProgrammesKeyedByUpcomingProgramId, tmpUpcomingProgrammesKeyedByUpcomingProgramId;
-
-
-@synthesize RecordingsDone, AlertsDone, SuggestionsDone;
-
 
 // init from the global Argus object
 -(id)init
@@ -36,11 +26,11 @@
 	self = [super init];
 	if (self)
 	{
-		UpcomingRecordings = [NSMutableArray new];
-		UpcomingAlerts = [NSMutableArray new];
-		UpcomingSuggestions = [NSMutableArray new];
+		_UpcomingRecordings = [NSMutableArray new];
+		_UpcomingAlerts = [NSMutableArray new];
+		_UpcomingSuggestions = [NSMutableArray new];
 
-		IsForSchedule = nil;
+		_IsForSchedule = nil;
 
 		// when any upcoming programme changes, refresh our lists
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -85,38 +75,38 @@
 	self = [super init];
 	if (self)
 	{
-		UpcomingRecordings = [NSMutableArray new];
-		UpcomingAlerts = [NSMutableArray new];
-		UpcomingSuggestions = [NSMutableArray new];
+		_UpcomingRecordings = [NSMutableArray new];
+		_UpcomingAlerts = [NSMutableArray new];
+		_UpcomingSuggestions = [NSMutableArray new];
 
-		IsForSchedule = schedule;
+		_IsForSchedule = schedule;
 		SEL sel = @selector(getUpcomingProgrammesForSchedule);
 		
 		// when any upcoming programme changes, refresh our lists
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:sel
 													 name:kArgusCancelUpcomingProgrammeDone
-												   object:IsForSchedule];
+												   object:self.IsForSchedule];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:sel
 													 name:kArgusUncancelUpcomingProgrammeDone
-												   object:IsForSchedule];
+												   object:self.IsForSchedule];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:sel
 													 name:kArgusSaveUpcomingProgrammeDone
-												   object:IsForSchedule];
+												   object:self.IsForSchedule];
 		
 		// when anything deletes a schedule, we should refresh our list to ensure it's up to date
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:sel
 													 name:kArgusDeleteScheduleDone
-												   object:IsForSchedule];
+												   object:self.IsForSchedule];
 		
 		// when anything saves a schedule, we should refresh our list to ensure it's up to date
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:sel
 													 name:kArgusSaveScheduleDone
-												   object:IsForSchedule];
+												   object:self.IsForSchedule];
 
 	}
 	return self;
@@ -133,7 +123,7 @@
 	// ensure our queued local notifications are in sync with reality
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 	
-	[UpcomingAlerts enumerateObjectsUsingBlock:^(ArgusUpcomingProgramme *obj, NSUInteger idx, BOOL *stop)
+	[self.UpcomingAlerts enumerateObjectsUsingBlock:^(ArgusUpcomingProgramme *obj, NSUInteger idx, BOOL *stop)
 	{
 		[obj setupLocalNotification];
 	}];
@@ -147,7 +137,7 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	// divert to the correct function if we are for a single schedule
-	if (IsForSchedule)
+	if (self.IsForSchedule)
 		return [self getUpcomingProgrammesForSchedule];
 	
 	[AppDelegate requestLoadingSpinner];
@@ -155,9 +145,9 @@
 	// upcoming programmes for the entire system have 3 types
 	
 	// we use these to check when to send the notification out
-	RecordingsDone = AlertsDone = SuggestionsDone = NO;	
+	self.RecordingsDone = self.AlertsDone = self.SuggestionsDone = NO;
 	
-	tmpUpcomingProgrammesKeyedByUniqueIdentifier = [NSMutableDictionary new];
+	self.tmpUpcomingProgrammesKeyedByUniqueIdentifier = [NSMutableDictionary new];
 	//tmpUpcomingProgrammesKeyedByUpcomingProgramId = [NSMutableDictionary new];
 	
 	[self getUpcomingProgrammesForScheduleType:ArgusScheduleTypeRecording];
@@ -217,7 +207,7 @@
 		
 		[tmpArr addObject:p];
 		
-		tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
+		self.tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
 		//[tmpUpcomingProgrammesKeyedByUpcomingProgramId setObject:p forKey:[p Property:kUpcomingProgramId]];
 	}
 	
@@ -231,7 +221,7 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	RecordingsDone = YES;
+	self.RecordingsDone = YES;
 	
 	NSMutableArray *tmpArr = [self UpcomingProgrammesDone:notify forScheduleType:ArgusScheduleTypeRecording];
 	[self setUpcomingRecordings:tmpArr];
@@ -244,7 +234,7 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	AlertsDone = YES;
+	self.AlertsDone = YES;
 	
 	// cancel any notifications we happen to have lying about, we'll recreate them
 	// as we learn new upcoming programmes in the below loop
@@ -259,7 +249,7 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	SuggestionsDone = YES;
+	self.SuggestionsDone = YES;
 	
 	NSMutableArray *tmpArr = [self UpcomingProgrammesDone:notify forScheduleType:ArgusScheduleTypeSuggestion];
 	[self setUpcomingSuggestions:tmpArr];
@@ -269,11 +259,10 @@
 
 -(void)sendNotifyIfAllDone
 {
-	NSLog(@"%s %d %d %d", __PRETTY_FUNCTION__, RecordingsDone, AlertsDone, SuggestionsDone);
-	if (RecordingsDone && AlertsDone && SuggestionsDone)
+	NSLog(@"%s %d %d %d", __PRETTY_FUNCTION__, self.RecordingsDone, self.AlertsDone, self.SuggestionsDone);
+	if (self.RecordingsDone && self.AlertsDone && self.SuggestionsDone)
 	{
-		UpcomingProgrammesKeyedByUniqueIdentifier = tmpUpcomingProgrammesKeyedByUniqueIdentifier;
-		//UpcomingProgrammesKeyedByUpcomingProgramId = tmpUpcomingProgrammesKeyedByUpcomingProgramId;
+		self.UpcomingProgrammesKeyedByUniqueIdentifier = self.tmpUpcomingProgrammesKeyedByUniqueIdentifier;
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusUpcomingProgrammesDone object:self userInfo:nil];
 		
@@ -287,13 +276,13 @@
 	switch (scheduleType)
 	{
 		case ArgusScheduleTypeRecording:
-			return UpcomingRecordings;
+			return self.UpcomingRecordings;
 			break;
 		case ArgusScheduleTypeAlert:
-			return UpcomingAlerts;
+			return self.UpcomingAlerts;
 			break;
 		case ArgusScheduleTypeSuggestion:
-			return UpcomingSuggestions;
+			return self.UpcomingSuggestions;
 			break;
 	}
 }
@@ -313,17 +302,17 @@
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	NSMutableDictionary *tmp = [NSMutableDictionary new];
-	tmp[@"Schedule"] = [IsForSchedule originalData];
+	tmp[@"Schedule"] = [self.IsForSchedule originalData];
 	tmp[@"IncludeCancelled"] = @YES;
 	
 	NSString *body = [tmp JSONString];
 	
-	NSLog(@"%s: upcoming for: %@", __PRETTY_FUNCTION__, [IsForSchedule originalData]);
+	NSLog(@"%s: upcoming for: %@", __PRETTY_FUNCTION__, [self.IsForSchedule originalData]);
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[c enqueue];
 	
-	IsForScheduleType = [[IsForSchedule Property:kScheduleType] intValue];
+	self.IsForScheduleType = [[self.IsForSchedule Property:kScheduleType] intValue];
 	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -347,19 +336,18 @@
 	
 	for (NSDictionary *t in jsonObject)
 	{
-		ArgusUpcomingProgramme *p = [[ArgusUpcomingProgramme alloc] initWithDictionary:t ScheduleType:IsForScheduleType];
+		ArgusUpcomingProgramme *p = [[ArgusUpcomingProgramme alloc] initWithDictionary:t ScheduleType:self.IsForScheduleType];
 		
-		NSLog(@"%@", p);
+		//NSLog(@"%@", p);
 		
 		[tmpArr addObject:p];
-		tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
+		self.tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
 		//[tmpUpcomingProgrammesKeyedByUpcomingProgramId setObject:p forKey:[p Property:kUpcomingProgramId]];
 	}
 	
-	UpcomingProgrammesKeyedByUniqueIdentifier = tmpUpcomingProgrammesKeyedByUniqueIdentifier;
-	//UpcomingProgrammesKeyedByUpcomingProgramId = tmpUpcomingProgrammesKeyedByUpcomingProgramId;
+	self.UpcomingProgrammesKeyedByUniqueIdentifier = self.tmpUpcomingProgrammesKeyedByUniqueIdentifier;
 	
-	switch (IsForScheduleType)
+	switch (self.IsForScheduleType)
 	{
 		case ArgusScheduleTypeRecording: [self setUpcomingRecordings:tmpArr]; break;
 		case ArgusScheduleTypeAlert: [self setUpcomingAlerts:tmpArr]; break;
@@ -376,8 +364,8 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	if (IsForSchedule)
-		return [self upcomingProgrammesForScheduleType:IsForScheduleType];
+	if (self.IsForSchedule)
+		return [self upcomingProgrammesForScheduleType:self.IsForScheduleType];
 
 	return nil;
 }

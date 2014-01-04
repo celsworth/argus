@@ -12,7 +12,6 @@
 static ArgusScheduleIcons *sharedArgusScheduleIcons = nil;
 
 @implementation ArgusScheduleIcons
-@synthesize spriteImage, spriteImageCG, scale;
 
 +(id)sharedInstance
 {
@@ -31,19 +30,19 @@ static ArgusScheduleIcons *sharedArgusScheduleIcons = nil;
 	self = [super init];
 	if (self)
 	{
-		spriteImage = [UIImage imageNamed:@"schedule-icons.png"];
-		spriteImageCG = [spriteImage CGImage];
+		_spriteImage = [UIImage imageNamed:@"schedule-icons.png"];
+		_spriteImageCG = [self.spriteImage CGImage];
 		
 		switch([DeviceDetection deviceType])
 		{
 			case ArgusDeviceTypeiPadSD:
 			case ArgusDeviceTypeiPhoneSD:
-				scale = 1.0;
+				_scale = 1.0;
 				break;
 			
 			case ArgusDeviceTypeiPadRetina:
 			case ArgusDeviceTypeiPhoneRetina:
-				scale = 2.0;
+				_scale = 2.0;
 				break;
 		}
 	}
@@ -76,8 +75,10 @@ static ArgusScheduleIcons *sharedArgusScheduleIcons = nil;
 	CGFloat offsetY = row * imgH;
 	CGFloat width = isSeries ? seriesW : imgW;
 	
-	CGImageRef partOfImage = CGImageCreateWithImageInRect(spriteImageCG, CGRectMake(offsetX*scale, offsetY*scale, width*scale, imgH*scale));
-	UIImage *ret = [UIImage imageWithCGImage:partOfImage scale:scale orientation:UIImageOrientationUp];
+	CGImageRef partOfImage = CGImageCreateWithImageInRect(self.spriteImageCG,
+														  CGRectMake(offsetX*self.scale, offsetY*self.scale,
+																	 width*self.scale, imgH*self.scale));
+	UIImage *ret = [UIImage imageWithCGImage:partOfImage scale:self.scale orientation:UIImageOrientationUp];
 	
 	CGImageRelease(partOfImage);
 	

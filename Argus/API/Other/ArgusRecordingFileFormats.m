@@ -15,7 +15,6 @@
 #import "JSONKit.h"
 
 @implementation ArgusRecordingFileFormats
-@synthesize RecordingFileFormats, RecordingFileFormatsKeyedById;
 
 -(id)init
 {
@@ -64,8 +63,8 @@
 			tmpDict[[r Property:kRecordingFileFormatId]] = r;
 		}
 		
-		RecordingFileFormats = tmpArr;
-		RecordingFileFormatsKeyedById = tmpDict;
+		self.RecordingFileFormats = tmpArr;
+		self.RecordingFileFormatsKeyedById = tmpDict;
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusRecordingFileFormatsDone
 															object:self
