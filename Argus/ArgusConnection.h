@@ -13,7 +13,6 @@
 
 @interface ArgusConnection : NSObject <NSURLConnectionDelegate>
 
-
 @property (nonatomic, retain) NSHTTPURLResponse *httpresponse;
 @property (nonatomic, retain) NSError *error;
 

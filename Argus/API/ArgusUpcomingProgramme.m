@@ -101,7 +101,7 @@
 			
 			NSDictionary *userInfo = @{ kArgusLocalNotificationProgrammeKey: [self Property:kUpcomingProgramId] };
 			
-			self.localNotification = [[UILocalNotification alloc] init];
+			self.localNotification = [UILocalNotification new];
 						
 			[self.localNotification setFireDate:fireDate];
 			[self.localNotification setTimeZone:[NSTimeZone localTimeZone]];

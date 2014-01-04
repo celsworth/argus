@@ -27,7 +27,7 @@
         exponent++;
     }
 	
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
     [formatter setMaximumFractionDigits:1];
 	[formatter setNumberStyle: NSNumberFormatterDecimalStyle];
 

@@ -177,7 +177,7 @@
 	if (arg && arg != (NSString *)[NSNull null])
 	{
 		NSDate *date = [r getArgumentAsDate];
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		NSDateFormatter *df = [NSDateFormatter new];
 		[df setDateStyle:NSDateFormatterFullStyle];
 		[self setCell:on_date value:[df stringFromDate:date] subValue:nil];
 	}
@@ -226,7 +226,7 @@
 	NSString *val;
 	if (arg && arg != (NSDate *)[NSNull null])
 	{
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		NSDateFormatter *df = [NSDateFormatter new];
 		[df setTimeStyle:NSDateFormatterMediumStyle];
 		val = [df stringFromDate:arg];
 	}
@@ -240,7 +240,7 @@
 
 	if (from && from != (NSDate *)[NSNull null] && to && to != (NSDate *)[NSNull null])
 	{
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		NSDateFormatter *df = [NSDateFormatter new];
 		[df setTimeStyle:NSDateFormatterMediumStyle];
 		NSString *val = [NSString stringWithFormat:@"%@ - %@", [df stringFromDate:from], [df stringFromDate:to]];
 

@@ -39,7 +39,7 @@
 												 name:kArgusChannelLogoDone
 											   object:[Channel Logo]];
 	
-	view = [[UIImageView alloc] init];
+	view = [UIImageView new];
 
 	[self addImageToView];
 	

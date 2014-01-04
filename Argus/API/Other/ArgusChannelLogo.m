@@ -168,7 +168,7 @@
 -(BOOL)createBasePath
 {
 	NSString *path = [self basePath];
-	NSFileManager *fm = [[NSFileManager alloc] init];
+	NSFileManager *fm = [NSFileManager new];
 	NSError *error;
 	return [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];	
 }
@@ -187,7 +187,7 @@
 -(NSDictionary *)statLogo
 {
 	NSString *fileName = [self absoluteFileForLogo];
-	NSFileManager *fm = [[NSFileManager alloc] init];
+	NSFileManager *fm = [NSFileManager new];
 	
 	if (![fm fileExistsAtPath:fileName])
 		return nil;
@@ -202,7 +202,7 @@
 
 -(void)touchLogo
 {
-	NSFileManager *fm = [[NSFileManager alloc] init];
+	NSFileManager *fm = [NSFileManager new];
 
 	[fm setAttributes:@{NSFileModificationDate: [NSDate date]}
 		 ofItemAtPath:[self absoluteFileForLogo]
@@ -214,7 +214,7 @@
 	if ([self createBasePath])
 	{
 		NSString *fileName = [self absoluteFileForLogo];
-		NSFileManager *fm = [[NSFileManager alloc] init];
+		NSFileManager *fm = [NSFileManager new];
 		[fm removeItemAtPath:fileName error:nil];
 	}
 }
@@ -224,7 +224,7 @@
 	if ([self createBasePath])
 	{
 		NSString *fileName = [self absoluteFileForLogo];
-		NSFileManager *fm = [[NSFileManager alloc] init];
+		NSFileManager *fm = [NSFileManager new];
 		//NSLog(@"Saved Channel Logo %@", ChannelId);
 		return [fm createFileAtPath:fileName contents:data attributes:nil];
 	}
@@ -233,7 +233,7 @@
 -(UIImage *)loadLogo
 {
 	NSString *fileName = [self absoluteFileForLogo];
-	NSFileManager *fm = [[NSFileManager alloc] init];
+	NSFileManager *fm = [NSFileManager new];
 	if ([fm fileExistsAtPath:fileName])
 	{
 		//return [UIImage imageWithContentsOfFile:[self absoluteFileForLogo]];

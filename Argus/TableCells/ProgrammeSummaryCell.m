@@ -99,9 +99,9 @@
 		self.card.text = nil;
 	
 	
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterFullStyle];
-	NSDateFormatter *df2 = [[NSDateFormatter alloc] init];
+	NSDateFormatter *df2 = [NSDateFormatter new];
 	[df2 setDateStyle:NSDateFormatterNoStyle];
 	[df2 setTimeStyle:NSDateFormatterShortStyle];
 	time.text = [NSString stringWithFormat:@"%@, %@ - %@", [df stringFromDate:[Programme Property:kStartTime]],

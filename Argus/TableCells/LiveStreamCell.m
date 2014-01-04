@@ -46,7 +46,7 @@
 	channel.text = [[LiveStream Channel] Property:kDisplayName];
 	channel.textColor = [ArgusProgramme fgColourStd];
 
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterLongStyle];
 	[df setTimeStyle:NSDateFormatterMediumStyle];
 	

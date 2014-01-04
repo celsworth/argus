@@ -184,7 +184,7 @@
 	//NSLog(@"sv is %f x %f", sv.contentSize.width, sv.contentSize.height);
 #endif
 
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterFullStyle];
 	
 	// some descriptive text about when the programme will be on

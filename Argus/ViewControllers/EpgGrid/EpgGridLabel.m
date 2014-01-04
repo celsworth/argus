@@ -76,7 +76,7 @@
 
 	iconView = [[UIImageView alloc] initWithFrame:CGRectMake(width-25, topAndBottomOffset, 25, 16)];
 	
-	label = [[UILabel alloc] init];
+	label = [UILabel new];
 	label.backgroundColor = [UIColor clearColor];
 	
 	// to make gesture recognisers work

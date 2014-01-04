@@ -379,7 +379,7 @@
 -(void)updateCurDayButton
 {
 	// make sure curDay is right too
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	NSDateFormatter *df = [NSDateFormatter new];
 	if (iPad())
 		[df setDateStyle:NSDateFormatterFullStyle];
 	else

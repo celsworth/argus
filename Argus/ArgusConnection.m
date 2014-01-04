@@ -47,7 +47,7 @@
 		_urgent = !lowPriority;
 		_NotificationThread = [NSThread currentThread];
 		
-		_req = [[NSMutableURLRequest alloc] init];
+		_req = [NSMutableURLRequest new];
 		[_req setHTTPMethod:@"POST"];
 		[_req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 		[_req setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -55,7 +55,7 @@
 		// url set in start
 		
 		_connection = nil;
-		_receivedData = [[NSMutableData alloc] init];
+		_receivedData = [NSMutableData new];
 		
 		if (startImmediately)
 		{

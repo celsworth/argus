@@ -55,7 +55,7 @@
 -(void)setMatchType:(ArgusScheduleRuleMatchType)MatchType
 {
 	self.Modified = @YES;
-	self.MatchType = MatchType;
+	_MatchType = MatchType;
 	
 	if (self.SuperType)
 		self.Type = [self typeForMatchType:self.MatchType andSuperType:self.SuperType];
@@ -88,7 +88,7 @@
 	
 	if (self.Type == ArgusScheduleRuleTypeOnDate)
 	{
-		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
+		ISO8601DateFormatter *isodf = [ISO8601DateFormatter new];
 		return [isodf dateFromString:tmp];
 	}
 	
@@ -103,7 +103,7 @@
 {
 	if (self.Type == ArgusScheduleRuleTypeOnDate)
 	{
-		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
+		ISO8601DateFormatter *isodf = [ISO8601DateFormatter new];
 		self.Arguments = [@[[isodf stringFromDate:val]] mutableCopy];
 	}
 	

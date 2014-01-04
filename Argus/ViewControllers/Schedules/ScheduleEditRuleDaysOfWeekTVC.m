@@ -31,7 +31,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
-	weekdays = [NSMutableArray arrayWithArray:[[NSDateFormatter alloc] weekdaySymbols]];
+	weekdays = [NSMutableArray arrayWithArray:[[NSDateFormatter new] weekdaySymbols]];
 	
 	// shuffle first object (Sunday) to the end
 	[weekdays addObject:weekdays[0]];
