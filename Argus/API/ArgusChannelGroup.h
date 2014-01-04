@@ -23,7 +23,7 @@
 @property (nonatomic, retain) NSMutableDictionary *ProgrammeArraysKeyedByChannelId;
 
 
--(id)initWithString:(NSString *)_ChannelGroupId;
+-(id)initWithString:(NSString *)ChannelGroupId;
 -(id)initWithDictionary:(NSDictionary *)input;
 
 -(void)getChannels;

@@ -12,8 +12,6 @@
 #import "ArgusConnection.h"
 
 @implementation ArgusScheduleRecordedProgram
-@synthesize IsRemovingFromPRH;
-
 
 -(void)removeFromPRH
 {
@@ -25,7 +23,7 @@
 												 name:kArgusConnectionDone
 											   object:c];
 	
-	IsRemovingFromPRH = YES;	
+	self.IsRemovingFromPRH = YES;
 }
 -(void)removeFromPRHDone:(NSNotification *)notify
 {
@@ -34,7 +32,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	IsRemovingFromPRH = NO;
+	self.IsRemovingFromPRH = NO;
 	
 	// trigger a refetch of the PreviouslyRecordedHistory for the schedule, as it will now be out of date
 	ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:[self Property:kScheduleId]];

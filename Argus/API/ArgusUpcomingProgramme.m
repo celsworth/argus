@@ -24,15 +24,6 @@
 #import "JSONKit.h"
 
 @implementation ArgusUpcomingProgramme
-@synthesize ScheduleType;
-@synthesize rChannel;
-@synthesize isModified;
-@synthesize SaveUpcomingProgrammeRequestsOutstanding;
-@synthesize localNotification;
-
-// set YES when we're waiting for a reply to the appropriate request
-@synthesize IsCancelling, IsUncancelling, IsSaving;
-@synthesize IsAddingToPRH, IsRemovingFromPRH;
 
 // given an UpcomingProgramId, look up an existing ArgusUpcomingProgramme object in the UpcomingProgrammes dictionary
 // this isn't keyed by UpcomingProgramId so it's an O(n) loop
@@ -64,17 +55,17 @@
 	return nil;
 }
 
--(id)initWithDictionary:(NSDictionary *)input ScheduleType:(ArgusScheduleType)_ScheduleType
+-(id)initWithDictionary:(NSDictionary *)input ScheduleType:(ArgusScheduleType)ScheduleType
 {
 	self = [super init];
 	if (self)
 	{
-		ScheduleType = _ScheduleType;
+		_ScheduleType = ScheduleType;
 		
 		[self populateSelfFromDictionary:input];
-		IsSaving = NO;
-		IsCancelling = NO;
-		IsUncancelling = NO;
+		_IsSaving = NO;
+		_IsCancelling = NO;
+		_IsUncancelling = NO;
 		
 		[self setupLocalNotification];
 	}
@@ -88,7 +79,7 @@
 -(void)setupLocalNotification
 {
 	// notifications are only relevant for alerts
-	if (ScheduleType == ArgusScheduleTypeAlert)
+	if (self.ScheduleType == ArgusScheduleTypeAlert)
 	{
 		// see if we need to set one up if the preference is on
 		if (notifyForUpcomingAlerts != ArgusPreferenceAlertNotificationOff)
@@ -104,41 +95,41 @@
 			// don't schedule anything with a fireDate before now
 			if ([fireDate timeIntervalSinceNow] < 0)
 			{
-				localNotification = nil;
+				self.localNotification = nil;
 				return;
 			}
 			
 			NSDictionary *userInfo = @{ kArgusLocalNotificationProgrammeKey: [self Property:kUpcomingProgramId] };
 			
-			localNotification = [[UILocalNotification alloc] init];
+			self.localNotification = [[UILocalNotification alloc] init];
 						
-			[localNotification setFireDate:fireDate];
-			[localNotification setTimeZone:[NSTimeZone localTimeZone]];
+			[self.localNotification setFireDate:fireDate];
+			[self.localNotification setTimeZone:[NSTimeZone localTimeZone]];
 			
 			NSString *x = NSLocalizedString(@"%@ is about to start on %@",
 											@"notification popup for alert (%@ are title and channel)");
 			NSString *alertBody = [NSString stringWithFormat:x,
 								   [self Property:kTitle], [[self Channel] Property:kDisplayName]];
-			[localNotification setAlertBody:alertBody];
-			[localNotification setHasAction:NO];
-			[localNotification setSoundName:UILocalNotificationDefaultSoundName];
-			[localNotification setUserInfo:userInfo];
+			[self.localNotification setAlertBody:alertBody];
+			[self.localNotification setHasAction:NO];
+			[self.localNotification setSoundName:UILocalNotificationDefaultSoundName];
+			[self.localNotification setUserInfo:userInfo];
 			
-			[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+			[[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
 
-			NSLog(@"%s ADD %@ %@", __PRETTY_FUNCTION__, [self Property:kTitle], localNotification);
+			NSLog(@"%s ADD %@ %@", __PRETTY_FUNCTION__, [self Property:kTitle], self.localNotification);
 		}
-		else if (localNotification)
+		else if (self.localNotification)
 		{
-			NSLog(@"%s REMOVE %@ %@", __PRETTY_FUNCTION__, [self Property:kTitle], localNotification);
+			NSLog(@"%s REMOVE %@ %@", __PRETTY_FUNCTION__, [self Property:kTitle], self.localNotification);
 			
 			// remove any existing pending notification
-			[[UIApplication sharedApplication] cancelLocalNotification:localNotification];
-			localNotification = nil;
+			[[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
+			self.localNotification = nil;
 		}
 	}
 	else
-		localNotification = nil; // probably not necessary
+		self.localNotification = nil; // probably not necessary
 	
 	NSLog(@"%s %d local notifications queued", __PRETTY_FUNCTION__, [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
 }
@@ -171,13 +162,10 @@
 
 	if ([input isKindOfClass:[NSDictionary class]])
 	{
-		isModified = NO;
+		self.isModified = NO;
 		
-		// UpcomingProgramme objects have a Channel sub-object
-		// rChannel is alloced and retained in an UpcomingProgramme, then linked to
-		// Programme.Channel weakly so uniqueIdentifier works (amongst other things)
-		rChannel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
-		self.Channel = rChannel;
+		// UpcomingProgramme objects have a Channel sub-object, send it to our Program parent
+		self.Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		
 		return YES;
 	}	
@@ -195,7 +183,7 @@
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
-	IsCancelling = YES;
+	self.IsCancelling = YES;
 
 	// inline block to forward on the notification when that finishes
 	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusConnectionDone
@@ -204,7 +192,7 @@
 												  usingBlock:^(NSNotification *note)
 	{
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[note object]];
-		IsCancelling = NO;
+		self.IsCancelling = NO;
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusCancelUpcomingProgrammeDone object:self];
 	}];
 	
@@ -241,14 +229,14 @@
 												 name:kArgusConnectionDone
 											   object:c];
 	
-	IsUncancelling = YES;
+	self.IsUncancelling = YES;
 }
 -(void)UncancelUpcomingProgrammeDone:(NSNotification *)notify
 {
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	IsUncancelling = NO;
+	self.IsUncancelling = NO;
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusUncancelUpcomingProgrammeDone object:self];
 }
@@ -271,7 +259,7 @@
 											 selector:@selector(AddToPRHDone:)
 												 name:kArgusConnectionDone
 											   object:c];
-	IsAddingToPRH = YES;
+	self.IsAddingToPRH = YES;
 }
 
 -(void)AddToPRHDone:(NSNotification *)notify
@@ -281,7 +269,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	IsAddingToPRH = NO;
+	self.IsAddingToPRH = NO;
 
 	// send our own notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusAddToPreviouslyRecordedHistoryDone object:self];
@@ -305,7 +293,7 @@
 											 selector:@selector(RemoveFromPRHDone:)
 												 name:kArgusConnectionDone
 											   object:c];
-	IsRemovingFromPRH = YES;
+	self.IsRemovingFromPRH = YES;
 }
 
 -(void)RemoveFromPRHDone:(NSNotification *)notify
@@ -315,7 +303,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	IsRemovingFromPRH = NO;
+	self.IsRemovingFromPRH = NO;
 	
 	// send our own notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusRemoveFromPreviouslyRecordedHistoryDone object:self];
@@ -329,7 +317,7 @@
 	//	NSLog(@"%@", self.originalData);
 	
 	// count down how many outstanding connections there are until we consider the programme saved
-	SaveUpcomingProgrammeRequestsOutstanding = 3;
+	self.SaveUpcomingProgrammeRequestsOutstanding = 3;
 	
 	NSString *url = [NSString stringWithFormat:@"Scheduler/SetUpcomingProgramPriority/%@/%@?priority=%@", 
 					 [self Property:kUpcomingProgramId],
@@ -366,20 +354,20 @@
 												 name:kArgusConnectionDone
 											   object:c];
 	
-	IsSaving = YES;
+	self.IsSaving = YES;
 }
 -(void)SaveUpcomingProgrammeElementDone:(NSNotification *)notify
 {
 	//NSData *data = [[notify userInfo] objectForKey:@"data"];
-	SaveUpcomingProgrammeRequestsOutstanding--;
+	self.SaveUpcomingProgrammeRequestsOutstanding--;
 	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	if (SaveUpcomingProgrammeRequestsOutstanding == 0)
+	if (self.SaveUpcomingProgrammeRequestsOutstanding == 0)
 	{
-		IsSaving = NO;
-		isModified = NO;
+		self.IsSaving = NO;
+		self.isModified = NO;
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusSaveUpcomingProgrammeDone object:self];
 	}
 }
@@ -388,18 +376,18 @@
 -(void)setPriority:(NSNumber *)val
 {
 	[[self originalData] setValue:val forKey:kPriority];
-	isModified = YES;
+	self.isModified = YES;
 }
 
 -(void)setPreRecordSeconds:(NSNumber *)val
 {
 	[[self originalData] setValue:val forKey:kPreRecordSeconds];
-	isModified = YES;
+	self.isModified = YES;
 }
 -(void)setPostRecordSeconds:(NSNumber *)val
 {
 	[[self originalData] setValue:val forKey:kPostRecordSeconds];
-	isModified = YES;
+	self.isModified = YES;
 }
 
 -(ArgusUpcomingProgrammeScheduleStatus)scheduleStatus
@@ -419,7 +407,7 @@
 	
 	//NSLog(@"%@", [self originalData]);
 
-	switch (ScheduleType)
+	switch (self.ScheduleType)
 	{
 		case ArgusScheduleTypeRecording:
 			// decide cancellation reason

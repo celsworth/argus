@@ -22,51 +22,48 @@
 #import "JSONKit.h"
 
 @implementation ArgusScheduleRule
-@synthesize Type, Arguments;
-@synthesize SuperType, MatchType;
-@synthesize Modified;
 
--(id)initWithSuperType:(ArgusScheduleRuleSuperType)_SuperType
+-(id)initWithSuperType:(ArgusScheduleRuleSuperType)SuperType
 {
 	self = [super init];
 	if (self)
 	{
-		SuperType = _SuperType;
+		_SuperType = SuperType;
 		
 		// these are defaults but let's be implicit
-		MatchType = 0;
-		Arguments = nil;
-		Modified = @NO;
+		_MatchType = 0;
+		_Arguments = nil;
+		_Modified = @NO;
 	}
 	return self;
 }
--(id)initWithType:(ArgusScheduleRuleType)_Type
+-(id)initWithType:(ArgusScheduleRuleType)Type
 {
 	self = [super init];
 	if (self)
 	{
-		Type = _Type;
+		_Type = Type;
 		
 		// these are defaults but let's be implicit
-		MatchType = 0;
-		Arguments = nil;
-		Modified = @NO;
+		_MatchType = 0;
+		_Arguments = nil;
+		_Modified = @NO;
 	}
 	return self;
 }
 
--(void)setMatchType:(ArgusScheduleRuleMatchType)_MatchType
+-(void)setMatchType:(ArgusScheduleRuleMatchType)MatchType
 {
-	Modified = @YES;
-	MatchType = _MatchType;
+	self.Modified = @YES;
+	self.MatchType = MatchType;
 	
-	if (SuperType)
-		Type = [self typeForMatchType:MatchType andSuperType:SuperType];
+	if (self.SuperType)
+		self.Type = [self typeForMatchType:self.MatchType andSuperType:self.SuperType];
 }
--(void)setArguments:(NSMutableArray *)_Arguments
+-(void)setArguments:(NSMutableArray *)Arguments
 {
-	Modified = @YES;
-	Arguments = _Arguments;
+	self.Modified = @YES;
+	_Arguments = Arguments;
 }
 
 -(void)setArgumentAsBoolean:(BOOL)val
@@ -75,27 +72,27 @@
 	// @"True" for true
 	// empty for false?
 	if (val)
-		Arguments = [@[@"True"] mutableCopy];
+		self.Arguments = [@[@"True"] mutableCopy];
 	else
-		Arguments = nil;
+		self.Arguments = nil;
 }
 -(BOOL)getArgumentAsBoolean
 {
-	return [Arguments[0] isEqualToString:@"True"];
+	return [self.Arguments[0] isEqualToString:@"True"];
 }
 
 -(NSDate *)getArgumentAsDate
 {
-	NSString *tmp = Arguments[0];
+	NSString *tmp = self.Arguments[0];
 	if (!tmp) return nil;
 	
-	if (Type == ArgusScheduleRuleTypeOnDate)
+	if (self.Type == ArgusScheduleRuleTypeOnDate)
 	{
 		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
 		return [isodf dateFromString:tmp];
 	}
 	
-	if (Type == ArgusScheduleRuleTypeAroundTime)
+	if (self.Type == ArgusScheduleRuleTypeAroundTime)
 	{
 		NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:ss"];
 		return [df dateFromString:tmp];
@@ -104,16 +101,16 @@
 }
 -(void)setArgumentAsDate:(NSDate *)val
 {
-	if (Type == ArgusScheduleRuleTypeOnDate)
+	if (self.Type == ArgusScheduleRuleTypeOnDate)
 	{
 		ISO8601DateFormatter *isodf = [[ISO8601DateFormatter alloc] init];
-		Arguments = [@[[isodf stringFromDate:val]] mutableCopy];
+		self.Arguments = [@[[isodf stringFromDate:val]] mutableCopy];
 	}
 	
-	if (Type == ArgusScheduleRuleTypeAroundTime)
+	if (self.Type == ArgusScheduleRuleTypeAroundTime)
 	{
 		NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:00"];
-		Arguments = [@[[df stringFromDate:val]] mutableCopy];
+		self.Arguments = [@[[df stringFromDate:val]] mutableCopy];
 	}
 }
 
@@ -122,40 +119,40 @@
 	NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:00"];
 	NSString *fromString = [df stringFromDate:fromVal];
 	NSString *toString = [df stringFromDate:toVal];
-	Arguments = [@[fromString, toString] mutableCopy];
+	self.Arguments = [@[fromString, toString] mutableCopy];
 }
 -(NSDate *)getArgumentAsDateAtIndex:(NSInteger)index
 {
 	NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm:ss"];
-	return [df dateFromString:Arguments[index]];
+	return [df dateFromString:self.Arguments[index]];
 }
 
 -(BOOL)getArgumentAsDayOfWeekSelected:(ArgusScheduleRuleDaysOfWeek)day
 {
 	// Arguments[0] is a bitmask of days of week
-	NSInteger days = [Arguments[0] intValue];
+	NSInteger days = [self.Arguments[0] intValue];
 	return (days & day);
 }
 -(void)setArgumentAsDayOfWeek:(ArgusScheduleRuleDaysOfWeek)day selected:(BOOL)selected
 {
-	NSInteger days = [Arguments[0] intValue];
+	NSInteger days = [self.Arguments[0] intValue];
 
 	if (selected)
 		days |= day;
 	else
 		days &= ~day;
 	
-	Arguments = [@[@(days)] mutableCopy];
+	self.Arguments = [@[@(days)] mutableCopy];
 }
 
 #pragma mark - Output Formats; converting structures back to JSON
 
 -(NSDictionary *)ruleAsDictionary
 {
-	if (Type && Arguments)
+	if (self.Type && self.Arguments)
 	{
 		NSMutableDictionary *tmp = [NSMutableDictionary new];
-		tmp[kArguments] = Arguments;
+		tmp[kArguments] = self.Arguments;
 		tmp[kType] = [self typeAsString];
 	
 		return [NSDictionary dictionaryWithDictionary:tmp];
@@ -166,7 +163,7 @@
 // convert Type to an NSString to send back to Argus
 -(NSString *)typeAsString
 {	
-	switch(Type)
+	switch(self.Type)
 	{		
 		case ArgusScheduleRuleTypeTitleStartsWith:                   return kArgusScheduleRuleTypeTitleStartsWith;
 		case ArgusScheduleRuleTypeTitleEquals:                       return kArgusScheduleRuleTypeTitleEquals;
@@ -215,51 +212,51 @@
 }
 
 // convert SuperType+MatchType back to Type (for sending back to Argus)
--(ArgusScheduleRuleType)typeForMatchType:(ArgusScheduleRuleMatchType)_MatchType andSuperType:(ArgusScheduleRuleSuperType)_SuperType
+-(ArgusScheduleRuleType)typeForMatchType:(ArgusScheduleRuleMatchType)MatchType andSuperType:(ArgusScheduleRuleSuperType)SuperType
 {
 	// based on SuperType and MatchType, set a new Type
 	// ie Title + Equals -> TitleEquals
-	switch (_SuperType)
+	switch (SuperType)
 	{
 		case ArgusScheduleRuleSuperTypeTitle:
-			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeTitleEquals;
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeTitleContains;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeTitleDoesNotContain;
-			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeTitleStartsWith;
+			if (MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeTitleEquals;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeTitleContains;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeTitleDoesNotContain;
+			if (MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeTitleStartsWith;
 			break;
 			
 		case ArgusScheduleRuleSuperTypeSubTitle:
-			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeSubTitleEquals;
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeSubTitleContains;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeSubTitleDoesNotContain;
-			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeSubTitleStartsWith;
+			if (MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeSubTitleEquals;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeSubTitleContains;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeSubTitleDoesNotContain;
+			if (MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeSubTitleStartsWith;
 			break;
 
 		case ArgusScheduleRuleSuperTypeEpisodeNumber:
-			if (_MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeEpisodeNumberEquals;
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeEpisodeNumberContains;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeEpisodeNumberDoesNotContain;
-			if (_MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeEpisodeNumberStartsWith;
+			if (MatchType == ArgusScheduleRuleMatchTypeEquals)         return ArgusScheduleRuleTypeEpisodeNumberEquals;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeEpisodeNumberContains;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeEpisodeNumberDoesNotContain;
+			if (MatchType == ArgusScheduleRuleMatchTypeStartsWith)     return ArgusScheduleRuleTypeEpisodeNumberStartsWith;
 			break;
 			
 		case ArgusScheduleRuleSuperTypeProgramInfo:
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeProgramInfoContains;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeProgramInfoDoesNotContain;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeProgramInfoContains;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeProgramInfoDoesNotContain;
 			break;
 
 		case ArgusScheduleRuleSuperTypeDescription:
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeDescriptionContains;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeDescriptionDoesNotContain;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeDescriptionContains;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeDescriptionDoesNotContain;
 			break;
 		
 		case ArgusScheduleRuleSuperTypeChannels:
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeChannels;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeNotOnChannels;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeChannels;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeNotOnChannels;
 			break;
 			
 		case ArgusScheduleRuleSuperTypeCategories:
-			if (_MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeCategoryEquals;
-			if (_MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeCategoryDoesNotEqual;
+			if (MatchType == ArgusScheduleRuleMatchTypeContains)       return ArgusScheduleRuleTypeCategoryEquals;
+			if (MatchType == ArgusScheduleRuleMatchTypeDoesNotContain) return ArgusScheduleRuleTypeCategoryDoesNotEqual;
 			break;
 	}
 	return 0;

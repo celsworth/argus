@@ -16,11 +16,6 @@
 #import "AppDelegate.h"
 
 @implementation ArgusActiveRecording
-//@synthesize ActualStartTime, ActualStopTime, Programme, RecordingFileName, RecordingId, RecordingStartTime;
-
-@synthesize UpcomingProgramme;
-
-@synthesize StoppingAsNumber;
 
 // pass a JSONValue decoded dictionary.
 -(id)initWithDictionary:(NSDictionary *)input
@@ -32,7 +27,7 @@
 			return nil;
 		
 		// this needs forcing for an active recording, it can only ever be this
-		UpcomingProgramme = [[ArgusUpcomingProgramme alloc] initWithDictionary:input[kProgram] ScheduleType:ArgusScheduleTypeRecording];
+		self.UpcomingProgramme = [[ArgusUpcomingProgramme alloc] initWithDictionary:input[kProgram] ScheduleType:ArgusScheduleTypeRecording];
 				
 		// CardChannelAllocation
 		
@@ -48,11 +43,11 @@
 
 -(void)setStopping:(BOOL)val
 {
-	StoppingAsNumber = @(val);
+	self.StoppingAsNumber = @(val);
 }
 -(BOOL)Stopping
 {
-	return [StoppingAsNumber boolValue];
+	return [self.StoppingAsNumber boolValue];
 }
 
 -(void)AbortActiveRecording
@@ -68,7 +63,7 @@
 	
 	[c enqueue];
 
-	StoppingAsNumber = @YES;
+	self.StoppingAsNumber = @YES;
 	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -84,7 +79,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 
-	StoppingAsNumber = @NO;
+	self.StoppingAsNumber = @NO;
 	
 	// now update our ActiveRecordings list
 	// put a delay on this, active recordings seem to take a second or two to stop even after Abort returns

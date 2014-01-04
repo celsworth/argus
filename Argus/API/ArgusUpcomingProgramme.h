@@ -41,8 +41,6 @@ typedef enum {
 // true if the upcoming programme details are modified
 @property (nonatomic, assign) BOOL isModified;
 
-@property (nonatomic, retain) ArgusChannel *rChannel;
-
 @property (nonatomic, assign) NSInteger SaveUpcomingProgrammeRequestsOutstanding;
 
 @property (nonatomic, retain) UILocalNotification *localNotification;
@@ -50,11 +48,12 @@ typedef enum {
 +(ArgusUpcomingProgramme *)UpcomingProgrammeForUpcomingProgramId:(NSString *)UpcomingProgramId;
 
 //-(id)initWithDictionary:(NSDictionary *)input;
--(id)initWithDictionary:(NSDictionary *)input ScheduleType:(ArgusScheduleType)_ScheduleType;
+-(id)initWithDictionary:(NSDictionary *)input ScheduleType:(ArgusScheduleType)ScheduleType;
 -(void)setupLocalNotification;
 -(void)showLocalNotification;
 -(BOOL)populateSelfFromDictionary:(NSDictionary *)input;
 
+// set YES when we're waiting for a reply to the appropriate request
 -(void)cancelUpcomingProgramme;
 @property (nonatomic, assign) BOOL IsCancelling;
 -(void)uncancelUpcomingProgramme;

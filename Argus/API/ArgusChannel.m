@@ -18,7 +18,6 @@
 // representation of a single Channel object as sent from Argus, plus our own extra bits
 
 @implementation ArgusChannel
-@synthesize Logo, Programmes, CurrentProgramme, NextProgramme;
 
 // pass a JSONValue decoded dictionary.
 -(id)initWithDictionary:(NSDictionary *)input
@@ -30,12 +29,12 @@
 			return nil;
 
 		// and some bits of our own
-		Logo = [[ArgusChannelLogo alloc] initWithChannelId: [self Property:kChannelId]];
+		_Logo = [[ArgusChannelLogo alloc] initWithChannelId: [self Property:kChannelId]];
 		
 		// a list of programmes for this channel. Timeframes are undefined, generally
 		// this is whatever view happens to be using it, maybe from now to +12h for Whats On,
 		// or 00:00 - 23:59 for a days worth.
-		Programmes = [NSMutableArray new];
+		_Programmes = [NSMutableArray new];
 	}
 	
 	return self;
@@ -45,9 +44,9 @@
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
 
 	// release some retains, why doesn't ARC handle this?
-	Programmes = nil;
-	CurrentProgramme = nil;
-	NextProgramme = nil;
+	self.Programmes = nil;
+	self.CurrentProgramme = nil;
+	self.NextProgramme = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -129,7 +128,7 @@
 		}
 	}
 	
-	Programmes = tmpArr;
+	self.Programmes = tmpArr;
 	
 	if (dumpData)
 	{

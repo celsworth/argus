@@ -14,9 +14,6 @@
 #import "AppDelegate.h"
 
 @implementation ArgusLiveStream
-@synthesize Channel;
-
-@synthesize StoppingAsNumber;
 
 // pass a JSONValue decoded dictionary.
 -(id)initWithDictionary:(NSDictionary *)input
@@ -27,10 +24,10 @@
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
 
-		Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
+		_Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		
 		// our own metadata
-		StoppingAsNumber = @NO;
+		_StoppingAsNumber = @NO;
 	}
 	
 	return self;
@@ -43,11 +40,11 @@
 
 -(void)setStopping:(BOOL)val
 {
-	StoppingAsNumber = @(val);
+	self.StoppingAsNumber = @(val);
 }
 -(BOOL)Stopping
 {
-	return [StoppingAsNumber boolValue];
+	return [self.StoppingAsNumber boolValue];
 }
 
 -(void)StopLiveStream
@@ -63,7 +60,7 @@
 	
 	[c enqueue];
 	
-	StoppingAsNumber = @YES;
+	self.StoppingAsNumber = @YES;
 	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -79,7 +76,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	StoppingAsNumber = @NO;
+	self.StoppingAsNumber = @NO;
 
 	// now update our LiveStreams list
 	[argus getLiveStreams];

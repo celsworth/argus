@@ -17,19 +17,15 @@
 // representation of a single ChannelGroup object as sent from Argus, plus our own extra bits
 
 @implementation ArgusChannelGroup
-@synthesize ChannelGroupId;
-@synthesize Channels, CurrentAndNext;
-@synthesize earliestCurrentStopTime;
-@synthesize ProgrammeArraysKeyedByChannelId;
 
 #pragma mark - Initialisation and Deallocation
 
--(id)initWithString:(NSString *)_ChannelGroupId
+-(id)initWithString:(NSString *)ChannelGroupId
 {
 	self = [super init];
 	if (self)
 	{
-		ChannelGroupId = _ChannelGroupId;
+		_ChannelGroupId = ChannelGroupId;
 	}
 	return self;
 }
@@ -42,15 +38,15 @@
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
 
-		ChannelGroupId = input[kChannelGroupId];
+		_ChannelGroupId = input[kChannelGroupId];
 		
 		// channels within the channel group, once we know them
 		// pointer to an NSMutableArray
-		Channels = nil;
+		_Channels = nil;
 		
 		// Current and Next for group, once we know it
 		// pointer to NSMutableArray
-		CurrentAndNext = nil;
+		_CurrentAndNext = nil;
 	}
 	return self;
 }
@@ -67,7 +63,7 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 
 	// fire off a ChannelsInGroup request
-	NSString *url = [NSString stringWithFormat:@"Scheduler/ChannelsInGroup/%@", ChannelGroupId];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/ChannelsInGroup/%@", self.ChannelGroupId];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
 	// await notification from ArgusConnection that the request has finished
@@ -115,7 +111,7 @@
 		//[c setProgrammes:nil];
 	//}
 	
-	Channels = tmpArr;
+	self.Channels = tmpArr;
 	
 	// notifications
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusChannelGroupChannelsDone object:self userInfo:nil];
@@ -130,7 +126,7 @@
 
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	NSString *body = [@{kChannelGroupId: ChannelGroupId} JSONString];
+	NSString *body = [@{kChannelGroupId: self.ChannelGroupId} JSONString];
 
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
 	
@@ -165,7 +161,7 @@
 
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
-	earliestCurrentStopTime = [NSDate distantFuture];
+	self.earliestCurrentStopTime = [NSDate distantFuture];
 	
 	ArgusProgramme *p;
 	NSDictionary *tmp;
@@ -185,10 +181,10 @@
 		
 			// remember the earliest Current StopTime we find
 			// What's On uses this so it knows when to refresh data
-			if ([[p StopTime] timeIntervalSinceDate:earliestCurrentStopTime] < 0)
+			if ([[p StopTime] timeIntervalSinceDate:self.earliestCurrentStopTime] < 0)
 			{
 				//NSLog(@"%@ matched", [p Property:kTitle]);
-				earliestCurrentStopTime = [p StopTime];
+				self.earliestCurrentStopTime = [p StopTime];
 			}
 		}
 		
@@ -214,7 +210,7 @@
 		//[c setNextProgramme:nil];
 	//}
 	
-	CurrentAndNext = tmpArr;
+	self.CurrentAndNext = tmpArr;
 	
 	// notifications
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusChannelGroupCurrentAndNextDone object:self userInfo:nil];
@@ -240,7 +236,7 @@
 
 	// send an array of GuideChannelId to get
 	NSMutableArray *GuideChannelIds = [NSMutableArray new];
-	for (ArgusChannel *c in Channels)
+	for (ArgusChannel *c in self.Channels)
 	{
 		// don't attempt to add nil objects to the array
 		// these can occur when a channel has no guide channel
@@ -324,7 +320,7 @@
 		}
 	}
 	
-	ProgrammeArraysKeyedByChannelId = tmpDict;
+	self.ProgrammeArraysKeyedByChannelId = tmpDict;
 	
 	//NSLog(@"%s took %f seconds", __PRETTY_FUNCTION__, [[NSDate date] timeIntervalSinceDate:start]);
 

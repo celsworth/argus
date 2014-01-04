@@ -26,7 +26,7 @@ typedef enum {
 @class ArgusUpcomingProgramme;
 @interface ArgusProgramme : ArgusBaseObject
 
-@property (nonatomic, weak) ArgusChannel *Channel;
+@property (nonatomic, retain) ArgusChannel *Channel;
 
 @property (nonatomic, assign) BOOL fullDetailsDone;
 

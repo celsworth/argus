@@ -173,7 +173,7 @@ typedef enum {
 +(ArgusSchedule *)ScheduleForScheduleId:(ArgusGuid *)ScheduleId;
 
 -(id)initEmptyWithChannelType:(ArgusChannelType)ChannelType scheduleType:(ArgusScheduleType)ScheduleType;
--(id)initWithScheduleId:(NSString *)_ScheduleId;
+-(id)initWithScheduleId:(NSString *)ScheduleId;
 -(id)initWithDictionary:(NSDictionary *)input;
 -(id)initWithExistingSchedule:(ArgusSchedule *)sched;
 

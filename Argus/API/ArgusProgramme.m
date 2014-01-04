@@ -18,12 +18,6 @@
 #import "NSDate+Formatter.h"
 
 @implementation ArgusProgramme
-@synthesize Channel;
-//@synthesize ChannelId;
-@synthesize fullDetailsDone;
-
-// cache
-@synthesize StartTime, StopTime, UpcomingProgrammeHaveCached, UpcomingProgrammeCached;
 
 // backgrounds
 +(UIColor *)bgColourStdOdd
@@ -82,7 +76,7 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
 	
-	Channel = nil;
+	self.Channel = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -92,8 +86,8 @@
 // so kill the cache and let it re-evaluate when its next called
 -(void)killUpcomingProgrammeCache:(NSNotification *)notify
 {
-	UpcomingProgrammeHaveCached = NO;
-	UpcomingProgrammeCached = nil;
+	self.UpcomingProgrammeHaveCached = NO;
+	self.UpcomingProgrammeCached = nil;
 }
 
 -(BOOL)populateSelfFromDictionary:(NSDictionary *)input
@@ -102,8 +96,8 @@
 		return NO;
 	
 	// cache some commonly used hard-to-calculate values
-	StartTime = [self Property:kStartTime];
-	StopTime = [self Property:kStopTime];
+	self.StartTime = [self Property:kStartTime];
+	self.StopTime = [self Property:kStopTime];
 	
 	return YES;
 }
@@ -111,11 +105,9 @@
 #if 0
 -(void)setChannel:(ArgusChannel *)c
 {
-	ChannelId = [c Property:kChannelId];
-}
--(ArgusChannel *)Channel
-{
-	return [[argus Channels] objectForKey:ChannelId];
+	// debugging why channels are getting set to nil
+	NSLog(@"setting channel of %@ to %@", [self Property:kTitle], c);
+	_Channel = c;
 }
 #endif
 
@@ -150,8 +142,8 @@
 	[self.originalData addEntriesFromDictionary:jsonObject];
 
 	// cache some commonly used hard-to-calculate values.. ensure they're up to date
-	StartTime = [self Property:kStartTime];
-	StopTime = [self Property:kStopTime];
+	self.StartTime = [self Property:kStartTime];
+	self.StopTime = [self Property:kStopTime];
 
 	// mark the object as full details fetched so we don't end up looping
 	// if description isn't populated now, there isn't one
@@ -169,9 +161,11 @@
 	// returns a string that can uniquely identify an ArgusProgramme object across channels too
 	
 	// stopped using Property here because it's quite expensive when doing various checks
+
+	assert(self.Channel);
 	
 	//NSString *ChannelId = [[Channel originalData] objectForKey:kChannelId];
-	NSString *ChannelId = [Channel Property:kChannelId];
+	NSString *ChannelId = [self.Channel Property:kChannelId];
 	
 	// if either of these are nil, this won't work, but they shouldn't be..
 	assert(ChannelId);
@@ -193,7 +187,7 @@
 	
 	NSString *uniqueId = @"";
 	uniqueId = [uniqueId stringByAppendingString:ChannelId];
-	uniqueId = [uniqueId stringByAppendingString:[NSString stringWithFormat:@"%@", StartTime]];
+	uniqueId = [uniqueId stringByAppendingString:[NSString stringWithFormat:@"%@", self.StartTime]];
 	uniqueId = [uniqueId stringByAppendingString:Title];
 	return uniqueId;
 	
@@ -205,31 +199,31 @@
 // find an ArgusUpcomingProgramme that matches this ArgusProgramme
 -(ArgusUpcomingProgramme *)upcomingProgramme
 {
-	if (UpcomingProgrammeHaveCached)
-		return UpcomingProgrammeCached;
+	if (self.UpcomingProgrammeHaveCached)
+		return self.UpcomingProgrammeCached;
 	
 	if ([[[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier] count] == 0)
 	{
-		UpcomingProgrammeHaveCached = YES;
-		UpcomingProgrammeCached = nil;
-		return UpcomingProgrammeCached;
+		self.UpcomingProgrammeHaveCached = YES;
+		self.UpcomingProgrammeCached = nil;
+		return self.UpcomingProgrammeCached;
 	}
 	
 	// cache the upcoming programme, it's expensive to calculate.
 	// this cache is nuked when ArgusUpcomingProgrammesDone is seen (new upcoming programmes list)
-	UpcomingProgrammeCached = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
-	UpcomingProgrammeHaveCached = YES;
-	return UpcomingProgrammeCached;
+	self.UpcomingProgrammeCached = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
+	self.UpcomingProgrammeHaveCached = YES;
+	return self.UpcomingProgrammeCached;
 }
 
 -(BOOL)isOnNow
 {
-	if (!StartTime || !StopTime)
+	if (!self.StartTime || !self.StopTime)
 	{
-		StartTime = [self Property:kStartTime];
-		StopTime = [self Property:kStopTime];	
+		self.StartTime = [self Property:kStartTime];
+		self.StopTime = [self Property:kStopTime];
 	}
-	return ([StartTime timeIntervalSinceNow] < 0 && [StopTime timeIntervalSinceNow] > 0);
+	return ([self.StartTime timeIntervalSinceNow] < 0 && [self.StopTime timeIntervalSinceNow] > 0);
 	
 	//return ([[self Property:kStartTime] timeIntervalSinceNow] < 0 && [[self Property:kStopTime] timeIntervalSinceNow] > 0);
 }
