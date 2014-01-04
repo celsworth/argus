@@ -14,7 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	[TestFlight takeOff:@"0b330e26451cfe4bd766f850fa7b0574_ODAwNDIyMDEyLTA0LTExIDE2OjI5OjUwLjgzOTU4MA"];
+	[TestFlight takeOff:@"937054f4-277a-4121-ac3c-4082442f5367"];
 	
 	if (iPad())
 	{
