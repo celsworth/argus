@@ -171,7 +171,7 @@
 	NSDictionary *tmp;
 	for (NSDictionary *d in jsonObject)
 	{
-		//NSLog(@"%@", jsonObject);
+		//NSLog(@"%@", d);
 		
 		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:d[kChannel]];
 		
@@ -310,7 +310,7 @@
 		{
 			NSString *ChannelId = [c Property:kChannelId];
 			
-			// find the array to add this programme into (one array per GuideChannelId)
+			// find the array to add this programme into (one array per ChannelId)
 			NSMutableArray *tmpArr = tmpDict[ChannelId];
 			if (!tmpArr)
 			{

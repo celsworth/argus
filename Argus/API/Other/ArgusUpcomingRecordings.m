@@ -101,7 +101,7 @@
 	
 	for (NSDictionary *t in jsonObject)
 	{
-		NSLog(@"%s %@", __PRETTY_FUNCTION__, t);
+		//NSLog(@"%s %@", __PRETTY_FUNCTION__, t);
 		
 		ArgusUpcomingRecording *upr = [[ArgusUpcomingRecording alloc] initWithDictionary:t];
 		

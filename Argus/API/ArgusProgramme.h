@@ -27,7 +27,6 @@ typedef enum {
 @interface ArgusProgramme : ArgusBaseObject
 
 @property (nonatomic, weak) ArgusChannel *Channel;
-//@property (nonatomic, retain) NSString *ChannelId;
 
 @property (nonatomic, assign) BOOL fullDetailsDone;
 

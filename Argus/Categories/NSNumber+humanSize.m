@@ -48,8 +48,7 @@
 		m = s / 60;
 		s -= m * 60;
 	}
-	return @[@(h),
-			@(m), @(s)];
+	return @[@(h), @(m), @(s)];
 }
 
 -(NSString *)hmsString

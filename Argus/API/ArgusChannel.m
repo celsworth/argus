@@ -107,9 +107,6 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//NSArray *jsonObject = [jsonParser objectWithData:data];
-	
 	NSArray *jsonObject = [data objectFromJSONData];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];

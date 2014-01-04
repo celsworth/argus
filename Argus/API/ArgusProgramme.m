@@ -82,7 +82,6 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
 	
-	//ChannelId = nil;
 	Channel = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
