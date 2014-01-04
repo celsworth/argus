@@ -88,7 +88,7 @@
 	
 	// ensure I'm calling this properly
 	// note this is in viewWillAppear because a popover view is loaded on init?
-	assert(Programme != nil);
+	assert(Programme);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

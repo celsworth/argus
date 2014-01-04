@@ -53,7 +53,7 @@
 		}
 	}
 	
-	assert(Programme != nil);
+	assert(Programme);
 	return Programme;
 }
 

@@ -32,7 +32,7 @@
 	ArgusUpcomingProgramme *Programme = [ArgusUpcomingProgramme UpcomingProgrammeForUpcomingProgramId:UpcomingProgramId];
 
 	// ensure arguments are set
-	assert(Programme != nil);
+	assert(Programme);
 	assert(editType != 0);
 	
 	NSNumber *arg;
