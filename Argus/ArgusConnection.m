@@ -92,17 +92,33 @@
 
 	_httpresponse = nil;
 	_error = nil;
-	_connection = [[NSURLConnection alloc] initWithRequest:_req delegate:self];
 	
+	if (self.completionBlock)
+	{
+		/*
+			'new' way of invoking connections
+			the completion block replaces notifications and all other delegate methods
+			sadly this doesn't work with Argus because of the self signed cert, it 
+			seems to be designed for the simple case. need another way to do background stuff.
+			for calling sample, see [Argus -checkApiVersion]
+		 */
+		[NSURLConnection sendAsynchronousRequest:self.req
+										   queue:[NSOperationQueue new]
+							   completionHandler:self.completionBlock];
+	}
+	else
+	{
+		_connection = [[NSURLConnection alloc] initWithRequest:_req delegate:self];
+		
+		// set up our own timeout
+		_timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+														 target:self
+													   selector:@selector(cancel)
+													   userInfo:nil
+														repeats:NO];
+	}
 	[AppDelegate requestNetworkActivityIndicator];
 	
-	// set up our own timeout
-	_timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-													 target:self
-												   selector:@selector(cancel)
-												   userInfo:nil
-													repeats:NO];
-
 	
 	return YES;
 }

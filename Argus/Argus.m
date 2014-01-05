@@ -66,12 +66,38 @@
 #pragma mark - Network methods
 -(void)checkApiVersion:(NSInteger)version
 {
+	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%d", version]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(ApiVersionDone:)
 												 name:kArgusConnectionDone
 											   object:c];
+	
+	/*
+		this is a sample of how I might use background block processing in future.
+		sadly it doesn't work very well atm because of Argus's self signed cert, and I'm not
+		sure how to send auth details either. Left here for reference..
+	*/
+#if 0
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%d", version] startImmediately:NO lowPriority:NO];
+	
+	// ideally completion block would be passed as part of init as well, to avoid
+	// startImmediately:NO and then enqueue (otherwise race condition that the request finishes too early)
+	[c setCompletionBlock:^(NSURLResponse *response, NSData *data, NSError *error)
+	{
+		NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, response, error);
+		
+		// will need error handling!
+		
+		NSInteger rv = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] intValue];
+		NSDictionary *r = @{@"ApiVersion": @(rv)};
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusApiVersionDone object:self userInfo:r];
+		});
+	}];
+	[c enqueue];
+#endif
 }
 
 -(void)ApiVersionDone:(NSNotification *)notify

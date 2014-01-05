@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void(^ConnectionCompletionBlock)(NSURLResponse *, NSData *, NSError *);
+
 #define kArgusConnectionDone @"kArgusConnectionDone"
 #define kArgusConnectionFail @"kArgusConnectionFail"
 
@@ -15,6 +17,8 @@
 
 @property (nonatomic, retain) NSHTTPURLResponse *httpresponse;
 @property (nonatomic, retain) NSError *error;
+
+@property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
 
 // simplified init that assumes startImmediately=YES and lowPriority=NO
 -(id)initWithUrl:(NSString *)url;
