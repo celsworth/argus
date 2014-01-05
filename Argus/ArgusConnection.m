@@ -13,13 +13,13 @@
 @interface ArgusConnection () // private properties
 
 @property (nonatomic, retain) NSString *url;
-@property (nonatomic, assign) BOOL urgent;
+@property (nonatomic, assign) BOOL lowPriority;
 
 // initialised in init
 @property (nonatomic, retain) NSMutableURLRequest *req;
+@property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
 
 @property (nonatomic, retain) NSTimer *timeOutTimer;
-@property (nonatomic, retain) NSThread *NotificationThread;
 
 // transient data related to the connection
 @property (nonatomic, retain) NSURLConnection *connection;
@@ -35,17 +35,42 @@
 
 -(id)initWithUrl:(NSString *)url 
 {
-	return [self initWithUrl:url startImmediately:YES lowPriority:NO];
+	// old style default call, expected to handle notifications
+	return [self initWithUrl:url startImmediately:YES lowPriority:NO completionBlock:nil];
 }
+-(id)initWithUrl:(NSString *)url completionBlock:(ConnectionCompletionBlock)completionBlock
+{
+	// new style default call, pass a block for completion
+	return [self initWithUrl:url startImmediately:YES lowPriority:NO completionBlock:completionBlock];
+}
+
+// single arg overrides
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ConnectionCompletionBlock)completionBlock
+{
+	return [self initWithUrl:url startImmediately:startImmediately lowPriority:NO completionBlock:completionBlock];
+}
+-(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ConnectionCompletionBlock)completionBlock
+{
+	return [self initWithUrl:url startImmediately:YES lowPriority:lowPriority completionBlock:completionBlock];
+}
+
 -(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority
+{
+	// being phased out..
+	return [self initWithUrl:url startImmediately:startImmediately lowPriority:lowPriority completionBlock:nil];
+}
+
+// full method
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority
+ completionBlock:(ConnectionCompletionBlock)completionBlock
 {
 	self = [super init];
 	if (self)
 	{	
 		// remember these so we can restart the request if we need auth details
 		_url = url;
-		_urgent = !lowPriority;
-		_NotificationThread = [NSThread currentThread];
+		_lowPriority = !lowPriority;
+		_completionBlock = completionBlock;
 		
 		_req = [NSMutableURLRequest new];
 		[_req setHTTPMethod:@"POST"];
@@ -59,7 +84,7 @@
 		
 		if (startImmediately)
 		{
-			// connections are now started by arguscq
+			// connections are now started by arguscq, don't usually call -start directly
 			[self enqueue];
 		}
 	}
@@ -75,10 +100,10 @@
 // if startImmediately was false, call enqueue instead (generally after setting a body)
 -(void)enqueue
 {
-	if (_urgent)
-		[[[AppDelegate sharedInstance] arguscq] queueUrgentConnection:self];
-	else
+	if (_lowPriority)
 		[[[AppDelegate sharedInstance] arguscq] queueConnection:self];
+	else
+		[[[AppDelegate sharedInstance] arguscq] queueUrgentConnection:self];
 }
 
 -(BOOL)start
@@ -93,32 +118,16 @@
 	_httpresponse = nil;
 	_error = nil;
 	
-	if (self.completionBlock)
-	{
-		/*
-			'new' way of invoking connections
-			the completion block replaces notifications and all other delegate methods
-			sadly this doesn't work with Argus because of the self signed cert, it 
-			seems to be designed for the simple case. need another way to do background stuff.
-			for calling sample, see [Argus -checkApiVersion]
-		 */
-		[NSURLConnection sendAsynchronousRequest:self.req
-										   queue:[NSOperationQueue new]
-							   completionHandler:self.completionBlock];
-	}
-	else
-	{
-		_connection = [[NSURLConnection alloc] initWithRequest:_req delegate:self];
-		
-		// set up our own timeout
-		_timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-														 target:self
-													   selector:@selector(cancel)
-													   userInfo:nil
-														repeats:NO];
-	}
-	[AppDelegate requestNetworkActivityIndicator];
+	_connection = [[NSURLConnection alloc] initWithRequest:_req delegate:self];
 	
+	// set up our own timeout
+	_timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+													 target:self
+												   selector:@selector(cancel)
+												   userInfo:nil
+													repeats:NO];
+	
+	[AppDelegate requestNetworkActivityIndicator];
 	
 	return YES;
 }
@@ -134,7 +143,6 @@
 	[AppDelegate releaseNetworkActivityIndicator];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
-	//[self performSelector:@selector(sendFail:) onThread:NotificationThread withObject:nil waitUntilDone:NO];
 }
 
 -(void)sendFail:(NSDictionary *)userInfo
@@ -195,10 +203,19 @@
 	_connection = nil;
 	[AppDelegate releaseNetworkActivityIndicator];
 
+	if (self.completionBlock)
+	{
+		[[NSOperationQueue new] addOperationWithBlock:^{
+			self.completionBlock(_httpresponse, nil, error);
+		}];
+		
+		/* don't do the notification stuff below, assume the completionBlock has handled everything */
+		return;
+	}
+
 	// tell someone about the failure
 	NSDictionary *userInfo = @{ @"error": error };
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:userInfo];
-	//[self performSelector:@selector(sendFail:) onThread:NotificationThread withObject:userInfo waitUntilDone:NO];
 }
 
 -(void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
@@ -222,9 +239,18 @@
 			_connection = nil;
 			[AppDelegate releaseNetworkActivityIndicator];
 			
+			if (self.completionBlock)
+			{
+				[[NSOperationQueue new] addOperationWithBlock:^{
+					self.completionBlock(_httpresponse, nil, nil);
+				}];
+				
+				/* don't do the notification stuff below, assume the completionBlock has handled everything */
+				return;
+			}
+
 			// tell someone about the failure
 			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
-			//[self performSelector:@selector(sendFail:) onThread:NotificationThread withObject:nil waitUntilDone:NO];
 		}
 	}
 }
@@ -246,19 +272,27 @@
 	_req = nil;
 	[AppDelegate releaseNetworkActivityIndicator];
 
+	if (self.completionBlock)
+	{
+		[[NSOperationQueue new] addOperationWithBlock:^{
+			self.completionBlock(_httpresponse, _receivedData, nil);
+		}];
+		
+		/* don't do the notification stuff below, assume the completionBlock has handled everything */
+		return;
+	}
+	
 	NSDictionary *info = @{ @"data": _receivedData };
 	NSInteger statusCode = [_httpresponse statusCode];
-
+	
 	if (statusCode == 500)
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:info];
-		//[self performSelector:@selector(sendFail:) onThread:NotificationThread withObject:info waitUntilDone:NO];
 		return;
 	}
 		
 	// tell all interested parties a request is done
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionDone object:self userInfo:info];
-	//[self performSelector:@selector(sendDone:) onThread:NotificationThread withObject:info waitUntilDone:NO];
 }
 
 -(NSString *)baseURL

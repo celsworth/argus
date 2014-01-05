@@ -18,11 +18,20 @@ typedef void(^ConnectionCompletionBlock)(NSURLResponse *, NSData *, NSError *);
 @property (nonatomic, retain) NSHTTPURLResponse *httpresponse;
 @property (nonatomic, retain) NSError *error;
 
-@property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
 
-// simplified init that assumes startImmediately=YES and lowPriority=NO
+// simplified inits that assumes startImmediately=YES and lowPriority=NO
 -(id)initWithUrl:(NSString *)url;
+-(id)initWithUrl:(NSString *)url completionBlock:(ConnectionCompletionBlock)completionBlock;
+
+// single argument overrides
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ConnectionCompletionBlock)completionBlock;
+-(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ConnectionCompletionBlock)completionBlock;
+
 -(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority;
+
+// full call
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority
+ completionBlock:(ConnectionCompletionBlock)ConnectionCompletionBlock;
 
 -(void)setHTTPBody:(NSData *)body;
 
