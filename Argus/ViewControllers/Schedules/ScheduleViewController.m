@@ -91,62 +91,12 @@
     [super viewWillAppear:animated];
 
 	[self redraw];
-	
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-	
-#if 0
-	// force the view to dealloc when Back is pressed
-	// this in turn forces it to be reloaded if we visit this schedule
-	// again, getting the most up-to-date info
-	// REMOVED, SCHEDULE RELOADING IS NOW IN THE SEGUE FROM THE PREVIOUS VIEW
-	if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound)
-	{
-		[super didReceiveMemoryWarning];
-	}
-#endif
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-	// resize delete button
-	//[self resizeDelBtn];
-}
-
--(void)willMoveToParentViewController:(UIViewController *)parent
-{
-	NSLog(@"willMoveToParentViewController: %@", parent);
-}
-
-#if 0
--(void)resizeDelBtn
-{	
-	[delbtn setFrame:[del.contentView frame]];
-	
-	// magic numbers :(
-	// I think the 48 is 44 (default cell height) plus 2 pixels border at top and bottom
-	// the 10/20 are left/right indent, settable in IB.
-	[delbtn setFrame:CGRectMake(10, 0, del.bounds.size.width-20, 48)];
-}
-#endif
 
 -(void)redraw
 {
