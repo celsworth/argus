@@ -995,11 +995,12 @@
 	// prepare our model so cellForRowAtIndexPath doesn't have much work to do
 	
 	NSUInteger row = [[[[argus ChannelGroups] SelectedChannelGroup] Channels] indexOfObjectIdenticalTo:c];
-
+	
 	// crash fix, bit hacky. check that the SelectedChannelGroup hasn't changed since
 	// we requested these programmes. if it has, do not attempt to draw them into the table!
 	if (row == NSNotFound)
 		return;
+	
 	
 	// had a crash report which could have been explained by either c or ChannelId being nil
 	if (!c)
@@ -1010,18 +1011,18 @@
 	{
 		NSLog(@"%s c.ChannelId=nil :(", __PRETTY_FUNCTION__);
 	}
-		
 	
+	assert(c);
 	
 	// CHANNEL LOGOS TABLE
 	EpgGridChannel *egc;
-
+	
 	if (! (egc = viewsByChannelId[[c Property:kChannelId]]))
 	{
 		egc = [[EpgGridChannel alloc] initWithRowHeight:rowHeight channel:c delegate:self];
-	
+		
 		[egc makeView];
-	
+		
 		// retain the object so cellForRowAtIndexPath can use it shortly..
 		viewsByChannelId[[c Property:kChannelId]] = egc;
 	}
