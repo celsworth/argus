@@ -60,12 +60,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	
-	// set up delete button background colours
-	UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"button_redbg.png"]];
-	del.backgroundView = [[UIImageView alloc] initWithImage:[iv.image stretchableImageWithLeftCapWidth:iv.image.size.width/2 topCapHeight:iv.image.size.height/2]];
-	
-	
+		
 	// redraw on any schedule update
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(redraw)
