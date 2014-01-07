@@ -203,10 +203,11 @@
 	if (self.completionBlock)
 	{
 		[[NSOperationQueue new] addOperationWithBlock:^{
-			self.completionBlock(_httpresponse, nil, error);
+			self.completionBlock(self->_httpresponse, nil, error);
 		}];
 		
 		/* don't do the notification stuff below, assume the completionBlock has handled everything */
+		_retainSelf = nil;
 		return;
 	}
 
@@ -241,7 +242,7 @@
 			if (self.completionBlock)
 			{
 				[[NSOperationQueue new] addOperationWithBlock:^{
-					self.completionBlock(_httpresponse, nil, nil);
+					self.completionBlock(self->_httpresponse, nil, nil);
 				}];
 				
 				/* don't do the notification stuff below, assume the completionBlock has handled everything */
@@ -277,7 +278,7 @@
 	if (self.completionBlock)
 	{
 		[[NSOperationQueue new] addOperationWithBlock:^{
-			self.completionBlock(_httpresponse, _receivedData, nil);
+			self.completionBlock(self->_httpresponse, self->_receivedData, nil);
 		}];
 		
 		/* don't do the notification stuff below, assume the completionBlock has handled everything */
