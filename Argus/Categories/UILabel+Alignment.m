@@ -43,6 +43,11 @@
 	CGRect new = self.frame;
 	new.size.height = tmp.height+1; // +1 seems to fix some last lines not fitting in.. silly
 	
+#if USE_AUTOLAYOUT
+	/* autolayout fix, allow us to resize the view and make new constraints with it */
+	[self setTranslatesAutoresizingMaskIntoConstraints:YES];
+#endif
+	
 	[self setFrame:new];
 }
 @end
