@@ -227,7 +227,7 @@
 	
 	// this relies on an API endpoint added in 1.6.1.0 B7 (api v50)
 	NSString *url = @"Guide/ChannelsPrograms";
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
+	ArgusConnection *conn = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	time_t fromTimeT = [from timeIntervalSince1970];
 	time_t toTimeT = [to timeIntervalSince1970];
@@ -236,11 +236,11 @@
 
 	// send an array of GuideChannelId to get
 	NSMutableArray *GuideChannelIds = [NSMutableArray new];
-	for (ArgusChannel *c in self.Channels)
+	for (ArgusChannel *chan in self.Channels)
 	{
 		// don't attempt to add nil objects to the array
 		// these can occur when a channel has no guide channel
-		NSString *GuideChannelId = [c Property:kGuideChannelId];
+		NSString *GuideChannelId = [chan Property:kGuideChannelId];
 		if (GuideChannelId)
 			[GuideChannelIds addObject:GuideChannelId];
 	}
@@ -253,21 +253,21 @@
 	//NSLog(@"%@", bodyDict);
 	
 	NSError *error;
-	[c setHTTPBody:[bodyDict JSONDataWithOptions:JKSerializeOptionNone error:&error]];
+	[conn setHTTPBody:[bodyDict JSONDataWithOptions:JKSerializeOptionNone error:&error]];
 	
-	[c enqueue];
+	[conn enqueue];
 	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(ProgrammesDone:)
 												 name:kArgusConnectionDone
-											   object:c];
+											   object:conn];
 
 	// catch 404 failure for this one, if they're running earlier than 1.6.1.0 B7 it won't be there
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(ProgrammesFail:)
 												 name:kArgusConnectionFail
-											   object:c];
+											   object:conn];
 
 }
 -(void)ProgrammesFail:(NSNotification *)notify

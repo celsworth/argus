@@ -352,7 +352,7 @@
 			// New Episodes and New Titles are mutually exclusive
 			if (val)
 			{
-				ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleTypeNewTitlesOnly];
+				r = [Schedule Rules][kArgusScheduleRuleTypeNewTitlesOnly];
 				[r setArgumentAsBoolean:NO];
 				[self setUniqueTitlesCell];
 			}
@@ -369,7 +369,7 @@
 			// New Episodes and New Titles are mutually exclusive
 			if (val)
 			{
-				ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleTypeNewEpisodesOnly];
+				r = [Schedule Rules][kArgusScheduleRuleTypeNewEpisodesOnly];
 				[r setArgumentAsBoolean:NO];
 				[self setNewEpisodesCell];
 			}

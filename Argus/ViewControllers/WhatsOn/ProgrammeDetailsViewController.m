@@ -234,7 +234,7 @@
 	}
 	else
 	{
-		NSTimeInterval duration = [[self.Programme Property:kStopTime] timeIntervalSinceDate:StartTime];
+		duration = [[self.Programme Property:kStopTime] timeIntervalSinceDate:StartTime];
 		// we have started, and we are secondsIn/duration done.
 		double done = secondsIn/duration;
 		self.pctDone.progress = done;
