@@ -69,6 +69,7 @@
 		834FE562150468A1003E427E /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE561150468A1003E427E /* ScheduleViewController.m */; };
 		83510E5F1875B6620022BE1F /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
 		83510E601875B66D0022BE1F /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83510E5C187321580022BE1F /* Reveal.framework */; };
+		83510E6F187BD3C50022BE1F /* OnMainThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 83510E6E187BD3C50022BE1F /* OnMainThread.m */; };
 		83544B82158D7F1600C7ADDE /* ScheduleViewPRHTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */; };
 		83544B85158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B84158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m */; };
 		835B7518157065CB00029F2A /* ArgusChannelGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 835B7517157065CB00029F2A /* ArgusChannelGroups.m */; };
@@ -304,6 +305,8 @@
 		834FE560150468A1003E427E /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
 		834FE561150468A1003E427E /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
 		83510E5C187321580022BE1F /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		83510E6D187BD3C50022BE1F /* OnMainThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnMainThread.h; path = Support/OnMainThread.h; sourceTree = "<group>"; };
+		83510E6E187BD3C50022BE1F /* OnMainThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnMainThread.m; path = Support/OnMainThread.m; sourceTree = "<group>"; };
 		83544B80158D7F1600C7ADDE /* ScheduleViewPRHTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewPRHTVC.h; sourceTree = "<group>"; };
 		83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewPRHTVC.m; sourceTree = "<group>"; };
 		83544B83158D837900C7ADDE /* ArgusScheduleRecordedProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusScheduleRecordedProgram.h; sourceTree = "<group>"; };
@@ -855,6 +858,8 @@
 			children = (
 				83EF4F861512D6FD007A483B /* DeviceDetection.h */,
 				83EF4F871512D6FD007A483B /* DeviceDetection.m */,
+				83510E6D187BD3C50022BE1F /* OnMainThread.h */,
+				83510E6E187BD3C50022BE1F /* OnMainThread.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1178,6 +1183,7 @@
 				833119311528C81C0022FB2A /* RecordingsTVC.m in Sources */,
 				833119351528CDCC0022FB2A /* SearchEpgTVC.m in Sources */,
 				838894171529E2B6008E8D78 /* LoadingSpinner.m in Sources */,
+				83510E6F187BD3C50022BE1F /* OnMainThread.m in Sources */,
 				83889420152A29B0008E8D78 /* EpgGridTVC.m in Sources */,
 				83795C5D152BF42700BD995A /* EpgGridLabel.m in Sources */,
 				83A1E42F152D32E000C12278 /* ArgusConnectionQueue.m in Sources */,
@@ -1249,8 +1255,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
 				SDKROOT = iphoneos;
 				SHARED_PRECOMPS_DIR = "";
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -1273,8 +1279,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
 				SDKROOT = iphoneos;
 				SHARED_PRECOMPS_DIR = "";
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -1286,8 +1292,8 @@
 		8330719A14FF009C0042F7D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1319,8 +1325,8 @@
 		8330719B14FF009C0042F7D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

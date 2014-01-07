@@ -19,6 +19,10 @@
 @property (nonatomic, retain) NSMutableURLRequest *req;
 @property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
 
+// this is set to ourselves on init and nulled when we're done
+// this ensures we're not released while our connection is alive
+@property (nonatomic, retain) ArgusConnection *retainSelf;
+
 @property (nonatomic, retain) NSTimer *timeOutTimer;
 
 // transient data related to the connection
@@ -71,6 +75,7 @@
 		_url = url;
 		_lowPriority = !lowPriority;
 		_completionBlock = completionBlock;
+		_retainSelf = self;
 		
 		_req = [NSMutableURLRequest new];
 		[_req setHTTPMethod:@"POST"];
@@ -143,17 +148,9 @@
 	[AppDelegate releaseNetworkActivityIndicator];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
+	
+	_retainSelf = nil;
 }
-
--(void)sendFail:(NSDictionary *)userInfo
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:userInfo];
-}
--(void)sendDone:(NSDictionary *)userInfo
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionDone object:self userInfo:userInfo];
-}
-
 
 -(void)connection:(NSURLConnection *)conn willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
@@ -216,6 +213,8 @@
 	// tell someone about the failure
 	NSDictionary *userInfo = @{ @"error": error };
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:userInfo];
+	
+	_retainSelf = nil;
 }
 
 -(void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
@@ -246,11 +245,14 @@
 				}];
 				
 				/* don't do the notification stuff below, assume the completionBlock has handled everything */
+				_retainSelf = nil;
 				return;
 			}
 
 			// tell someone about the failure
 			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
+			
+			_retainSelf = nil;
 		}
 	}
 }
@@ -279,6 +281,7 @@
 		}];
 		
 		/* don't do the notification stuff below, assume the completionBlock has handled everything */
+		_retainSelf = nil;
 		return;
 	}
 	
@@ -293,6 +296,8 @@
 		
 	// tell all interested parties a request is done
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionDone object:self userInfo:info];
+	
+	_retainSelf = nil;
 }
 
 -(NSString *)baseURL

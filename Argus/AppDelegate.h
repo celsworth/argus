@@ -12,6 +12,8 @@
 #import "ArgusConnectionQueue.h"
 #import "LoadingSpinner.h"
 
+#import "OnMainThread.h"
+
 /* API VERSION DETAILS
 	49: GetRecordings* (unused)
 	50: ChannelsProgams (optionally used in EPG Grid)

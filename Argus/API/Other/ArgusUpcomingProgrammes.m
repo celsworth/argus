@@ -290,74 +290,65 @@
 
 #pragma mark - Schedule-specific functions
 
-
 -(void)getUpcomingProgrammesForSchedule
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	// upcoming programmes for a schedule can only have one type; the ScheduleType of the schedule
+	self.IsForScheduleType = [[self.IsForSchedule Property:kScheduleType] intValue];
 	
-	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingProgramsForSchedule"];
-	
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	NSMutableDictionary *tmp = [NSMutableDictionary new];
 	tmp[@"Schedule"] = [self.IsForSchedule originalData];
 	tmp[@"IncludeCancelled"] = @YES;
 	
+	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingProgramsForSchedule"];
 	NSString *body = [tmp JSONString];
 	
-	NSLog(@"%s: upcoming for: %@", __PRETTY_FUNCTION__, [self.IsForSchedule originalData]);
+	// block to run when the request finishes
+	ConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
+	{
+		NSLog(@"%s", __PRETTY_FUNCTION__);
+		
+		if (error)
+		{
+			// FIXME: handle error in getUpcomingProgrammesForSchedule
+			return;
+		}
+		
+		NSDictionary *jsonObject = [data objectFromJSONData];
+		//NSLog(@"%@", jsonObject);
+		
+		NSMutableArray *tmpArr = [NSMutableArray new];
+		
+		for (NSDictionary *t in jsonObject)
+		{
+			ArgusUpcomingProgramme *p = [[ArgusUpcomingProgramme alloc] initWithDictionary:t
+																			  ScheduleType:self.IsForScheduleType];
+			
+			[tmpArr addObject:p];
+			self.tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
+		}
+		
+		self.UpcomingProgrammesKeyedByUniqueIdentifier = self.tmpUpcomingProgrammesKeyedByUniqueIdentifier;
+		
+		switch (self.IsForScheduleType)
+		{
+			case ArgusScheduleTypeRecording:  [self setUpcomingRecordings:tmpArr];  break;
+			case ArgusScheduleTypeAlert:      [self setUpcomingAlerts:tmpArr];      break;
+			case ArgusScheduleTypeSuggestion: [self setUpcomingSuggestions:tmpArr]; break;
+		}
+		
+		[OnMainThread postNotificationName:kArgusUpcomingProgrammesDone object:self userInfo:nil];
+	};
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO completionBlock:cmp];
+	
+	//NSLog(@"%s: upcoming for: %@", __PRETTY_FUNCTION__, [self.IsForSchedule originalData]);
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-	
 	[c enqueue];
-	
-	self.IsForScheduleType = [[self.IsForSchedule Property:kScheduleType] intValue];
-	
-	// await notification from ArgusConnection that the request has finished
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(UpcomingProgrammesForScheduleDone:)
-												 name:kArgusConnectionDone
-											   object:c];
 }
--(void)UpcomingProgrammesForScheduleDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	NSData *data = [notify userInfo][@"data"];
-	
-	NSDictionary *jsonObject = [data objectFromJSONData];
-	//NSLog(@"%@", jsonObject);
 
-	NSMutableArray *tmpArr = [NSMutableArray new];
-	
-	for (NSDictionary *t in jsonObject)
-	{
-		ArgusUpcomingProgramme *p = [[ArgusUpcomingProgramme alloc] initWithDictionary:t ScheduleType:self.IsForScheduleType];
-		
-		//NSLog(@"%@", p);
-		
-		[tmpArr addObject:p];
-		self.tmpUpcomingProgrammesKeyedByUniqueIdentifier[[p uniqueIdentifier]] = p;
-		//[tmpUpcomingProgrammesKeyedByUpcomingProgramId setObject:p forKey:[p Property:kUpcomingProgramId]];
-	}
-	
-	self.UpcomingProgrammesKeyedByUniqueIdentifier = self.tmpUpcomingProgrammesKeyedByUniqueIdentifier;
-	
-	switch (self.IsForScheduleType)
-	{
-		case ArgusScheduleTypeRecording: [self setUpcomingRecordings:tmpArr]; break;
-		case ArgusScheduleTypeAlert: [self setUpcomingAlerts:tmpArr]; break;
-		case ArgusScheduleTypeSuggestion: [self setUpcomingSuggestions:tmpArr]; break;
-	}
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusUpcomingProgrammesDone
-														object:self
-													  userInfo:nil];
-}
 
 #pragma mark Reading Programmes
 -(NSMutableArray *)upcomingProgrammesForSchedule
