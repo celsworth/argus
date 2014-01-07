@@ -132,12 +132,8 @@ Advanced Stuff to consider:
   leave manual refresh there for fixing up if they edit on another device
 
 
-NEW IN 0.23
-* iOS7 compatibility and bugfixes
-* internal cleanups
-* now requires at least iOS 6.1, dropping iOS5 support
-* some temporary regressions:
-	* some pages have iOS7 translucency disabled (EPG Grid, Programme Details)
-	* EPG Grid long press disabled while I redo it not to look crap in iOS7
-		* it wasn't very useful anyway, might just scrap it unless strong objections
-	* Search Bar not anchored to top of view while I redo entire project with AutoLayout :(
+NEW IN 0.24
+* crash in Edit Schedule 'On Days' fixed
+* rare crash on switching to EPG Grid fixed
+* experimental threading of some API requests to improve UI responsiveness
+* internal cleanups, as always :)
