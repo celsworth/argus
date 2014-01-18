@@ -22,39 +22,102 @@
 // backgrounds
 +(UIColor *)bgColourStdOdd
 {
-	if (dark) return [UIColor colorWithRed:.15 green:.15 blue:.15 alpha:1]; // dark
-	return [UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1]; // light
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor colorWithRed:.15 green:.15 blue:.15 alpha:1]; // dark
+		else
+			col = [UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1]; // light
+		
+	}
+	
+	return col;
 }
 +(UIColor *)bgColourStdEven
 {
-	if (dark) return [UIColor colorWithRed:.25 green:.25 blue:.25 alpha:1]; // dark
-	return [UIColor colorWithRed:.99 green:.99 blue:.99 alpha:1]; // light
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor colorWithRed:.25 green:.25 blue:.25 alpha:1]; // dark
+		else
+			col = [UIColor colorWithRed:.99 green:.99 blue:.99 alpha:1]; // light
+		
+	}
+	
+	return col;
 }
 +(UIColor *)bgColourEpgCell
 {
-	if (dark) return [UIColor colorWithRed:.25 green:.25 blue:.30 alpha:1]; // dark
-	return [UIColor colorWithRed:.90 green:.90 blue:.94 alpha:1]; // light
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor colorWithRed:.25 green:.25 blue:.30 alpha:1]; // dark
+		else
+			col = [UIColor colorWithRed:.90 green:.90 blue:.94 alpha:1]; // light
+
+	}
+	
+	return col;
 }
 +(UIColor *)bgColourUpcomingRec
 {
-	if (dark) return [UIColor colorWithRed:.40 green:.20 blue:.20 alpha:1]; // dark
-	return [UIColor colorWithRed:.95 green:.80 blue:.80 alpha:1]; // light
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor colorWithRed:.40 green:.20 blue:.20 alpha:1]; // dark
+		else
+			col = [UIColor colorWithRed:.95 green:.80 blue:.80 alpha:1]; // light
+		
+	}
+	
+	return col;
 }
 +(UIColor *)bgColourOnNow
 {
-	if (dark) return [UIColor colorWithRed:.33 green:.33 blue:.20 alpha:1]; // dark
-	return [UIColor colorWithRed:.93 green:.93 blue:.80 alpha:1]; // light
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor colorWithRed:.33 green:.33 blue:.20 alpha:1]; // dark
+		else
+			col = [UIColor colorWithRed:.93 green:.93 blue:.80 alpha:1]; // light
+		
+	}
+	
+	return col;
 }
 
 +(UIColor *)fgColourStd
 {
-	if (dark) return [UIColor whiteColor];
-	return [UIColor blackColor];
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor whiteColor];
+		else
+			col = [UIColor blackColor];
+		
+	}
+	
+	return col;
 }
 +(UIColor *)fgColourAlreadyShown
 {
-	if (dark) return [UIColor darkGrayColor];
-	return [UIColor lightGrayColor];
+	static UIColor *col = NULL;
+	if (!col)
+	{
+		if (dark)
+			col = [UIColor darkGrayColor];
+		else
+			col = [UIColor lightGrayColor];
+		
+	}
+	
+	return col;
 }
 
 
