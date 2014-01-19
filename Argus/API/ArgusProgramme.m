@@ -227,8 +227,8 @@
 
 	assert(self.Channel);
 	
-	//NSString *ChannelId = [[Channel originalData] objectForKey:kChannelId];
-	NSString *ChannelId = [self.Channel Property:kChannelId];
+	NSString *ChannelId = [self.Channel originalData][kChannelId];
+	//NSString *ChannelId = [self.Channel Property:kChannelId];
 	
 	// if either of these are nil, this won't work, but they shouldn't be..
 	assert(ChannelId);
@@ -236,15 +236,15 @@
 	
 	
 	// most programmes will do this
-	//NSString *GuideProgramId = [[self originalData] objectForKey:kGuideProgramId];
-	NSString *GuideProgramId = [self Property:kGuideProgramId];
+	NSString *GuideProgramId = [self originalData][kGuideProgramId];
+	//NSString *GuideProgramId = [self Property:kGuideProgramId];
 	//if (![GuideProgramId isKindOfClass:[NSNull class]])
 	if (GuideProgramId)
 		return [ChannelId stringByAppendingString:GuideProgramId];
 	
 	// but manual recordings don't have a GuideProgramId, so use this
-	//NSString *Title = [[self originalData] objectForKey:kTitle];
-	NSString *Title = [self Property:kTitle];
+	NSString *Title = [self originalData][kTitle];
+	//NSString *Title = [self Property:kTitle];
 	assert(Title);
 	//assert(![Title isKindOfClass:[NSNull class]]);
 	
@@ -256,7 +256,7 @@
 	
 	
 	// old, slow way
-	//return [NSString stringWithFormat:@"%@-%@", [Channel Property:kChannelId], [self Property:kGuideProgramId]];
+	//return [NSString stringWithFormat:@"%@-%@-%@", ChannelId, self.StartTime, Title];
 }
 
 // find an ArgusUpcomingProgramme that matches this ArgusProgramme

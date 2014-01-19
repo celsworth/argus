@@ -64,6 +64,4 @@ typedef enum {
 
 -(BOOL)isOnNow;
 
-//-(ArgusProgrammeBgColour)backgroundColour;
-
 @end

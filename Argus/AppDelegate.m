@@ -161,24 +161,20 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 	
 	if (globalLoadingSpinner == nil)
 		globalLoadingSpinner = [LoadingSpinner new];
-
-	//NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	if (loadingSpinnerRefCount == 0)
 	{
 		NSLog(@"%s", __PRETTY_FUNCTION__);
-
+		
 		[globalLoadingSpinner presentOnView:[[[[AppDelegate sharedInstance] window] rootViewController] view]];
 	}
-	//NSLog(@"%s", __PRETTY_FUNCTION__);
-
 	
 	++loadingSpinnerRefCount;
 }
 +(void) releaseLoadingSpinner
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	if (--loadingSpinnerRefCount < 0)
 		loadingSpinnerRefCount = 0;
 	
