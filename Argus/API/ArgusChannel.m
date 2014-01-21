@@ -27,7 +27,7 @@
 	{
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
-
+		
 		// and some bits of our own
 		_Logo = [[ArgusChannelLogo alloc] initWithChannelId: [self Property:kChannelId]];
 		
@@ -42,7 +42,7 @@
 -(void)dealloc
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
-
+	
 	// release some retains, why doesn't ARC handle this?
 	self.Programmes = nil;
 	self.CurrentProgramme = nil;
@@ -71,41 +71,35 @@
 	localtime_r(&fromTimeT, &timeStruct);
 	strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timeStruct);
 	NSString *fromAsStr = @(buffer);
-
+	
 	localtime_r(&toTimeT, &timeStruct);
 	strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timeStruct);
 	NSString *toAsStr = @(buffer);
-
+	
 	NSString *url = [NSString stringWithFormat:@"Guide/FullPrograms/%@/%@/%@/false", GuideChannelId, fromAsStr, toAsStr];
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
-	// await notification from ArgusConnection that the request has finished
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(ProgrammesDone:)
-												 name:kArgusConnectionDone
-											   object:c];
+	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusConnectionDone
+													  object:c
+													   queue:[NSOperationQueue new]
+												  usingBlock:^(NSNotification *note)
+	 {
+		 [self ProgrammesDone:note];
+	 }];
 }
 
 -(void)ProgrammesDone:(NSNotification *)notify
 {
+	/*** THIS SELECTOR CAN RUN IN THE BACKGROUND ***/
+	
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
-
-	// there will be no more notifications from that object
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	// try doing this in the bg, it's heavy..
-	[self performSelectorInBackground:@selector(ProgrammesDoneBgThread:) withObject:notify];
-	
-}
--(void)ProgrammesDoneBgThread:(NSNotification *)notify
-{
 	BOOL dumpData = NO;
 	
-	// parse the data, which is an array of ArgusProgramme objects?
-	
 	NSData *data = [notify userInfo][@"data"];
-	
 	NSArray *jsonObject = [data objectFromJSONData];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
@@ -135,14 +129,10 @@
 		NSLog(@"%s: got a nil ArgusProgramme out of %@", __PRETTY_FUNCTION__, data);
 	}
 	
-	// back to foreground for notify
-	[self performSelectorOnMainThread:@selector(PostProgrammesDone) withObject:nil waitUntilDone:NO];
-	//	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammesDone object:self userInfo:nil];
-}
-
--(void)PostProgrammesDone
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammesDone object:self userInfo:nil];
+	// back to foreground for notification
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammesDone object:self userInfo:nil];
+	});
 }
 
 @end
