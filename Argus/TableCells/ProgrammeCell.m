@@ -19,8 +19,6 @@
 #import "UILabel+Alignment.h"
 
 @implementation ProgrammeCell
-@synthesize Programme;
-@synthesize title, time, desc, icon;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -38,42 +36,42 @@
     // Configure the view for the selected state
 }
 
--(void)populateCellWithProgramme:(ArgusProgramme *)_Programme
+-(void)populateCellWithProgramme:(ArgusProgramme *)Programme
 {
-	Programme = _Programme;
+	_Programme = Programme;
 	
 	[self redraw];
 }
 
 -(void)redraw
 {
-	title.text = [Programme Property:kTitle];
+	self.title.text = [self.Programme Property:kTitle];
 	
 	NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm"];
 	
 	UIColor *textColor;
 	// is this programme in the past? we use this to grey out the text labels
-	if ([[Programme Property:kStopTime] timeIntervalSinceNow] < 0)
+	if ([self.Programme hasFinished])
 		textColor = [ArgusProgramme fgColourAlreadyShown];
 	else
 		textColor = [ArgusProgramme fgColourStd];
 	
-	ArgusUpcomingProgramme *upc = [Programme upcomingProgramme];
+	ArgusUpcomingProgramme *upc = [self.Programme upcomingProgramme];
 	if (upc)
-		icon.image = [upc iconImage];
+		self.icon.image = [upc iconImage];
 	else
-		icon.image = nil;
+		self.icon.image = nil;
 	
-	time.text = [df stringFromDate:[Programme Property:kStartTime]];
-	time.textColor = textColor;
+	self.time.text = [df stringFromDate:[self.Programme Property:kStartTime]];
+	self.time.textColor = textColor;
 	
-	title.text = [Programme Property:kTitle];
-	title.textColor = textColor;
+	self.title.text = [self.Programme Property:kTitle];
+	self.title.textColor = textColor;
 	
-	desc.text = [Programme Property:kDescription];
-	desc.textColor = textColor;
+	self.desc.text = [self.Programme Property:kDescription];
+	self.desc.textColor = textColor;
 	
-	[desc topAlign];
+	[self.desc topAlign];
 }
 
 

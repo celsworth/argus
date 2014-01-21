@@ -32,8 +32,8 @@
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activity;
 
--(void)populateCellWithActiveRecording:(ArgusActiveRecording *)_ActiveRecording;
--(void)populateCellWithUpcomingProgramme:(ArgusUpcomingProgramme *)_UpcomingProgramme;
--(void)populateCellWithProgramme:(ArgusProgramme *)_Programme;
+-(void)populateCellWithActiveRecording:(ArgusActiveRecording *)ActiveRecording;
+-(void)populateCellWithUpcomingProgramme:(ArgusUpcomingProgramme *)UpcomingProgramme;
+-(void)populateCellWithProgramme:(ArgusProgramme *)Programme;
 
 @end

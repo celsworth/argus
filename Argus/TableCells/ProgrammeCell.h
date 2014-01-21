@@ -21,6 +21,6 @@
 // upcoming recording icon
 @property (nonatomic, weak) IBOutlet UIImageView *icon;
 
--(void)populateCellWithProgramme:(ArgusProgramme *)_Programme;
+-(void)populateCellWithProgramme:(ArgusProgramme *)Programme;
 
 @end

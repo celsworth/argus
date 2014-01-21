@@ -16,10 +16,6 @@
 #import "UILabel+Alignment.h"
 
 @implementation ProgrammeSummaryCell
-@synthesize Programme, UpcomingProgramme, ActiveRecording;
-@synthesize title, time, icon, priority;
-@synthesize chan, chan_image;
-@synthesize activity;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -37,29 +33,29 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+	
     // Configure the view for the selected state
 }
 
--(void)populateCellWithActiveRecording:(ArgusActiveRecording *)_ActiveRecording
+-(void)populateCellWithActiveRecording:(ArgusActiveRecording *)ActiveRecording
 {
-	ActiveRecording = _ActiveRecording;
-	UpcomingProgramme = [ActiveRecording UpcomingProgramme];
-	Programme = UpcomingProgramme;
+	_ActiveRecording = ActiveRecording;
+	_UpcomingProgramme = [ActiveRecording UpcomingProgramme];
+	_Programme = _UpcomingProgramme;
 	[self redraw];
 }
 
--(void)populateCellWithUpcomingProgramme:(ArgusUpcomingProgramme *)_UpcomingProgramme
+-(void)populateCellWithUpcomingProgramme:(ArgusUpcomingProgramme *)UpcomingProgramme
 {
-	UpcomingProgramme = _UpcomingProgramme;
-	Programme = UpcomingProgramme;
+	_UpcomingProgramme = UpcomingProgramme;
+	_Programme = UpcomingProgramme;
 	[self redraw];
 }
 
 
--(void)populateCellWithProgramme:(ArgusProgramme *)_Programme
+-(void)populateCellWithProgramme:(ArgusProgramme *)Programme
 {
-	Programme = _Programme;
+	_Programme = Programme;
 	
 	[self redraw];
 }
@@ -67,29 +63,29 @@
 -(void)redraw
 {
 	// in case we got here via a notification..
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kArgusChannelLogoDone object:[[Programme Channel] Logo]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kArgusChannelLogoDone object:[[self.Programme Channel] Logo]];
 	
-	title.text = [Programme Property:kTitle];
+	self.title.text = [self.Programme Property:kTitle];
 	
 	
 	UIColor *textColor;
 	// is this programme in the past? we use this to grey out the text labels
-	if ([[Programme Property:kStopTime] timeIntervalSinceNow] < 0)
+	if ([self.Programme hasFinished])
 		textColor = [ArgusProgramme fgColourAlreadyShown];
 	else
 		textColor = [ArgusProgramme fgColourStd];
 	
-	ArgusUpcomingProgramme *upc = UpcomingProgramme ? UpcomingProgramme : [Programme upcomingProgramme];
+	ArgusUpcomingProgramme *upc = self.UpcomingProgramme ? self.UpcomingProgramme : [self.Programme upcomingProgramme];
 	if (upc)
 	{
-		icon.image = [upc iconImage];
-		priority.text = [ArgusSchedule stringForPriority:[[upc Property:kPriority] intValue]];
-		priority.textColor = textColor;
+		self.icon.image = [upc iconImage];
+		self.priority.text = [ArgusSchedule stringForPriority:[[upc Property:kPriority] intValue]];
+		self.priority.textColor = textColor;
 	}
 	else
 	{
-		icon.image = nil;
-		priority.text = @"";
+		self.icon.image = nil;
+		self.priority.text = @"";
 	}
 	
 	ArgusUpcomingRecording *upcr = [upc upcomingRecording];
@@ -104,20 +100,20 @@
 	NSDateFormatter *df2 = [NSDateFormatter new];
 	[df2 setDateStyle:NSDateFormatterNoStyle];
 	[df2 setTimeStyle:NSDateFormatterShortStyle];
-	time.text = [NSString stringWithFormat:@"%@, %@ - %@", [df stringFromDate:[Programme Property:kStartTime]],
-				 [df2 stringFromDate:[Programme Property:kStartTime]], [df2 stringFromDate:[Programme Property:kStopTime]]];
-	time.textColor = textColor;
+	self.time.text = [NSString stringWithFormat:@"%@, %@ - %@", [df stringFromDate:[self.Programme Property:kStartTime]],
+					  [df2 stringFromDate:[self.Programme Property:kStartTime]], [df2 stringFromDate:[self.Programme Property:kStopTime]]];
+	self.time.textColor = textColor;
 	
-	title.text = [Programme Property:kTitle];
-	title.textColor = textColor;
+	self.title.text = [self.Programme Property:kTitle];
+	self.title.textColor = textColor;
 	
-	chan.text = [[Programme Channel] Property:kDisplayName];
-	chan.textColor = textColor;
-
-	UIImage *img = [[[Programme Channel] Logo] image];
+	self.chan.text = [[self.Programme Channel] Property:kDisplayName];
+	self.chan.textColor = textColor;
+	
+	UIImage *img = [[[self.Programme Channel] Logo] image];
 	if (img)
 	{
-		chan_image.image = img;
+		self.chan_image.image = img;
 	}
 	else
 	{
@@ -125,20 +121,20 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(redraw)
 													 name:kArgusChannelLogoDone
-												   object:[[Programme Channel] Logo]];
+												   object:[[self.Programme Channel] Logo]];
 		
-		chan_image.image = nil;
+		self.chan_image.image = nil;
 		
 		// draw a spinny for now?
 	}
 	
 	// active recording support
-	if (ActiveRecording)
+	if (self.ActiveRecording)
 	{
-		if ([ActiveRecording Stopping])
-			[activity startAnimating];
+		if ([self.ActiveRecording Stopping])
+			[self.activity startAnimating];
 		else
-			[activity stopAnimating];
+			[self.activity stopAnimating];
 	}
 }
 

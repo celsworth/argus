@@ -24,6 +24,6 @@
 
 @property (nonatomic, weak) IBOutlet UIProgressView *usedProgressView;
 
--(void)populateCellWithRecordingDiskInfo:(ArgusRecordingDiskInfo *)_RecordingDiskInfo;
+-(void)populateCellWithRecordingDiskInfo:(ArgusRecordingDiskInfo *)RecordingDiskInfo;
 
 @end

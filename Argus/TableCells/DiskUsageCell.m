@@ -14,9 +14,6 @@
 #import "NSNumber+humanSize.h"
 
 @implementation DiskUsageCell
-@synthesize RecordingDiskInfo;
-@synthesize name, size, used, free, hd_free, sd_free, usedProgressView;
-
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -34,34 +31,34 @@
     // Configure the view for the selected state
 }
 
--(void)populateCellWithRecordingDiskInfo:(ArgusRecordingDiskInfo *)_RecordingDiskInfo;
+-(void)populateCellWithRecordingDiskInfo:(ArgusRecordingDiskInfo *)RecordingDiskInfo;
 {
-	RecordingDiskInfo = _RecordingDiskInfo;
+	_RecordingDiskInfo = RecordingDiskInfo;
 	[self redraw];
 }
 
 -(void)redraw
 {
-	name.text = [RecordingDiskInfo Property:kName];
-	name.textColor = [ArgusProgramme fgColourStd];
+	self.name.text = [self.RecordingDiskInfo Property:kName];
+	self.name.textColor = [ArgusProgramme fgColourStd];
 	
-	size.text = [[RecordingDiskInfo Property:kTotalSizeBytes] humanSize];
+	self.size.text = [[self.RecordingDiskInfo Property:kTotalSizeBytes] humanSize];
 	//size.textColor = [ArgusProgramme fgColourStd];
 
-	used.text = [NSString stringWithFormat:@"%@ used",
-				 [@([[RecordingDiskInfo Property:kTotalSizeBytes] doubleValue] - [[RecordingDiskInfo Property:kFreeSpaceBytes] doubleValue]) humanSize]];
+	self.used.text = [NSString stringWithFormat:@"%@ used",
+				 [@([[self.RecordingDiskInfo Property:kTotalSizeBytes] doubleValue] - [[self.RecordingDiskInfo Property:kFreeSpaceBytes] doubleValue]) humanSize]];
 	//used.textColor = [ArgusProgramme fgColourStd];
 
-	free.text = [NSString stringWithFormat:@"%@ free", [[RecordingDiskInfo Property:kFreeSpaceBytes] humanSize]];
+	self.free.text = [NSString stringWithFormat:@"%@ free", [[self.RecordingDiskInfo Property:kFreeSpaceBytes] humanSize]];
 	//free.textColor = [ArgusProgramme fgColourStd];
 
-	hd_free.text = [NSString stringWithFormat:@"%@h HD", [[RecordingDiskInfo Property:kFreeHoursHD] stringValue]];
-	hd_free.textColor = [ArgusProgramme fgColourStd];
+	self.hd_free.text = [NSString stringWithFormat:@"%@h HD", [[self.RecordingDiskInfo Property:kFreeHoursHD] stringValue]];
+	self.hd_free.textColor = [ArgusProgramme fgColourStd];
 
-	sd_free.text = [NSString stringWithFormat:@"%@h SD", [[RecordingDiskInfo Property:kFreeHoursSD] stringValue]];
-	sd_free.textColor = [ArgusProgramme fgColourStd];
+	self.sd_free.text = [NSString stringWithFormat:@"%@h SD", [[self.RecordingDiskInfo Property:kFreeHoursSD] stringValue]];
+	self.sd_free.textColor = [ArgusProgramme fgColourStd];
 
-	usedProgressView.progress = [[RecordingDiskInfo Property:kPercentageUsed] doubleValue] / 100.0;
+	self.usedProgressView.progress = [[self.RecordingDiskInfo Property:kPercentageUsed] doubleValue] / 100.0;
 }
 
 

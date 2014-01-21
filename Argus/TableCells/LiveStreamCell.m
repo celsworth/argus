@@ -13,10 +13,6 @@
 #import "AppDelegate.h"
 
 @implementation LiveStreamCell
-@synthesize LiveStream;
-@synthesize channel, startTime, cardId, rtspURL;
-@synthesize stoppingActivityIndicator;
-
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -34,40 +30,40 @@
     // Configure the view for the selected state
 }
 
--(void)populateCellWithLiveStream:(ArgusLiveStream *)_LiveStream
+-(void)populateCellWithLiveStream:(ArgusLiveStream *)LiveStream
 {
-	LiveStream = _LiveStream;
+	_LiveStream = LiveStream;
 	
 	[self redraw];
 }
 
 -(void)redraw
 {
-	channel.text = [[LiveStream Channel] Property:kDisplayName];
-	channel.textColor = [ArgusProgramme fgColourStd];
+	self.channel.text = [[self.LiveStream Channel] Property:kDisplayName];
+	self.channel.textColor = [ArgusProgramme fgColourStd];
 
 	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterLongStyle];
 	[df setTimeStyle:NSDateFormatterMediumStyle];
 	
-	startTime.text = [df stringFromDate:[LiveStream Property:kStreamStartedTime]];
-	startTime.textColor = [ArgusProgramme fgColourStd];
+	self.startTime.text = [df stringFromDate:[self.LiveStream Property:kStreamStartedTime]];
+	self.startTime.textColor = [ArgusProgramme fgColourStd];
 
-	rtspURL.text = [LiveStream Property:kRtspUrl];
-	rtspURL.textColor = [ArgusProgramme fgColourStd];
+	self.rtspURL.text = [self.LiveStream Property:kRtspUrl];
+	self.rtspURL.textColor = [ArgusProgramme fgColourStd];
 	
-	if ([LiveStream Property:kCardId])
+	if ([self.LiveStream Property:kCardId])
 	{
-		cardId.text = [NSString stringWithFormat:@"Card #%@", [LiveStream Property:kCardId]];
-		cardId.textColor = [ArgusProgramme fgColourStd];
+		self.cardId.text = [NSString stringWithFormat:@"Card #%@", [self.LiveStream Property:kCardId]];
+		self.cardId.textColor = [ArgusProgramme fgColourStd];
 		
 	}
 	
 	
-	if ([LiveStream Stopping])
-		[stoppingActivityIndicator startAnimating];
+	if ([self.LiveStream Stopping])
+		[self.stoppingActivityIndicator startAnimating];
 	else
-		[stoppingActivityIndicator stopAnimating];	
+		[self.stoppingActivityIndicator stopAnimating];
 }
 
 @end

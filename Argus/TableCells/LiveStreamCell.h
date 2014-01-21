@@ -22,6 +22,6 @@
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *stoppingActivityIndicator;
 
--(void)populateCellWithLiveStream:(ArgusLiveStream *)_LiveStream;
+-(void)populateCellWithLiveStream:(ArgusLiveStream *)LiveStream;
 
 @end

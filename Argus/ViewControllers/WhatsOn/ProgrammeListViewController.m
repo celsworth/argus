@@ -20,10 +20,6 @@
 
 @implementation ProgrammeListViewController
 
-@synthesize Channel;
-@synthesize fetchStart, fetchEnd;
-@synthesize isFetchingMore, autoRedrawTimer;
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -58,43 +54,47 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
-	[[self navigationItem] setTitle:[Channel Property:kDisplayName]];
+	[[self navigationItem] setTitle:[self.Channel Property:kDisplayName]];
 	
 	// if the channel has some Programmes present already, use those and just set fetchedUpTo
-	if ([Channel Programmes] && [[Channel Programmes] count])
+	if ([self.Channel Programmes] && [[self.Channel Programmes] count])
 	{
-		fetchStart = [[Channel Programmes][0] Property:kStartTime];
-		fetchEnd = [[[Channel Programmes] lastObject] Property:kStopTime];
+		self.fetchStart = [[self.Channel Programmes][0] Property:kStartTime];
+		self.fetchEnd = [[[self.Channel Programmes] lastObject] Property:kStopTime];
 	}
 	else
 	{
 		// none present, fetch a few initial programmes from $NOW to $NOW + FETCH_PERIOD_INITIAL
-		fetchStart = [NSDate date];
-		fetchEnd = [NSDate dateWithTimeIntervalSinceNow:FETCH_PERIOD_INITIAL];
-		[Channel getProgrammesFrom:fetchStart to:fetchEnd];
-		isFetchingMore = YES;
+		self.fetchStart = [NSDate date];
+		self.fetchEnd = [NSDate dateWithTimeIntervalSinceNow:FETCH_PERIOD_INITIAL];
+		[self.Channel getProgrammesFrom:self.fetchStart to:self.fetchEnd];
+		self.isFetchingMore = YES;
 	}
 	
 	// tell us when new programmes are ready to display
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(programmesDone)
 												 name:kArgusProgrammesDone
-											   object:Channel];
+											   object:self.Channel];
 	
 	// redraw our rows when the sidepanel changes, so we can recalculate heights
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kArgusSidePanelDisplayStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(reloadData)
+												 name:kArgusSidePanelDisplayStateChanged
+											   object:nil];
 
 	// scroll to the programme that is on now
 	NSInteger row = -1;
-	for (ArgusProgramme *p in [Channel Programmes])
+	for (ArgusProgramme *p in [self.Channel Programmes])
 	{
 		if ([p isOnNow])
 		{
-			row = [[Channel Programmes] indexOfObject:p];
+			row = [[self.Channel Programmes] indexOfObject:p];
 			break;
 		}
 	}
 	if (row != -1)
-		[[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+		[[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]
+								atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];
 	
@@ -103,11 +103,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
     [super viewWillAppear:animated];
 	[[self tableView] reloadData];
 	
-	autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:YES];
+	self.autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+															target:self.tableView
+														  selector:@selector(reloadData)
+														  userInfo:nil
+														   repeats:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -124,7 +128,7 @@
 {
     [super viewDidDisappear:animated];
 	
-	[autoRedrawTimer invalidate];
+	[self.autoRedrawTimer invalidate];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -149,7 +153,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-	return [[Channel Programmes] count] + 1;
+	return [[self.Channel Programmes] count] + 1;
 }
 
 
@@ -157,15 +161,15 @@
 {
 	//	NSLog(@"%s %@", __PRETTY_FUNCTION__, indexPath);
 	
-	if ([[Channel Programmes] count] == 0)
+	if ([[self.Channel Programmes] count] == 0)
 		return 50.0f;
 	
 	// last row is "fetch more" which is static at 50px
-	if (indexPath.row == [[Channel Programmes] count])
+	if (indexPath.row == [[self.Channel Programmes] count])
 		return 50.0f;
 	
 	ArgusProgramme *p;
-	if ((p = [Channel Programmes][indexPath.row]))
+	if ((p = [self.Channel Programmes][indexPath.row]))
 	{
 		// work out our optimal height
 		if ([p Property:kDescription])
@@ -226,11 +230,11 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 		
-	if (indexPath.row == [[Channel Programmes] count])
+	if (indexPath.row == [[self.Channel Programmes] count])
 	{
 		// last row in this table is a dummy "fetch more" cell, when tapped it will do exactly that.
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FetchMoreCell"];
-		if (isFetchingMore)
+		if (self.isFetchingMore)
 		{
 			[cell viewWithTag:1].hidden = YES;
 			[cell viewWithTag:2].hidden = NO;
@@ -246,7 +250,7 @@
 	else
 	{
 		ProgrammeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProgrammeCell"];
-		ArgusProgramme *p = [Channel Programmes][indexPath.row];
+		ArgusProgramme *p = [self.Channel Programmes][indexPath.row];
 		[cell populateCellWithProgramme:p];
 		return cell;
 	}
@@ -254,7 +258,7 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger c = [[Channel Programmes] count];
+	NSInteger c = [[self.Channel Programmes] count];
 	if (c == 0) // no programmes!
 		return;
 
@@ -265,7 +269,7 @@
 		return;
 	}
 	
-	ArgusProgramme *p = [Channel Programmes][indexPath.row];
+	ArgusProgramme *p = [self.Channel Programmes][indexPath.row];
 
 	// start off with standard table odd/even colour
 	UIColor *colourToSet = (indexPath.row % 2) ? [ArgusProgramme bgColourStdOdd] : [ArgusProgramme bgColourStdEven];
@@ -318,14 +322,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (isFetchingMore == NO && indexPath.row == [[Channel Programmes] count])
+	if (self.isFetchingMore == NO && indexPath.row == [[self.Channel Programmes] count])
 	{
 		// fetching more programmes
-		isFetchingMore = YES;
+		self.isFetchingMore = YES;
 		[self reloadData]; // hides "fetch more", show spinner
 		
-		fetchEnd = [fetchEnd dateByAddingTimeInterval:FETCH_PERIOD_SUBSEQUENT];
-		[Channel getProgrammesFrom:fetchStart to:fetchEnd];
+		self.fetchEnd = [self.fetchEnd dateByAddingTimeInterval:FETCH_PERIOD_SUBSEQUENT];
+		[self.Channel getProgrammesFrom:self.fetchStart to:self.fetchEnd];
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -339,13 +343,13 @@
         
         // tell dvc which programme has been tapped on
 		NSInteger r = [self.tableView indexPathForSelectedRow].row;
-		dvc.Programme = [Channel Programmes][r];
+		dvc.Programme = [self.Channel Programmes][r];
 	}
 }
 
 -(void)programmesDone
 {
-	isFetchingMore = NO;
+	self.isFetchingMore = NO;
 	[self reloadData];
 }
 

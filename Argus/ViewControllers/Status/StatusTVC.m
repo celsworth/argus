@@ -17,8 +17,6 @@
 #import "AppDelegate.h"
 
 @implementation StatusTVC
-@synthesize autoRedrawTimer;
-@synthesize LoadingDiskUsage, LoadingLiveStreams, LoadingActiveRecordings;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,10 +35,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+	
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	
@@ -48,22 +46,22 @@
 											 selector:@selector(RecordingDisksInfoDone:)
 												 name:kArgusRecordingDisksInfoDone
 											   object:argus];
-
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(ActiveRecordingsDone:)
 												 name:kArgusActiveRecordingsDone
 											   object:argus];
-
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(LiveStreamsDone:)
 												 name:kArgusLiveStreamsDone
 											   object:argus];
-
+	
 	if (dark)
 	{
 		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
 	}
-
+	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];
 }
 
@@ -77,23 +75,27 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-
+	
 	// trigger initial data load
 	[self refreshPressed:self];
 	
-	autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(autoRedraw) userInfo:nil repeats:YES];
+	self.autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0
+															target:self
+														  selector:@selector(autoRedraw)
+														  userInfo:nil
+														   repeats:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 	
-	[autoRedrawTimer invalidate];
+	[self.autoRedrawTimer invalidate];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;	
+	return YES;
 }
 
 
@@ -120,7 +122,7 @@
 		case ArgusStatusTableSectionDiskUsage:
 			return MAX(1, [[[argus RecordingDisksInfo] RecordingDiskInfos] count]);
 			break;
-		
+			
 		case ArgusStatusTableSectionActiveRecordings:
 			return MAX(1, [[argus ActiveRecordings] count]);
 			break;
@@ -184,7 +186,7 @@
 		{
 			// check if we have to display a special cell type
 			if ([[[argus RecordingDisksInfo] RecordingDiskInfos] count] == 0)
-				return [tableView dequeueReusableCellWithIdentifier:(LoadingDiskUsage ? @"LoadingCell" : @"NoDataCell")];
+				return [tableView dequeueReusableCellWithIdentifier:(self.LoadingDiskUsage ? @"LoadingCell" : @"NoDataCell")];
 			
 			DiskUsageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DiskUsageCell"];
 			ArgusRecordingDiskInfo *r = [[argus RecordingDisksInfo] RecordingDiskInfos][indexPath.row];
@@ -192,26 +194,26 @@
 			return cell;
 			break;
 		}
-		
+			
 		case ArgusStatusTableSectionActiveRecordings:
 		{
 			// check if we have to display a special cell type
 			if ([[argus ActiveRecordings] count] == 0)
-				return [tableView dequeueReusableCellWithIdentifier:(LoadingActiveRecordings ? @"LoadingCell" : @"NoDataCell")];
-
+				return [tableView dequeueReusableCellWithIdentifier:(self.LoadingActiveRecordings ? @"LoadingCell" : @"NoDataCell")];
+			
 			ProgrammeSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ActiveRecordingCell"];
 			ArgusActiveRecording *ar = [argus ActiveRecordings][indexPath.row];
 			[cell populateCellWithActiveRecording:ar];
 			return cell;
 			break;
 		}
-		
+			
 		case ArgusStatusTableSectionLiveStreams:
 		{
 			// check if we have to display a special cell type
 			if ([[argus LiveStreams] count] == 0)
-				return [tableView dequeueReusableCellWithIdentifier:(LoadingLiveStreams ? @"LoadingCell" : @"NoDataCell")];
-
+				return [tableView dequeueReusableCellWithIdentifier:(self.LoadingLiveStreams ? @"LoadingCell" : @"NoDataCell")];
+			
 			LiveStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveStreamCell"];
 			ArgusLiveStream *ls = [argus LiveStreams][indexPath.row];
 			[cell populateCellWithLiveStream:ls];
@@ -246,7 +248,7 @@
 		{
 			// loading or no results row
 			if ([[argus LiveStreams] count] == 0) return NO;
-
+			
 			ArgusLiveStream *ls = [argus LiveStreams][indexPath.row];
 			
 			// don't let them mess with the row when the stream is stopping
@@ -280,7 +282,7 @@
 	switch ((ArgusStatusTableSection)indexPath.section)
 	{
 		case ArgusStatusTableSectionDiskUsage:
-			return @""; 
+			return @"";
 			break;
 			
 		case ArgusStatusTableSectionActiveRecordings:
@@ -290,14 +292,14 @@
 		case ArgusStatusTableSectionLiveStreams:
 			return NSLocalizedString(@"Stop", @"button to stop a live stream");
 			break;
-	}	
+	}
 	/* NOTREACHED */
 }
 
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{	
+{
 	switch ((ArgusStatusTableSection)indexPath.section)
 	{
 		case ArgusStatusTableSectionDiskUsage:
@@ -314,7 +316,7 @@
 			
 			// reload the row, which removes the edit elements and adds a spinner
 			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
+			
 			break;
 		}
 		case ArgusStatusTableSectionLiveStreams:
@@ -328,7 +330,7 @@
 			
 			// reload the row, which removes the edit elements and adds a spinner
 			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
+			
 			break;
 		}
 	}
@@ -354,20 +356,20 @@
 
 -(void)RecordingDisksInfoDone:(NSNotification *)notify
 {
-	LoadingDiskUsage = NO;
+	self.LoadingDiskUsage = NO;
 	//[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:ArgusStatusTableSectionDiskUsage] withRowAnimation:UITableViewRowAnimationFade];
 	[self.tableView reloadData];
 }
 -(void)ActiveRecordingsDone:(NSNotification *)notify
 {
-	LoadingActiveRecordings = NO;
+	self.LoadingActiveRecordings = NO;
 	//[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:ArgusStatusTableSectionActiveRecordings] withRowAnimation:UITableViewRowAnimationFade];
 	[self.tableView reloadData];
 }
 
 -(void)LiveStreamsDone:(NSNotification *)notify
 {
-	LoadingLiveStreams = NO;
+	self.LoadingLiveStreams = NO;
 	//[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:ArgusStatusTableSectionLiveStreams] withRowAnimation:UITableViewRowAnimationFade];
 	[self.tableView reloadData];
 }
@@ -376,10 +378,10 @@
 
 -(IBAction)refreshPressed:(id)sender
 {
-	LoadingDiskUsage = YES;
-	LoadingActiveRecordings = YES;
-	LoadingLiveStreams = YES;
-
+	self.LoadingDiskUsage = YES;
+	self.LoadingActiveRecordings = YES;
+	self.LoadingLiveStreams = YES;
+	
 	[argus getRecordingDisksInfo];
 	[argus getActiveRecordings];
 	[argus getLiveStreams];
