@@ -438,7 +438,7 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"epg_chanlogo"];
 
 		// remove any previous egc instances
-		for (UIView *subview in cell.subviews)
+		for (UIView *subview in [[cell contentView] subviews])
 		{
 			if ([subview isKindOfClass:[UIImageView class]])
 				[subview removeFromSuperview];
@@ -448,7 +448,7 @@
 
 		if (egc)
 			// and add the new one
-			[cell addSubview:egc.view];	
+			[[cell contentView] addSubview:egc.view];
 
 		return cell;
 	}
