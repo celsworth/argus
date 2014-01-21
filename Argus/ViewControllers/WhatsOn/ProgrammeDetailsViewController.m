@@ -80,8 +80,12 @@
 	
 	//	NSLog(@"sv is %f x %f", sv.contentSize.width, sv.contentSize.height);
 	
-	self.autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(redraw) userInfo:nil repeats:YES];
-
+	self.autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+															target:self
+														  selector:@selector(redraw)
+														  userInfo:nil
+														   repeats:YES];
+	
 	[self redraw];
 }
 
