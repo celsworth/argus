@@ -307,21 +307,4 @@
 	return [NSString stringWithFormat:@"https://%@:49941/ArgusTV", [defaults stringForKey:@"host_preference"]];
 }
 
-#if 0
-+(NSString *)newJobId
-{
-	CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
-	assert(uuid);
-	
-	CFStringRef uuidStr = CFUUIDCreateString(kCFAllocatorDefault, uuid);
-	assert(uuidStr);
-	
-	NSString *ret = [NSString stringWithFormat:@"%@", uuidStr];
-	CFRelease(uuid);
-	CFRelease(uuidStr);
-	
-	return ret;
-}
-#endif
-
 @end

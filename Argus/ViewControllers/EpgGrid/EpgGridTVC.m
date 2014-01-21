@@ -286,21 +286,6 @@
 	[cmps setHour:3];
 	
 	return [cal dateFromComponents:cmps];
-
-	
-	
-	
-	// correct midnight-2:59am to be the previous day (new day starts at 3am)
-	if (cmps.hour == 0 || cmps.hour == 1 || cmps.hour == 2)
-	{
-		date = [date dateByAddingTimeInterval:-86400]; // subtract one day (3h or more would do the job)
-		cmps = [cal components:NSHourCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:date];
-	}
-	
-	// our EPG day starts at 3am
-	[cmps setHour:3];
-	
-	return [cal dateFromComponents:cmps];
 }
 
 -(UILabel *)labelForTimeHeaderAtTime:(NSDate *)time usingDateFormatter:(NSDateFormatter *)df

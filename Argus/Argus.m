@@ -111,53 +111,7 @@
 -(void)doEpgPartialSearchforString:(NSString *)search inChannelType:(ArgusChannelType)ChannelType
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-#if 0
-	// fire off a CurrentAndNextForGroup request
-	NSString *url = [NSString stringWithFormat:@"Scheduler/SearchGuideByPartialTitle/%d", ChannelType];
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO
-											  completionBlock:^(NSURLResponse *response, NSData *data, NSError *error)
-						  {
-							  NSLog(@"%s", __PRETTY_FUNCTION__);
-							  
-							  SBJsonParser *jsonParser = [SBJsonParser new];
-							  NSArray *jsonObject = [jsonParser objectWithData:data];
-							  
-							  NSMutableArray *tmpArr = [NSMutableArray new];
-							  
-							  for (NSDictionary *d in jsonObject)
-							  {
-								  ArgusProgramme *p = [[ArgusProgramme alloc] initWithDictionary:d];
-								  
-								  NSString *ChannelId = d[kChannel][kChannelId];
-								  assert(ChannelId);
-								  
-								  ArgusChannel *c = [argus ChannelsKeyedByChannelId][ChannelId];
-								  assert(c);
-								  
-								  [p setChannel:c];
-								  
-								  [tmpArr addObject:p];
-							  }
-							  
-							  SearchResults = tmpArr;
-							  
-							  dispatch_async(dispatch_get_main_queue(), ^{
-								  [[NSNotificationCenter defaultCenter] postNotificationName:kArgusEpgPartialSearchDone
-																					  object:self
-																					userInfo:nil];
-							  });
-							  
-							  [AppDelegate releaseLoadingSpinner];
-							  
-						  }];
-	
-	[AppDelegate requestLoadingSpinner];
-	
-	return;
-	//NSLog(@"doSearchEpg: %@", url);
-#endif
-	
+		
 	NSString *url = [NSString stringWithFormat:@"Scheduler/SearchGuideByPartialTitle/%d", ChannelType];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	

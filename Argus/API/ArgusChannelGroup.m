@@ -87,8 +87,6 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//NSArray *jsonObject = [jsonParser objectWithData:data];
 	NSArray *jsonObject = [data objectFromJSONData];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
@@ -104,12 +102,6 @@
 	
 		[tmpArr addObject:c];
 	}
-	
-	// prevent leaks because ARC can't clean up circular references
-	//for (ArgusChannel *c in Channels)
-	//{
-		//[c setProgrammes:nil];
-	//}
 	
 	self.Channels = tmpArr;
 	
@@ -152,11 +144,6 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 
-	//NSString *r = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-	//NSLog(@"%@", r);
-
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//NSArray *jsonObject = [jsonParser objectWithData:data];
 	NSArray *jsonObject = [data objectFromJSONData];
 
 	NSMutableArray *tmpArr = [NSMutableArray new];
@@ -175,16 +162,15 @@
 		if (tmp && tmp != (NSDictionary *)[NSNull null]) // avoid ArgusBaseObject nil error when no programme is on
 		{
 			p = [[ArgusProgramme alloc] initWithDictionary:tmp];
-			//[p setChannelId:[c Property:kChannelId]];
 			[p setChannel:c];
 			[c setCurrentProgramme:p];
 		
 			// remember the earliest Current StopTime we find
 			// What's On uses this so it knows when to refresh data
-			if ([[p StopTime] timeIntervalSinceDate:self.earliestCurrentStopTime] < 0)
+			if ([[p Property:kStopTime] timeIntervalSinceDate:self.earliestCurrentStopTime] < 0)
 			{
 				//NSLog(@"%@ matched", [p Property:kTitle]);
-				self.earliestCurrentStopTime = [p StopTime];
+				self.earliestCurrentStopTime = [p Property:kStopTime];
 			}
 		}
 		
@@ -192,23 +178,12 @@
 		if (tmp && tmp != (NSDictionary *)[NSNull null])
 		{
 			p = [[ArgusProgramme alloc] initWithDictionary:tmp];
-			//[p setChannelId:[c Property:kChannelId]];
 			[p setChannel:c];
 			[c setNextProgramme:p];
 		}
 		
 		[tmpArr addObject:c];
 	}
-	
-	// before we lose access to the old CurrentAndNext, remove the circular references
-	// between Channel and Programme, so ARC can deallocate stuff properly
-	//for (ArgusChannel *c in CurrentAndNext)
-	//{
-		////[[c CurrentProgramme] setChannel:nil];
-		//[c setCurrentProgramme:nil];
-		////[[c NextProgramme] setChannel:nil];
-		//[c setNextProgramme:nil];
-	//}
 	
 	self.CurrentAndNext = tmpArr;
 	

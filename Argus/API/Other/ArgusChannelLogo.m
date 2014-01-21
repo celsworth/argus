@@ -59,7 +59,6 @@
 		NSDate *mTime = [self logoModTime];
 		if ([[NSDate date] timeIntervalSinceDate:mTime] > 7200)
 		{
-			//[self performSelectorInBackground:@selector(fetchLogoIfNewerThan:) withObject:mTime];
 			[self fetchLogoIfNewerThan:mTime];
 		}
 		return tmp;
@@ -70,7 +69,6 @@
 	
 	// if no entry on disk, trigger request to go fetch it
 	// this will post a notification when done
-	//[self performSelectorInBackground:@selector(fetchLogoIfNewerThan:) withObject:nil];
 	[self fetchLogoIfNewerThan:nil];
 
 	return nil; // no logo to return yet
