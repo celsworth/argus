@@ -30,7 +30,6 @@
 
 
 @implementation ArgusRecordingDisksInfo
-@synthesize RecordingDiskInfos;
 
 // pass a JSONValue decoded dictionary.
 -(id)initWithDictionary:(NSDictionary *)input
@@ -50,7 +49,7 @@
 			ArgusRecordingDiskInfo *t = [[ArgusRecordingDiskInfo alloc] initWithDictionary:d];
 			[tmpArr addObject:t];
 		}
-		RecordingDiskInfos = tmpArr;
+		self.RecordingDiskInfos = tmpArr;
 		
 	}
 	
