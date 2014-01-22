@@ -31,11 +31,21 @@
 	// 3 pixels padding in each view to make labels not hug the sides of the box
 	viewPadding = 3;
 	
+	// watch for programme updates
+	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusProgrammeOnAirStatusChanged
+													  object:Programme queue:[NSOperationQueue mainQueue]
+												  usingBlock:^(NSNotification *note)
+	 {
+		 NSLog(@"%s", __PRETTY_FUNCTION__);
+		 [self updateColours];
+	 }];
+	
 	return self;
 }
 -(void)dealloc
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(UIView *)makeView
@@ -107,10 +117,10 @@
 
 	[view addSubview:label];
 	
+	[self updateColours];
+	
 	return view;
 }
-
-
 
 -(void)updateColours
 {
@@ -141,7 +151,7 @@
 		 [view addSubview:labeltest];
 		 */
 		
-		// set a red background for programmes that are goign to be recorded
+		// set a red background for programmes that are going to be recorded
 		switch ([upc scheduleStatus])
 		{
 			case ArgusUpcomingProgrammeScheduleStatusRecordingScheduled:
@@ -165,7 +175,7 @@
 	view.backgroundColor = colourToSet;
 	
 	// foreground colour
-	if ([[Programme StopTime] timeIntervalSinceNow] < 0)
+	if ([Programme hasFinished])
 		// programmes in the past
 		label.textColor = [ArgusProgramme fgColourAlreadyShown];
 	else

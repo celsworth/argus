@@ -22,6 +22,9 @@ typedef enum {
 
 #define kArgusProgrammeDone                 @"ArgusProgrammeDone"
 
+#define kArgusProgrammeOnAirStatusChanged   @"ArgusProgrammeOnAirStatusChanged"
+
+
 @class ArgusChannel;
 @class ArgusUpcomingProgramme;
 @interface ArgusProgramme : ArgusBaseObject
@@ -30,11 +33,15 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL fullDetailsDone;
 
+// runs when the programme starts and ends
+@property (nonatomic, retain) NSTimer *programmeStartOrEndTimer;
+
+
 // caches
-@property (nonatomic, retain) NSDate *StartTime;
-@property (nonatomic, retain) NSDate *StopTime;
 @property (nonatomic, retain) ArgusUpcomingProgramme *UpcomingProgrammeCached;
 @property (nonatomic, assign) BOOL UpcomingProgrammeHaveCached;
+@property (nonatomic, assign) BOOL isOnNow;
+@property (nonatomic, assign) BOOL hasFinished;
 
 -(void)setChannel:(ArgusChannel *)c;
 -(ArgusChannel *)Channel;
@@ -61,7 +68,5 @@ typedef enum {
 -(NSString *)uniqueIdentifier;
 
 -(ArgusUpcomingProgramme *)upcomingProgramme;
-
--(BOOL)isOnNow;
 
 @end

@@ -208,20 +208,20 @@
 	[self updateCurTimeLine];
 	[self updateCurDayButton];
 	
-	// update the current timeline every minute
-	autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(updateCurTimeLine) userInfo:nil repeats:YES];
+	// update the current timeline
+	autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+													   target:self
+													 selector:@selector(updateCurTimeLine)
+													 userInfo:nil
+													  repeats:YES];
 }
 
+/*
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-	
-	// ensure the column of channel logos lines up with the table when we reappear
-	// no longer necessary since sv1 became a table?
-	//CGPoint newOffset;
-	//newOffset.y = tv.contentOffset.y;
-	//tv_chanlogos.contentOffset = newOffset;
 }
+*/
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -353,7 +353,8 @@
 			curTimeLine.frame = new;
 			
 			// update labels and background colours if we moved the line
-			[self updateVisibleLabels];
+			// TESTING PER PROGRAMME NOTIFICATION UPDATES
+			//[self updateVisibleLabels];
 		}
 	}
 	else
@@ -380,7 +381,8 @@
     // Return the number of sections.
     return 1;
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [[[[argus ChannelGroups] SelectedChannelGroup] Channels] count];
 }
 
@@ -452,13 +454,13 @@
 	
 	NSArray *arr = labelsByIndexPath[@(indexPath.row)];
 
+	// and add the right ones back
 	if (arr)
 	{
 		for (EpgGridLabel *egl in arr)
 		{
-			// these are done here so as time moves along, the colours stay correct
-			// though they could move into an EpgGridLabel selector
-			[egl updateColours];
+			// TESTING PER PROGRAMME NOTIFICATION UPDATES
+			//[egl updateColours];
 			
 			[[cell contentView] addSubview:egl.view];
 		}
@@ -478,9 +480,6 @@
 	
 	if (scrollView == tv)
 	{
-		// this is now done auto every 60 seconds, so no need here
-		//[self updateCurTimeLine];
-		
 		// update chanlogo table to match this contentOffset
 		CGPoint newOffset = tv_chanlogos.contentOffset;
 		newOffset.y = tv.contentOffset.y;
@@ -490,9 +489,6 @@
 	
 	if (scrollView == tv_chanlogos)
 	{
-		// this is now done auto every 60 seconds, so no need here
-		//[self updateCurTimeLine];
-		
 		// update main tv to match this contentOffset
 		CGPoint newOffset = tv.contentOffset;
 		newOffset.y = tv_chanlogos.contentOffset.y;
@@ -502,8 +498,6 @@
 
 	if (scrollView == sv2)
 	{
-		// this is now done auto every 60 seconds, so no need here
-		//[self updateCurTimeLine];
 		// fall through to adjusting programme title labels below
 		//return;
 	}
@@ -546,7 +540,8 @@
 			// now we know frame is visible
 			
 			// check the background colour is still right
-			[egl updateColours];
+			// TESTING PER PROGRAMME NOTIFICATION UPDATES
+			//[egl updateColours];
 			
 			// now we start looking at the label
 			CGRect labelFrame = [[egl label] frame];

@@ -142,6 +142,66 @@
 	self.Channel = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.programmeStartOrEndTimer invalidate];
+}
+
+-(void)initProgrammeStartOrEndTimer
+{
+	// ensure we're not adding several timers at once
+	[self.programmeStartOrEndTimer invalidate];
+
+	// init of vars we'll use in a sec
+	[self startOrEndTimerFired:nil];
+	
+	// schedule the timer to fire at the start or end, whichever comes first
+	NSDate *tmp;
+	
+	if (self.isOnNow)
+		tmp = self.StopTime;
+	
+	else if (!self.hasFinished)
+		// is not on and has not finished, so wait for start time
+		tmp = self.StartTime;
+	
+	// if tmp isn't set now, we never need to be fired, the programme has already shown
+	if (tmp)
+	{
+		self.programmeStartOrEndTimer = [[NSTimer alloc] initWithFireDate:tmp
+																 interval:0
+																   target:self
+																 selector:@selector(startOrEndTimerFired:)
+																 userInfo:nil
+																  repeats:NO];
+		[[NSRunLoop mainRunLoop] addTimer:self.programmeStartOrEndTimer forMode:NSDefaultRunLoopMode];
+	}
+}
+
+-(void)startOrEndTimerFired:(NSTimer *)timer
+{
+	// this is called when the programme starts or ends.
+	// the variables it sets are used various other displays to set colours or whatever.
+	
+	BOOL isOnNow = self.isOnNow;
+	BOOL hasFinished = self.hasFinished;
+	
+	self.isOnNow = ([self.StartTime timeIntervalSinceNow] < 0 && [self.StopTime timeIntervalSinceNow] > 0);
+	self.hasFinished = [self.StopTime timeIntervalSinceNow] < 0;
+	
+
+	if (isOnNow != self.isOnNow || hasFinished != self.hasFinished)
+	{
+		NSLog(@"%s %@ isOn=%d hasFin=%d", __PRETTY_FUNCTION__, [self Property:kTitle], self.isOnNow, self.hasFinished);
+		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammeOnAirStatusChanged object:self userInfo:nil];
+	}
+	
+	// re-setup the timer, if we were called automatically
+	// don't call this if timer==nil, it'll just loop forever
+	if (timer)
+	{
+		// remove the old one first (may not even be necessary, but it makes sure)
+		[timer invalidate];
+		[self initProgrammeStartOrEndTimer];
+	}
 }
 
 // when the list of upcoming programmes changes,
@@ -162,6 +222,8 @@
 	self.StartTime = [self Property:kStartTime];
 	self.StopTime = [self Property:kStopTime];
 	
+	[self initProgrammeStartOrEndTimer];
+
 	return YES;
 }
 
@@ -277,18 +339,6 @@
 	self.UpcomingProgrammeCached = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
 	self.UpcomingProgrammeHaveCached = YES;
 	return self.UpcomingProgrammeCached;
-}
-
--(BOOL)isOnNow
-{
-	if (!self.StartTime || !self.StopTime)
-	{
-		self.StartTime = [self Property:kStartTime];
-		self.StopTime = [self Property:kStopTime];
-	}
-	return ([self.StartTime timeIntervalSinceNow] < 0 && [self.StopTime timeIntervalSinceNow] > 0);
-	
-	//return ([[self Property:kStartTime] timeIntervalSinceNow] < 0 && [[self Property:kStopTime] timeIntervalSinceNow] > 0);
 }
 
 -(ArgusProgrammeBgColour)backgroundColour
