@@ -51,6 +51,10 @@
 		
 	}
 	
+	/* reset all tableview separator insets on iOS7 back to zero */
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
+		[[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
+	
     return YES;
 }
 							
