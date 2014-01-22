@@ -70,7 +70,7 @@
 											 selector:@selector(RadioChannelGroupsDone:)
 												 name:kArgusConnectionDone
 											   object:c];
-
+	
 }
 -(ArgusConnection *)getChannelGroupsForChannelType:(ArgusChannelType)ChannelType
 {
@@ -85,7 +85,7 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	NSArray *jsonObject = [data objectFromJSONData];
-
+	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
 	for (NSDictionary *d in jsonObject)
@@ -115,15 +115,15 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	NSData *data = [notify userInfo][@"data"];
 	self.RadioEntries = [self parseChannelGroupData:data];
 	self.RadioGroupsDone = YES;
 	
 	if (self.TvGroupsDone && self.RadioGroupsDone)
 		[self ChannelGroupsDone];
-
-}	
+	
+}
 
 -(void)ChannelGroupsDone
 {
@@ -164,7 +164,7 @@
 		if (self.SelectedChannelType == ArgusChannelTypeTelevision && [self.TvEntries count])
 			self.SelectedChannelGroup = self.TvEntries[0];
 	}
-
+	
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusChannelGroupsDone object:self userInfo:nil];
 }

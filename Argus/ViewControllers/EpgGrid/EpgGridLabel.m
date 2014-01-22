@@ -52,7 +52,7 @@
 {
 	// 2px gap at top and bottom of row
 	NSInteger topAndBottomOffset = 2;
-
+	
 	float pps = EPG_TABLE_WIDTH / 86400.0;
 	
 	// calculate some sizing for this view
@@ -83,7 +83,7 @@
 	
 	// done when we're about to display instead
 	//[self updateColours];
-
+	
 	iconView = [[UIImageView alloc] initWithFrame:CGRectMake(width-25, topAndBottomOffset, 25, 16)];
 	
 	label = [UILabel new];
@@ -114,7 +114,7 @@
 	[lpgr setMinimumPressDuration:0.5];
 	
 	label.gestureRecognizers = @[tgr, lpgr];
-
+	
 	[view addSubview:label];
 	
 	[self updateColours];
@@ -131,7 +131,7 @@
 	// this is overridden by active recordings since it's above the next block..
 	if ([Programme isOnNow])
 		colourToSet = [ArgusProgramme bgColourOnNow];
-
+	
 	ArgusUpcomingProgramme *upc = [Programme upcomingProgramme];
 	if (upc)
 	{
@@ -158,12 +158,12 @@
 			case ArgusUpcomingProgrammeScheduleStatusRecordingScheduledConflict:
 				colourToSet = [ArgusProgramme bgColourUpcomingRec];
 				break;
-			
+				
 			default:
 				// nothing else gets a colour so far
 				break;
 		}
-
+		
 	}
 	else
 	{
@@ -189,10 +189,10 @@
 	// check that newFrame complies with our padding and doesn't exceed width of the view frame
 	CGRect viewFrame = [view frame];
 	CGSize viewSize = viewFrame.size;
-
+	
 	if (newFrame.origin.x < viewPadding)
 		newFrame.origin.x = viewPadding;
-
+	
 	if (newFrame.origin.y < viewPadding)
 		newFrame.origin.y = viewPadding;
 	
@@ -203,14 +203,14 @@
 	// same for height, though we don't usually tinker with this
 	if (newFrame.size.height + newFrame.origin.y > viewSize.height - viewPadding)
 		newFrame.size.height = viewSize.height - newFrame.origin.y - viewPadding;
-
+	
 	// apply the new frame, if it differed from the old one
 	if (label.frame.origin.x != newFrame.origin.x || label.frame.origin.y != newFrame.origin.y ||
 		label.frame.size.width != newFrame.size.width || label.frame.size.height != newFrame.size.height)
 		[label setFrame:newFrame];
 	
 	//	if (label.frame.origin.x > 0)
-		//		label.text = [NSString stringWithFormat:@"< %@", [Programme Title]];
+	//		label.text = [NSString stringWithFormat:@"< %@", [Programme Title]];
 }
 -(void)resetLabel
 {
@@ -220,13 +220,13 @@
 	CGRect newFrame = CGRectMake(viewPadding, viewPadding,
 								 viewSize.width - (viewPadding*2),
 								 viewSize.height - (viewPadding*2));
-
+	
 	if (label.frame.origin.x != newFrame.origin.x || label.frame.origin.y != newFrame.origin.y ||
 		label.frame.size.width != newFrame.size.width || label.frame.size.height != newFrame.size.height)
 		[label setFrame:newFrame];
 	
 	//	label.text = [Programme Title];
-
+	
 }
 
 
@@ -235,7 +235,7 @@
 	// only send the notification when we first detect the long press
 	// not when they lift fingers off, or move fingers, etc.
 	if ([sender state] == UIGestureRecognizerStateBegan)
-		[delegate epgGridLabel:self receivedLongPressOn:sender];	
+		[delegate epgGridLabel:self receivedLongPressOn:sender];
 }
 
 -(void)didTapOnLabel:(id)sender

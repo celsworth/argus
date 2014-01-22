@@ -40,7 +40,7 @@
 											   object:[Channel Logo]];
 	
 	view = [UIImageView new];
-
+	
 	[self addImageToView];
 	
 	[view setUserInteractionEnabled:YES];

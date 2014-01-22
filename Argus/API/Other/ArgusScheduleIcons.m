@@ -39,7 +39,7 @@ static ArgusScheduleIcons *sharedArgusScheduleIcons = nil;
 			case ArgusDeviceTypeiPhoneSD:
 				_scale = 1.0;
 				break;
-			
+				
 			case ArgusDeviceTypeiPadRetina:
 			case ArgusDeviceTypeiPhoneRetina:
 				_scale = 2.0;
@@ -59,10 +59,10 @@ static ArgusScheduleIcons *sharedArgusScheduleIcons = nil;
 		case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledManually:        row = 2; break;
 		case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledAlreadyRecorded: row = 3; break;
 		case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledConflict:        row = 4; break;
-		
+			
 		case ArgusUpcomingProgrammeScheduleStatusAlertScheduled: row = 5; break;
 		case ArgusUpcomingProgrammeScheduleStatusAlertCancelled: row = 6; break;
-		
+			
 		case ArgusUpcomingProgrammeScheduleStatusSuggestionScheduled: row = 7; break;
 		case ArgusUpcomingProgrammeScheduleStatusSuggestionCancelled: row = 8; break;
 	}

@@ -26,7 +26,7 @@
 -(void)dealloc
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
-		
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

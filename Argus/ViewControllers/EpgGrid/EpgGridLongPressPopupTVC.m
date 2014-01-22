@@ -35,13 +35,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
 	// make One Touch Record red
 	UIImage *imgR = [UIImage imageNamed:@"chris_stretchable_button_red.png"];
 	UIImage *imgRstretch = [imgR stretchableImageWithLeftCapWidth:imgR.size.width/2 topCapHeight:imgR.size.height/2];
-
+	
 	oneTouchRecordCell.backgroundView = [[UIImageView alloc] initWithImage:imgRstretch];
-
+	
 	// add the Record "image" (UTF8 symbol) to the One Tap Record cell
 	UILabel *oneTouchRecordLabel = oneTouchRecordCell.textLabel;
 	[oneTouchRecordLabel setText:[NSString stringWithFormat:@"\U0001F534 %@", oneTouchRecordLabel.text]];
@@ -53,7 +53,7 @@
 	searchIMDbCell.backgroundView = [[UIImageView alloc] initWithImage:imgGstretch];
 	
 	searchTvComCell.backgroundView = [[UIImageView alloc] initWithImage:imgGstretch];
-
+	
 	
 	ArgusUpcomingProgramme *upc = [Programme upcomingProgramme];
 	if (upc)
@@ -104,7 +104,7 @@
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	
 	ArgusUpcomingProgramme *upc = [Programme upcomingProgramme];
-
+	
 	if (cell == oneTouchRecordCell && !upc)
 	{
 		// set up empty schedule, populate for Programme, and save
@@ -120,8 +120,8 @@
 		// some feedback to the user?
 		oneTouchRecordCell.textLabel.text = NSLocalizedString(@"Saving...", nil);
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SaveScheduleDone:) name:kArgusSaveScheduleDone object:emptySchedule];	
-
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SaveScheduleDone:) name:kArgusSaveScheduleDone object:emptySchedule];
+		
 	}
 	else if (cell == oneTouchRecordCell && upc)
 	{
@@ -129,13 +129,13 @@
 		{
 			// Uncancel Programme
 			[upc uncancelUpcomingProgramme];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UncancelUpcomingProgrammeDone:) name:kArgusUncancelUpcomingProgrammeDone object:upc];	
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UncancelUpcomingProgrammeDone:) name:kArgusUncancelUpcomingProgrammeDone object:upc];
 		}
 		else
 		{
 			// Cancel Programme
 			[upc cancelUpcomingProgramme];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CancelUpcomingProgrammeDone:) name:kArgusCancelUpcomingProgrammeDone object:upc];	
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CancelUpcomingProgrammeDone:) name:kArgusCancelUpcomingProgrammeDone object:upc];
 		}
 	}
 	else if (cell == searchIMDbCell)
@@ -145,15 +145,15 @@
 		{
 			UISplitViewController *svc = (UISplitViewController *)[[[AppDelegate sharedInstance] window] rootViewController];
 			nc = [svc viewControllers][1];
-
+			
 			[[self popoverController] dismissPopoverAnimated:YES];
 		}
-		else 
+		else
 		{
 			nc = [self navigationController];
 			[nc popViewControllerAnimated:NO];
 		}
-
+		
 		NSString *url = [NSString stringWithFormat:@"http://www.imdb.com/find?q=%@&s=tt",
 						 [[Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 		//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
@@ -169,7 +169,7 @@
 		UINavigationController *nc = [svc viewControllers][1];
 		
 		[[self popoverController] dismissPopoverAnimated:YES];
-
+		
 		NSString *url = [NSString stringWithFormat:@"http://www.tv.com/search?q=%@",
 						 [[Programme Property:kTitle] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 		//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
@@ -215,9 +215,9 @@
 {
 	if (iPad())
 		[[self popoverController] dismissPopoverAnimated:YES];
-	else 
+	else
 		[[self navigationController] popViewControllerAnimated:YES];
-
+	
 }
 
 @end

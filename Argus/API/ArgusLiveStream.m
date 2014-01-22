@@ -23,7 +23,7 @@
 	{
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
-
+		
 		_Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		
 		// our own metadata
@@ -53,7 +53,7 @@
 	NSString *url = [NSString stringWithFormat:@"Control/StopLiveStream"];
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
-
+	
 	// request body is the live stream to stop, ie ourselves
 	NSString *body = [self.originalData JSONRepresentation];
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -72,12 +72,12 @@
 -(void)StopLiveStreamDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
 	self.StoppingAsNumber = @NO;
-
+	
 	// now update our LiveStreams list
 	[argus getLiveStreams];
 	

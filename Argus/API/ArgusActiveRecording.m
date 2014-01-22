@@ -28,7 +28,7 @@
 		
 		// this needs forcing for an active recording, it can only ever be this
 		self.UpcomingProgramme = [[ArgusUpcomingProgramme alloc] initWithDictionary:input[kProgram] ScheduleType:ArgusScheduleTypeRecording];
-				
+		
 		// CardChannelAllocation
 		
 	}
@@ -56,13 +56,13 @@
 	NSString *url = [NSString stringWithFormat:@"Control/AbortActiveRecording"];
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
-
+	
 	// request body is the live stream to stop, ie ourselves
 	NSString *body = [self.originalData JSONRepresentation];
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[c enqueue];
-
+	
 	self.StoppingAsNumber = @YES;
 	
 	// await notification from ArgusConnection that the request has finished
@@ -78,7 +78,7 @@
 	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	self.StoppingAsNumber = @NO;
 	
 	// now update our ActiveRecordings list
@@ -93,5 +93,5 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusAbortActiveRecordingDone object:self];
 }
 
-		
+
 @end

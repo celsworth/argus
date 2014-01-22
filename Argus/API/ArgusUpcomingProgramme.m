@@ -102,7 +102,7 @@
 			NSDictionary *userInfo = @{ kArgusLocalNotificationProgrammeKey: [self Property:kUpcomingProgramId] };
 			
 			self.localNotification = [UILocalNotification new];
-						
+			
 			[self.localNotification setFireDate:fireDate];
 			[self.localNotification setTimeZone:[NSTimeZone localTimeZone]];
 			
@@ -116,7 +116,7 @@
 			[self.localNotification setUserInfo:userInfo];
 			
 			[[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
-
+			
 			NSLog(@"%s ADD %@ %@", __PRETTY_FUNCTION__, [self Property:kTitle], self.localNotification);
 		}
 		else if (self.localNotification)
@@ -140,12 +140,12 @@
 	
 	// setupLocalNotification is for scheduled out-of-app alerts
 	// showLocalNotification is for in-app alerts, called from didReceiveLocalNotification
-		
+	
 	NSString *x = NSLocalizedString(@"%@ is about to start on %@",
 									@"notification popup for alert (%@ are title and channel)");
 	NSString *alertBody = [NSString stringWithFormat:x,
 						   [self Property:kTitle], [[self Channel] Property:kDisplayName]];
-
+	
 	UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Alert Notification"
 												 message:alertBody
 												delegate:nil
@@ -159,7 +159,7 @@
 	//	NSLog(@"%s", __PRETTY_FUNCTION__);
 	if (! [super populateSelfFromDictionary:input])
 		return NO;
-
+	
 	if ([input isKindOfClass:[NSDictionary class]])
 	{
 		self.isModified = NO;
@@ -168,7 +168,7 @@
 		self.Channel = [[ArgusChannel alloc] initWithDictionary:input[kChannel]];
 		
 		return YES;
-	}	
+	}
 	return NO;
 }
 
@@ -184,39 +184,39 @@
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
 	self.IsCancelling = YES;
-
+	
 	// inline block to forward on the notification when that finishes
 	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusConnectionDone
 													  object:c
 													   queue:nil
 												  usingBlock:^(NSNotification *note)
-	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[note object]];
-		self.IsCancelling = NO;
-		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusCancelUpcomingProgrammeDone object:self];
-	}];
+	 {
+		 [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[note object]];
+		 self.IsCancelling = NO;
+		 [[NSNotificationCenter defaultCenter] postNotificationName:kArgusCancelUpcomingProgrammeDone object:self];
+	 }];
 	
 	/* old way
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(CancelUpcomingProgrammeDone:)
-												 name:kArgusConnectionDone
-											   object:c];
+	 [[NSNotificationCenter defaultCenter] addObserver:self
+	 selector:@selector(CancelUpcomingProgrammeDone:)
+	 name:kArgusConnectionDone
+	 object:c];
 	 */
 }
 /*
--(void)CancelUpcomingProgrammeDone:(NSNotification *)notify
-{
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	IsCancelling = NO;
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusCancelUpcomingProgrammeDone object:self];
-}
-*/
+ -(void)CancelUpcomingProgrammeDone:(NSNotification *)notify
+ {
+ // there will be no more notifications from that object
+ [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+ 
+ IsCancelling = NO;
+ 
+ [[NSNotificationCenter defaultCenter] postNotificationName:kArgusCancelUpcomingProgrammeDone object:self];
+ }
+ */
 
 -(void)uncancelUpcomingProgramme
-{	
+{
 	NSString *url = [NSString stringWithFormat:@"Scheduler/UncancelUpcomingProgram/%@/%@/%@?guideProgramId=%@",
 					 [self Property:kScheduleId],
 					 [self.Channel Property:kChannelId],
@@ -252,7 +252,7 @@
 	NSString *body = [self.originalData JSONString];
 	
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-
+	
 	[c enqueue];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -265,12 +265,12 @@
 -(void)AddToPRHDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	self.IsAddingToPRH = NO;
-
+	
 	// send our own notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusAddToPreviouslyRecordedHistoryDone object:self];
 }
@@ -299,7 +299,7 @@
 -(void)RemoveFromPRHDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
@@ -319,7 +319,7 @@
 	// count down how many outstanding connections there are until we consider the programme saved
 	self.SaveUpcomingProgrammeRequestsOutstanding = 3;
 	
-	NSString *url = [NSString stringWithFormat:@"Scheduler/SetUpcomingProgramPriority/%@/%@?priority=%@", 
+	NSString *url = [NSString stringWithFormat:@"Scheduler/SetUpcomingProgramPriority/%@/%@?priority=%@",
 					 [self Property:kUpcomingProgramId],
 					 [[self Property:kStartTime] asFormat:@"yyyy-MM-dd'T'HH:mm:ss"],
 					 [self Property:kPriority]];
@@ -393,9 +393,9 @@
 -(ArgusUpcomingProgrammeScheduleStatus)scheduleStatus
 {
 	//NSLog(@"%s %@ %d", __PRETTY_FUNCTION__, [self Property:kTitle], ScheduleType);
-
+	
 	ArgusUpcomingRecording *upr = [self upcomingRecording];
-		
+	
 	BOOL isCancelled = [[self Property:kIsCancelled] boolValue];
 	if (upr)
 	{
@@ -406,7 +406,7 @@
 	}
 	
 	//NSLog(@"%@", [self originalData]);
-
+	
 	switch (self.ScheduleType)
 	{
 		case ArgusScheduleTypeRecording:
@@ -426,10 +426,10 @@
 						
 					case ArgusCancellationReasonManual:
 						return ArgusUpcomingProgrammeScheduleStatusRecordingCancelledManually;
-
+						
 					case ArgusCancellationReasonPreviouslyRecorded:
 						return ArgusUpcomingProgrammeScheduleStatusRecordingCancelledAlreadyRecorded;
-					
+						
 					case ArgusCancellationReasonAlreadyQueued:
 						return ArgusUpcomingProgrammeScheduleStatusRecordingCancelledAlreadyRecorded;
 				}
@@ -447,11 +447,11 @@
 		case ArgusScheduleTypeAlert:
 			return isCancelled ? ArgusUpcomingProgrammeScheduleStatusAlertCancelled : ArgusUpcomingProgrammeScheduleStatusAlertScheduled;
 			break;
-
+			
 		case ArgusScheduleTypeSuggestion:
 			return isCancelled ? ArgusUpcomingProgrammeScheduleStatusSuggestionCancelled : ArgusUpcomingProgrammeScheduleStatusSuggestionScheduled;
 			break;
-	}	
+	}
 }
 
 -(UIImage *)iconImage

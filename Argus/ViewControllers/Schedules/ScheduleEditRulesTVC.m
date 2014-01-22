@@ -39,10 +39,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+	
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -119,7 +119,7 @@
 	// don't display "Equals" for an otherwise empty rule
 	if ([rule Type] == 0)
 		return nil;
-		
+	
 	switch([rule MatchType])
 	{
 		case ArgusScheduleRuleMatchTypeEquals:
@@ -207,7 +207,7 @@
 		[selected addObject:weekdays[3]];
 	if ([r getArgumentAsDayOfWeekSelected:ArgusScheduleRuleDayOfWeekFriday])
 		[selected addObject:weekdays[4]];
-
+	
 	if ([r getArgumentAsDayOfWeekSelected:ArgusScheduleRuleDayOfWeekSaturday])
 		[selected addObject:weekdays[5]];
 	if ([r getArgumentAsDayOfWeekSelected:ArgusScheduleRuleDayOfWeekSunday])
@@ -221,7 +221,7 @@
 -(void)setAroundTimeCell
 {
 	ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleTypeAroundTime];
-
+	
 	NSDate *arg = [r getArgumentAsDate];
 	NSString *val;
 	if (arg && arg != (NSDate *)[NSNull null])
@@ -237,18 +237,18 @@
 	ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleTypeStartingBetween];
 	NSDate *from = [r getArgumentAsDateAtIndex:0];
 	NSDate *to = [r getArgumentAsDateAtIndex:1];
-
+	
 	if (from && from != (NSDate *)[NSNull null] && to && to != (NSDate *)[NSNull null])
 	{
 		NSDateFormatter *df = [NSDateFormatter new];
 		[df setTimeStyle:NSDateFormatterMediumStyle];
 		NSString *val = [NSString stringWithFormat:@"%@ - %@", [df stringFromDate:from], [df stringFromDate:to]];
-
+		
 		[self setCell:starts_between value:val subValue:nil];
 	}
 	else
 		[self setCell:starts_between value:nil subValue:nil];
-
+	
 }
 
 -(void)setNewEpisodesCell
@@ -264,14 +264,14 @@
 -(void)setSkipRepeatsCell
 {
 	ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleTypeSkipRepeats];
-	[skip_repeats setAccessoryType:[r getArgumentAsBoolean] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone];	
+	[skip_repeats setAccessoryType:[r getArgumentAsBoolean] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone];
 }
 
 
 -(void)setChannelsCell
 {
 	ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleSuperTypeChannels];
-
+	
 	NSMutableArray *tmp = [NSMutableArray new];
 	
 	// Arguments is an array of ChannelIds
@@ -298,9 +298,9 @@
 -(void)setCategoryCell
 {
 	ArgusScheduleRule *r = [Schedule Rules][kArgusScheduleRuleSuperTypeCategories];
-
+	
 	NSMutableArray *tmp = [NSMutableArray new];
-
+	
 	for (NSString *Category in [r Arguments])
 	{
 		[tmp addObject:Category];
@@ -373,7 +373,7 @@
 				[r setArgumentAsBoolean:NO];
 				[self setNewEpisodesCell];
 			}
-
+			
 		}
 		if (indexPath.row == 6)
 		{
@@ -390,7 +390,7 @@
 	
 	// section 2 all handled by Segues
 }
-	
+
 #pragma mark - Segue Handling
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -399,10 +399,10 @@
         ScheduleEditRuleTitleTVC *dvc = (ScheduleEditRuleTitleTVC *)[segue destinationViewController];
         
 		// send over a pointer to the element being edited
-		// in this case, title - when it's changed in the delegate, ours will be updated too	
+		// in this case, title - when it's changed in the delegate, ours will be updated too
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeTitle];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleSubTitle"])
     {
         ScheduleEditRuleTitleTVC *dvc = (ScheduleEditRuleTitleTVC *)[segue destinationViewController];
@@ -410,7 +410,7 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeSubTitle];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleEpNumber"])
     {
         ScheduleEditRuleTitleTVC *dvc = (ScheduleEditRuleTitleTVC *)[segue destinationViewController];
@@ -418,11 +418,11 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeEpisodeNumber];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleDescription"])
     {
 		ScheduleEditRuleTitleTVC *dvc = (ScheduleEditRuleTitleTVC *)[segue destinationViewController];
-
+		
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeDescription];
     }
@@ -433,7 +433,7 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeProgramInfo];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleOnDate"])
     {
 		ScheduleEditRuleOnDateTVC *dvc = (ScheduleEditRuleOnDateTVC *)[segue destinationViewController];
@@ -441,7 +441,7 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleTypeOnDate];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleDaysOfWeek"])
     {
 		ScheduleEditRuleDaysOfWeekTVC *dvc = (ScheduleEditRuleDaysOfWeekTVC *)[segue destinationViewController];
@@ -449,7 +449,7 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleTypeDaysOfWeek];
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleAroundTime"])
     {
 		ScheduleEditRuleAroundTimeTVC *dvc = (ScheduleEditRuleAroundTimeTVC *)[segue destinationViewController];
@@ -466,7 +466,7 @@
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleTypeStartingBetween];
 		dvc.editType = ArgusScheduleEditTypeStartingBetween;
     }
-
+	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleChannels"])
     {
 		ScheduleEditRuleChannelsTVC *dvc = (ScheduleEditRuleChannelsTVC *)[segue destinationViewController];
@@ -478,7 +478,7 @@
 		// so the user can't add TV channels to a Radio schedule.
 		dvc.Schedule = Schedule;
     }
-
+	
 	// categories, last one to do \o/
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleCategory"])
     {
@@ -487,7 +487,7 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleSuperTypeCategories];
     }
-
+	
 	
 	if ([[segue identifier] isEqualToString:@"ScheduleEditRuleDirectedBy"])
     {
@@ -503,8 +503,8 @@
 		// send over a pointer to the element being edited
 		dvc.Rule = [Schedule Rules][kArgusScheduleRuleTypeWithActor];
     }
-
-
+	
+	
 }
 
 @end

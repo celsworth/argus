@@ -29,9 +29,9 @@
 		_UpcomingRecordings = [NSMutableArray new];
 		_UpcomingAlerts = [NSMutableArray new];
 		_UpcomingSuggestions = [NSMutableArray new];
-
+		
 		_IsForSchedule = nil;
-
+		
 		// when any upcoming programme changes, refresh our lists
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(getUpcomingProgrammes)
@@ -78,7 +78,7 @@
 		_UpcomingRecordings = [NSMutableArray new];
 		_UpcomingAlerts = [NSMutableArray new];
 		_UpcomingSuggestions = [NSMutableArray new];
-
+		
 		_IsForSchedule = schedule;
 		SEL sel = @selector(getUpcomingProgrammesForSchedule);
 		
@@ -107,7 +107,7 @@
 												 selector:sel
 													 name:kArgusSaveScheduleDone
 												   object:self.IsForSchedule];
-
+		
 	}
 	return self;
 }
@@ -124,9 +124,9 @@
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 	
 	[self.UpcomingAlerts enumerateObjectsUsingBlock:^(ArgusUpcomingProgramme *obj, NSUInteger idx, BOOL *stop)
-	{
-		[obj setupLocalNotification];
-	}];
+	 {
+		 [obj setupLocalNotification];
+	 }];
 	
 }
 
@@ -141,7 +141,7 @@
 		return [self getUpcomingProgrammesForSchedule];
 	
 	[AppDelegate requestLoadingSpinner];
-
+	
 	// upcoming programmes for the entire system have 3 types
 	
 	// we use these to check when to send the notification out
@@ -159,7 +159,7 @@
 -(void)getUpcomingProgrammesForScheduleType:(ArgusScheduleType)scheduleType
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingPrograms/%d?includeCancelled=true", scheduleType];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
@@ -357,7 +357,7 @@
 	
 	if (self.IsForSchedule)
 		return [self upcomingProgrammesForScheduleType:self.IsForScheduleType];
-
+	
 	return nil;
 }
 

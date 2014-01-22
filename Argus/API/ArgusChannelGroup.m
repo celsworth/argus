@@ -37,7 +37,7 @@
 	{
 		if (! [super populateSelfFromDictionary:input])
 			return nil;
-
+		
 		_ChannelGroupId = input[kChannelGroupId];
 		
 		// channels within the channel group, once we know them
@@ -61,7 +61,7 @@
 -(void)getChannels
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// fire off a ChannelsInGroup request
 	NSString *url = [NSString stringWithFormat:@"Scheduler/ChannelsInGroup/%@", self.ChannelGroupId];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
@@ -73,16 +73,16 @@
 											   object:c];
 	
 	// what about failures?
-		
-	return;	
+	
+	return;
 }
 -(void)ChannelsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	// parse the data into Channels
 	
 	NSData *data = [notify userInfo][@"data"];
@@ -92,14 +92,14 @@
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
 	for (NSDictionary *d in jsonObject)
-	{	
+	{
 		//NSLog(@"%@", d);
 		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:d];
-
+		
 		// crash reported that could have been because of a NULL ChannelId
 		// surely that should never happen?
 		assert([c Property:kChannelId]);
-	
+		
 		[tmpArr addObject:c];
 	}
 	
@@ -115,11 +115,11 @@
 {
 	// fire off a CurrentAndNextForGroup request
 	NSString *url = [NSString stringWithFormat:@"Scheduler/CurrentAndNextForGroup"];
-
+	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	NSString *body = [@{kChannelGroupId: self.ChannelGroupId} JSONString];
-
+	
 	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[c enqueue];
@@ -136,16 +136,16 @@
 -(void)CurrentAndNextDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	// parse the data into CurrentAndNext
 	
 	NSData *data = [notify userInfo][@"data"];
-
+	
 	NSArray *jsonObject = [data objectFromJSONData];
-
+	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
 	self.earliestCurrentStopTime = [NSDate distantFuture];
@@ -164,7 +164,7 @@
 			p = [[ArgusProgramme alloc] initWithDictionary:tmp];
 			[p setChannel:c];
 			[c setCurrentProgramme:p];
-		
+			
 			// remember the earliest Current StopTime we find
 			// What's On uses this so it knows when to refresh data
 			if ([[p Property:kStopTime] timeIntervalSinceDate:self.earliestCurrentStopTime] < 0)
@@ -208,7 +208,7 @@
 	time_t toTimeT = [to timeIntervalSince1970];
 	NSString *fromX = [NSString stringWithFormat:@"/Date(%llu+0000)/", fromTimeT * 1000LL];
 	NSString *toX = [NSString stringWithFormat:@"/Date(%llu+0000)/", toTimeT * 1000LL];
-
+	
 	// send an array of GuideChannelId to get
 	NSMutableArray *GuideChannelIds = [NSMutableArray new];
 	for (ArgusChannel *chan in self.Channels)
@@ -237,21 +237,21 @@
 											 selector:@selector(ProgrammesDone:)
 												 name:kArgusConnectionDone
 											   object:conn];
-
+	
 	// catch 404 failure for this one, if they're running earlier than 1.6.1.0 B7 it won't be there
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(ProgrammesFail:)
 												 name:kArgusConnectionFail
 											   object:conn];
-
+	
 }
 -(void)ProgrammesFail:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that connection
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammesFail object:self userInfo:[notify object]];
 	
 	[AppDelegate releaseLoadingSpinner];
@@ -269,7 +269,7 @@
 	NSData *data = [notify userInfo][@"data"];
 	
 	NSArray *jsonObject = [data objectFromJSONData];
-
+	
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];
 	
 	for (NSDictionary *d in jsonObject)
@@ -298,12 +298,12 @@
 	self.ProgrammeArraysKeyedByChannelId = tmpDict;
 	
 	//NSLog(@"%s took %f seconds", __PRETTY_FUNCTION__, [[NSDate date] timeIntervalSinceDate:start]);
-
+	
 	//NSLog(@"%@", ProgrammeArraysKeyedByChannelId);
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammesDone object:self userInfo:nil];
 	
 	[AppDelegate releaseLoadingSpinner];
-
+	
 	//NSLog(@"%s after notify, %f seconds", __PRETTY_FUNCTION__, [[NSDate date] timeIntervalSinceDate:start]);
 }
 

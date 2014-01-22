@@ -43,7 +43,7 @@
 												 selector:@selector(getUpcomingRecordings)
 													 name:kArgusSaveUpcomingProgrammeDone
 												   object:nil];
-
+		
 		
 		// when anything deletes a schedule, we should refresh our list to ensure it's up to date
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -56,7 +56,7 @@
 												 selector:@selector(getUpcomingRecordings)
 													 name:kArgusSaveScheduleDone
 												   object:nil];
-
+		
 	}
 	return self;
 }
@@ -93,7 +93,7 @@
 	//SBJsonParser *jsonParser = [SBJsonParser new];
 	//	NSDictionary *jsonObject = [jsonParser objectWithData:data];
 	NSDictionary *jsonObject = [data objectFromJSONData];
-
+	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];
 	
@@ -148,7 +148,7 @@
 	//SBJsonParser *jsonParser = [SBJsonParser new];
 	//NSDictionary *jsonObject = [jsonParser objectWithData:data];
 	NSDictionary *jsonObject = [data objectFromJSONData];
-
+	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];
 	

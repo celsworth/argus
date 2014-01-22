@@ -56,7 +56,7 @@
 												 selector:@selector(fixGridFrame)
 													 name:kArgusSidePanelDisplayStateChanged
 												   object:nil];
-
+		
 	}
 	return self;
 }
@@ -90,7 +90,7 @@
 	[[[argus ChannelGroups] SelectedChannelGroup] getChannels];
 	
 	UIBarButtonItem *rbtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-																		  target:self 
+																		  target:self
 																		  action:@selector(refreshPressed:)];
 	
 	UIBarButtonItem *rbtn2 = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Now", @"go to current time in EPG Grid")
@@ -99,7 +99,7 @@
 															 action:@selector(nowPressed:)];
 	
 	[[self navigationItem] setRightBarButtonItems:@[rbtn, rbtn2]];
-
+	
     
     // setting height arbitrarily low stops the scrollview doing vertical scroll
     sv2.contentSize = CGSizeMake(tv.frame.size.width, 1);
@@ -131,10 +131,10 @@
 	timeRow2 = [[UIView alloc] initWithFrame:CGRectZero];
 	timeRow2.backgroundColor = [UIColor whiteColor];
 	timeRow2.alpha = 0.8;
-
+	
 	// midnight is an NSDate representing the start of the day we're showing
 	epgStartTime = [self epgStartTimeForDate:[NSDate date]];
-
+	
 	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterNoStyle];
 	[df setTimeStyle:NSDateFormatterShortStyle];
@@ -167,7 +167,7 @@
 	curTimeLine.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	[sv2 addSubview:curTimeLine];
 	[sv2 sendSubviewToBack:curTimeLine];
-
+	
 	[self zoomToDate:[NSDate date] animated:NO];
 	
 	if (dark)
@@ -175,7 +175,7 @@
 		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
 		[toolBar setTintColor:[UIColor blackColor]];
 	}
-
+	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];
 }
 
@@ -189,14 +189,14 @@
 	curTimeLine = nil;
 	timeRow = nil;
 	timeRow2 = nil;
-
+	
 	[self invalidateCaches];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
     [super viewWillAppear:animated];
 	
 	// reverse what we did in viewWillDisappear
@@ -204,7 +204,7 @@
 	
 	// ensure our sv2 size is still right (in case we rotated while offview)
 	[self fixGridFrame];
-
+	
 	[self updateCurTimeLine];
 	[self updateCurDayButton];
 	
@@ -217,11 +217,11 @@
 }
 
 /*
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-*/
+ - (void)viewDidAppear:(BOOL)animated
+ {
+ [super viewDidAppear:animated];
+ }
+ */
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -262,7 +262,7 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	sv2.frame = CGRectMake(CHANNEL_SCROLLVIEW_GAP + tv_chanlogos.frame.size.width, sv2.frame.origin.y,
-						   self.view.frame.size.width - tv_chanlogos.frame.size.width - CHANNEL_SCROLLVIEW_GAP, sv2.frame.size.height);	
+						   self.view.frame.size.width - tv_chanlogos.frame.size.width - CHANNEL_SCROLLVIEW_GAP, sv2.frame.size.height);
 }
 
 -(void)invalidateCaches
@@ -324,14 +324,14 @@
 	}
 	
 	NSInteger x = pps * [date timeIntervalSinceDate:epgStartTime] - 100;
-
-	// ensure that going to this offset won't show any empty space	
+	
+	// ensure that going to this offset won't show any empty space
 	if (x < 0)
 		x = 0;
 	
 	if (x > (EPG_TABLE_WIDTH - sv2.frame.size.width))
 		x = EPG_TABLE_WIDTH - sv2.frame.size.width;
-
+	
 	CGPoint p = CGPointMake(x, 0);
 	[sv2 setContentOffset:p animated:animated];
 }
@@ -359,7 +359,7 @@
 	}
 	else
 		curTimeLine.hidden = YES;
-
+	
 }
 
 -(void)updateCurDayButton
@@ -414,16 +414,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	//NSLog(@"%s %@", __PRETTY_FUNCTION__, indexPath);
-
+	
 	UITableViewCell *cell;
-
+	
 	ArgusChannel *c = [[[argus ChannelGroups] SelectedChannelGroup] Channels][indexPath.row];
-
+	
 	if (tableView == tv_chanlogos)
 	{
 		// CHANNEL LOGOS TABLE
 		cell = [tableView dequeueReusableCellWithIdentifier:@"epg_chanlogo"];
-
+		
 		// remove any previous egc instances
 		for (UIView *subview in [[cell contentView] subviews])
 		{
@@ -432,11 +432,11 @@
 		}
 		
 		EpgGridChannel *egc = viewsByChannelId[[c Property:kChannelId]];
-
+		
 		if (egc)
 			// and add the new one
 			[[cell contentView] addSubview:egc.view];
-
+		
 		return cell;
 	}
 	
@@ -450,10 +450,10 @@
 		if ([subview isKindOfClass:[UIView class]])
 			[subview removeFromSuperview];
 	}
-
+	
 	
 	NSArray *arr = labelsByIndexPath[@(indexPath.row)];
-
+	
 	// and add the right ones back
 	if (arr)
 	{
@@ -475,7 +475,7 @@
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{	
+{
 	//NSLog(@"%s %@", __PRETTY_FUNCTION__, scrollView);
 	
 	if (scrollView == tv)
@@ -495,7 +495,7 @@
 		tv.contentOffset = newOffset;
 		return;
 	}
-
+	
 	if (scrollView == sv2)
 	{
 		// fall through to adjusting programme title labels below
@@ -560,7 +560,7 @@
 				}
 			}
 			
-			else 
+			else
 			{
 				// start of frame is onscreen (end of frame not necessarily but we don't care about that)
 				// check the title is in the right place (resetLabel checks whether to change frame)
@@ -568,7 +568,7 @@
 			}
 		}
 		
-	}	
+	}
 }
 
 #pragma mark - ScrollView test stuff
@@ -594,10 +594,10 @@
 	if (0 && iPad())
 	{
 		/* popover test */
-
+		
 		// get rid of any existing popover, cannot have more than one up at a time
 		[popoverController dismissPopoverAnimated:YES];
-
+		
 		CGRect fromRect = egl.view.frame;
 		fromRect.origin.y = egl.tableViewCell.frame.origin.y;
 		
@@ -640,7 +640,7 @@
 		
 		[as showFromTabBar:[[self tabBarController] tabBar]];
 		return;
-#endif		
+#endif
 	}
 	
 	
@@ -670,7 +670,7 @@
 	UIView *v = egl.view;
 	UITableViewCell *cell = egl.tableViewCell;
 	CGRect fromRect = CGRectMake(v.frame.origin.x, cell.frame.origin.y, v.frame.size.width, v.frame.size.height);
-		
+	
 	popoverController = [[UIPopoverController alloc] initWithContentViewController:nc];
 	[dvc setPopoverController:popoverController];
 	[popoverController setPopoverContentSize:CGSizeMake(330, 220)];
@@ -714,7 +714,7 @@
 									   userInfo:nil
 										repeats:NO];
 	}
-
+	
 }
 -(void)dismissCalendarOniPhone
 {
@@ -753,7 +753,7 @@
 	{
 		EpgGridCalendarPickerVC *cmvc = (EpgGridCalendarPickerVC *)[segue destinationViewController];
 		[cmvc setDelegate:self];
-
+		
 		// this needs testing for timezone issues, I think I fixed it
 		[[cmvc cal] selectDate:epgStartTime];
 		
@@ -764,7 +764,7 @@
 			
 			popoverController = [(UIStoryboardPopoverSegue *)segue popoverController];
 			[cmvc setPopoverController:popoverController];
-
+			
 			CGRect frame = cmvc.cal.frame;
 			[popoverController setPopoverContentSize:CGSizeMake(frame.size.width, 309)];
 		}
@@ -832,12 +832,12 @@
 -(void)ChannelGroupChannelsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	ArgusChannelGroup *cg = [notify object];
 	
 	[self invalidateCaches];
 	[self reloadData];
-
+	
 	// 1.6.1.0 B7 (API 50) and newer have an API call we can use to get all channel data for a CG
 	// no need for this if (we can't do it anyway, we don't know the server apiversion)
 	// if the new API call fails, we fall back in ChannelGroupProgrammesFail
@@ -850,7 +850,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupProgrammesFail:)
 													 name:kArgusProgrammesFail
 												   object:cg];
-
+		
 		return;
 	}
 	
@@ -861,11 +861,11 @@
 -(void)ChannelGroupProgrammesFail:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	ArgusChannelGroup *cg = [notify object];
-
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:cg];
-
+	
 	// fall back to old way
 	[self getProgrammesForChannelGroupOneAtATime:cg];
 }
@@ -877,9 +877,9 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	ArgusChannelGroup *cg = [notify object];
-
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:cg];
-
+	
 	// fill out EpgGridChannel and EpgGridLabel objects, then redraw the entire table
 	for (ArgusChannel *c in [cg Channels])
 	{
@@ -896,14 +896,14 @@
 			// retain the object so cellForRowAtIndexPath can use it shortly..
 			viewsByChannelId[ChannelId] = egc;
 		}
-	
+		
 		// EpgGridLabel objects
 		
 		// programme data for that channel..
 		NSMutableArray *Programmes = [cg ProgrammeArraysKeyedByChannelId][ChannelId];
-
+		
 		NSMutableArray *tmpArr = [NSMutableArray new];
-
+		
 		EpgGridLabel *egl;
 		for (ArgusProgramme *p in Programmes)
 		{
@@ -1041,7 +1041,7 @@
 		// updateColours is done in cellForRowAtIndexPath so no need to do it here
 		//[egl updateColours];
 	}
-
+	
 	// used in cellForRowAtIndexPath to actually draw them in
 	labelsByIndexPath[@(row)] = tmpArr;
 	

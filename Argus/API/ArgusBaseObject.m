@@ -63,7 +63,7 @@
 	// its a lot faster than isEqualToString and achieves the same thing
 	if ([what isEqual:kStartTime] || [what isEqual:kStopTime])
 		return [ret getDateFromJSON];
-
+	
 	if ([what isEqual:kActualStartTime] || [what isEqual:kActualStopTime] || [what isEqual:kRecordingStartTime])
 		return [ret getDateFromJSON];
 	
@@ -72,13 +72,12 @@
 	
 	if ([what isEqual:kRecordedOn])
 		return [ret getDateFromJSON];
-
+	
 	return ret;
 }
 -(void)setValue:(id <NSCopying>)val forProperty:(NSString *)what
 {
 	_originalData[what] = val;
-	//[_originalData setValue:val forKey:what];
 }
 
 

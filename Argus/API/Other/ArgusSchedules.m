@@ -27,7 +27,7 @@
 	{
 		_TvSchedules = [NSMutableDictionary new];
 		_RadioSchedules = [NSMutableDictionary new];
-	
+		
 		// when anything deletes a schedule, we should refresh our list to ensure it's up to date
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(getSchedulesForSelectedChannelType)
@@ -39,7 +39,7 @@
 												 selector:@selector(getSchedulesForSelectedChannelType)
 													 name:kArgusSaveScheduleDone
 												   object:nil];
-
+		
 	}
 	return self;
 }
@@ -61,7 +61,7 @@
 	
 	self.fetchingChannelType = channelType;
 	self.tmpSchedulesKeyedByScheduleId = [NSMutableDictionary new];
-
+	
 	[self getSchedulesForChannelType:channelType scheduleType:ArgusScheduleTypeRecording];
 	[self getSchedulesForChannelType:channelType scheduleType:ArgusScheduleTypeAlert];
 	[self getSchedulesForChannelType:channelType scheduleType:ArgusScheduleTypeSuggestion];
@@ -103,7 +103,7 @@
 -(void)RecordingsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	self.RecordingsDone = YES;
 	[self setSchedules:[self SchedulesDone:notify] forChannelType:self.fetchingChannelType scheduleType:ArgusScheduleTypeRecording];
 	[self sendNotifyIfAllDone];
@@ -119,7 +119,7 @@
 -(void)SuggestionsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	self.SuggestionsDone = YES;
 	[self setSchedules:[self SchedulesDone:notify] forChannelType:self.fetchingChannelType scheduleType:ArgusScheduleTypeSuggestion];
 	[self sendNotifyIfAllDone];

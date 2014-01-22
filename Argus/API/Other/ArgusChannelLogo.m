@@ -70,7 +70,7 @@
 	// if no entry on disk, trigger request to go fetch it
 	// this will post a notification when done
 	[self fetchLogoIfNewerThan:nil];
-
+	
 	return nil; // no logo to return yet
 }
 
@@ -111,7 +111,7 @@
 											 selector:@selector(logoFetchDone:)
 												 name:kArgusConnectionDone
 											   object:c];
-
+	
 	return TRUE;
 }
 -(void)logoFetchDone:(NSNotification *)notify
@@ -141,7 +141,7 @@
 	
 	// logo is in here
 	NSData *data = [notify userInfo][@"data"];
-
+	
 	UIImage *image = [[UIImage alloc] initWithData:data];
 	if (!image)
 	{
@@ -150,7 +150,7 @@
 		NSLog(@"%s: notify: %@", __PRETTY_FUNCTION__, notify);
 		
 		NSLog(@"%s: headers: %@", __PRETTY_FUNCTION__, [[c httpresponse] allHeaderFields]);
-
+		
 		assert(image); // force crash
 	}
 	
@@ -168,7 +168,7 @@
 	NSString *path = [self basePath];
 	NSFileManager *fm = [NSFileManager new];
 	NSError *error;
-	return [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];	
+	return [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
 }
 
 -(NSString *)basePath
@@ -201,7 +201,7 @@
 -(void)touchLogo
 {
 	NSFileManager *fm = [NSFileManager new];
-
+	
 	[fm setAttributes:@{NSFileModificationDate: [NSDate date]}
 		 ofItemAtPath:[self absoluteFileForLogo]
 				error:nil];

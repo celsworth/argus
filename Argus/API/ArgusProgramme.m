@@ -57,7 +57,7 @@
 			col = [UIColor colorWithRed:.25 green:.25 blue:.30 alpha:1]; // dark
 		else
 			col = [UIColor colorWithRed:.90 green:.90 blue:.94 alpha:1]; // light
-
+		
 	}
 	
 	return col;
@@ -149,7 +149,7 @@
 {
 	// ensure we're not adding several timers at once
 	[self.programmeStartOrEndTimer invalidate];
-
+	
 	// init of vars we'll use in a sec
 	[self startOrEndTimerFired:nil];
 	
@@ -187,7 +187,7 @@
 	self.isOnNow = ([self.StartTime timeIntervalSinceNow] < 0 && [self.StopTime timeIntervalSinceNow] > 0);
 	self.hasFinished = [self.StopTime timeIntervalSinceNow] < 0;
 	
-
+	
 	if (isOnNow != self.isOnNow || hasFinished != self.hasFinished)
 	{
 		NSLog(@"%s %@ isOn=%d hasFin=%d", __PRETTY_FUNCTION__, [self Property:kTitle], self.isOnNow, self.hasFinished);
@@ -223,7 +223,7 @@
 	self.StopTime = [self Property:kStopTime];
 	
 	[self initProgrammeStartOrEndTimer];
-
+	
 	return YES;
 }
 
@@ -242,7 +242,7 @@
 	NSString *url = [NSString stringWithFormat:@"Guide/Program/%@", [self Property:kGuideProgramId]];
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
-		
+	
 	// await notification from ArgusConnection that the request has finished
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(GetFullProgrammeDetailsDone:)
@@ -253,10 +253,10 @@
 -(void)GetFullProgrammeDetailsDone:(NSNotification *)notify
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-
+	
 	NSData *data = [notify userInfo][@"data"];
 	
 	SBJsonParser *jsonParser = [SBJsonParser new];
@@ -265,11 +265,11 @@
 	//[self populateSelfFromDictionary:jsonObject];
 	// do not nuke originalData in here, merge them
 	[self.originalData addEntriesFromDictionary:jsonObject];
-
+	
 	// cache some commonly used hard-to-calculate values.. ensure they're up to date
 	self.StartTime = [self Property:kStartTime];
 	self.StopTime = [self Property:kStopTime];
-
+	
 	// mark the object as full details fetched so we don't end up looping
 	// if description isn't populated now, there isn't one
 	self.fullDetailsDone = true;
@@ -286,7 +286,7 @@
 	// returns a string that can uniquely identify an ArgusProgramme object across channels too
 	
 	// stopped using Property here because it's quite expensive when doing various checks
-
+	
 	assert(self.Channel);
 	
 	NSString *ChannelId = [self.Channel originalData][kChannelId];
@@ -360,7 +360,7 @@
 				// scheduled recordings are red
 				return ArgusProgrammeBgColourScheduled;
 				break;
-			
+				
 			case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledManually:
 			case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledAlreadyRecorded:
 			case ArgusUpcomingProgrammeScheduleStatusRecordingCancelledConflict:
