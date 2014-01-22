@@ -162,12 +162,18 @@
 	}
 	else
 	{
-		iconView.image = nil;
-		[iconView removeFromSuperview];
+		if (iconView.image)
+		{
+			[iconView removeFromSuperview];
+			iconView.image = nil;
+		}
 	}
-
+	
 	// be nice to store our colour as enum and then a condition can avoid re-setting the same colour
-	view.backgroundColor = colourToSet;
+	if (colourToSet != self.currentBgColor)
+	{
+		self.currentBgColor = view.backgroundColor = colourToSet;
+	}
 	
 	// foreground colour
 	if ([Programme hasFinished])

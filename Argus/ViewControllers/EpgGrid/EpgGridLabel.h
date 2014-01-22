@@ -29,6 +29,9 @@
 @property (nonatomic, retain) UIView *view;
 @property (nonatomic, retain) UILabel *label;
 
+@property (nonatomic, retain) UIColor *currentBgColor;
+
+
 // displayed if the programme is an upcoming programme
 @property (nonatomic, retain) UIImageView *iconView;
 
