@@ -41,15 +41,13 @@
 {
 	_ActiveRecording = ActiveRecording;
 	_UpcomingProgramme = [ActiveRecording UpcomingProgramme];
-	_Programme = _UpcomingProgramme;
-	[self redraw];
+	[self populateCellWithProgramme:self.UpcomingProgramme];
 }
 
 -(void)populateCellWithUpcomingProgramme:(ArgusUpcomingProgramme *)UpcomingProgramme
 {
 	_UpcomingProgramme = UpcomingProgramme;
-	_Programme = UpcomingProgramme;
-	[self redraw];
+	[self populateCellWithProgramme:UpcomingProgramme];
 }
 
 
