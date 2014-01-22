@@ -57,18 +57,13 @@
 	
 	// calculate some sizing for this view
 	
-	// ArgusProgramme pre-caches StartTime and StopTime as NSDate, since they're expensive
-	// to calculate, and used lots
-	NSDate *StartTime = [Programme StartTime];
-	NSDate *StopTime  = [Programme StopTime];
-	
-	NSTimeInterval duration = [StopTime timeIntervalSinceDate:StartTime];
-	NSInteger offset = pps * [StartTime timeIntervalSinceDate:midnight];
+	NSTimeInterval duration = [[Programme Property:kStopTime] timeIntervalSinceDate:[Programme Property:kStartTime]];
+	NSInteger offset = pps * [[Programme Property:kStartTime] timeIntervalSinceDate:midnight];
 	NSInteger width = (pps*duration) - 4; // 4 pixels gap to the right of each box
 	
 	if (offset < 0)
 	{
-		NSTimeInterval foo = [StartTime timeIntervalSinceDate:midnight];
+		NSTimeInterval foo = [[Programme Property:kStartTime] timeIntervalSinceDate:midnight];
 		width -= (pps * abs(foo));
 		offset = 0;
 	}

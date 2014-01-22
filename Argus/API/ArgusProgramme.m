@@ -17,6 +17,11 @@
 #import "NSString+JSONDate.h"
 #import "NSDate+Formatter.h"
 
+@interface ArgusProgramme ()
+@property (nonatomic, retain) NSDate *StartTime;
+@property (nonatomic, retain) NSDate *StopTime;
+@end
+
 @implementation ArgusProgramme
 
 // backgrounds
@@ -225,6 +230,18 @@
 	[self initProgrammeStartOrEndTimer];
 	
 	return YES;
+}
+
+-(id)Property:(NSString *)what
+{
+	// couple of overrides to improve performance
+	if (self.StartTime && [what isEqual:kStartTime])
+		return self.StartTime;
+	
+	if (self.StopTime && [what isEqual:kStopTime])
+		return self.StopTime;
+	
+	return [super Property:what];
 }
 
 #if 0
