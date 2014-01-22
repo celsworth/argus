@@ -17,4 +17,6 @@
 
 @property (nonatomic, retain) ArgusSchedule *SearchSchedule;
 
+@property (nonatomic, assign) BOOL isSearching;
+
 @end

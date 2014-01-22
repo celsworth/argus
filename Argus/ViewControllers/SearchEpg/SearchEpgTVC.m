@@ -28,40 +28,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+	
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	
-#if USE_EPG_PARTIAL_SEARCH
-	// reload table whenever search results come in
-	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusEpgPartialSearchDone object:argus
-													   queue:[NSOperationQueue mainQueue]
-												  usingBlock:^(NSNotification *note)
-	{
-		NSLog(@"%s", __PRETTY_FUNCTION__);
-
-		[self.tableView reloadData];
-	}];
-#else
-	// reload table whenever search results come in
-	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusUpcomingProgrammesDone object:_SearchSchedule
-													   queue:[NSOperationQueue mainQueue]
-												  usingBlock:^(NSNotification *note)
-	 {
-		 NSLog(@"%s", __PRETTY_FUNCTION__);
-		 
-		 [self.tableView reloadData];
-	 }];
-#endif
 	
 	if (dark)
 	{
 		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
 	}
-
+	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];
 	[self.tableView setBackgroundColor:[ArgusColours bgColour]];
 }
@@ -89,21 +67,22 @@
 
 - (NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
+	if (self.isSearching)
+		return 1; // 'Searching' row
+	
     // Return the number of rows in the section.
-#if USE_EPG_PARTIAL_SEARCH
-	ArgusProgramme *p = [argus SearchResults] count];
-#else
 	return [[[self.SearchSchedule UpcomingProgrammes] upcomingProgrammesForSchedule] count];
-#endif
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#if USE_EPG_PARTIAL_SEARCH
-	ArgusProgramme *p = [argus SearchResults][indexPath.row];
-#else
+	if (self.isSearching)
+	{
+		UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SearchEpgSearchingCell"];
+		return cell;
+	}
+	
 	ArgusProgramme *p = [[self.SearchSchedule UpcomingProgrammes] upcomingProgrammesForSchedule][indexPath.row];
-#endif
 	
 	ProgrammeSummaryCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SearchEpgResultCell"];
 	[cell populateCellWithProgramme:p];
@@ -111,13 +90,12 @@
 }
 -(void)tableView:(UITableView *)_tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (self.isSearching)
+		return; // nothing to do for the standard Searching row
+	
 	// programmes due to record get a red colour
 	
-#if USE_EPG_PARTIAL_SEARCH
-	ArgusProgramme *p = [argus SearchResults][indexPath.row];
-#else
 	ArgusProgramme *p = [[self.SearchSchedule UpcomingProgrammes] upcomingProgrammesForSchedule][indexPath.row];
-#endif
 	
 	// start off with standard table odd/even colour
 	UIColor *colourToSet = (indexPath.row % 2) ? [ArgusProgramme bgColourStdOdd] : [ArgusProgramme bgColourStdEven];
@@ -151,7 +129,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{	
+{
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -165,11 +143,7 @@
         
         // tell dvc which programme has been tapped on
 		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-#if USE_EPG_PARTIAL_SEARCH
-		dvc.Programme = [argus SearchResults][indexPath.row];
-#else
 		dvc.Programme = [[self.SearchSchedule UpcomingProgrammes] upcomingProgrammesForSchedule][indexPath.row];
-#endif
 	}
 }
 
@@ -177,12 +151,12 @@
 #pragma mark - Search Bar Delegate
 
 /*
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	// this could do "Google Instant" style searching if we wanted it
-}
-*/
+ - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+ {
+ NSLog(@"%s", __PRETTY_FUNCTION__);
+ // this could do "Google Instant" style searching if we wanted it
+ }
+ */
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
@@ -192,15 +166,12 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
+	
 	[self.search resignFirstResponder];
 	
 	NSString *searchStr = [[searchBar text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([searchStr length] > 0)
 	{
-#if USE_EPG_PARTIAL_SEARCH
-		[argus doEpgPartialSearchforString:searchStr inChannelType:[self.search selectedScopeButtonIndex]];
-#else
 		self.SearchSchedule = [[ArgusSchedule alloc] initWithExistingSchedule:[argus EmptySchedule]];
 		[self.SearchSchedule setChannelType:[self.search selectedScopeButtonIndex]];
 		[self.SearchSchedule setScheduleType:ArgusScheduleTypeRecording];
@@ -210,7 +181,23 @@
 		[Rule setMatchType:ArgusScheduleRuleMatchTypeContains];
 		
 		[self.SearchSchedule getUpcomingProgrammes];
-#endif
+		
+		self.isSearching = YES;
+		[self.tableView reloadData];
+		
+		// reload table when search results come in
+		[[NSNotificationCenter defaultCenter] addObserverForName:kArgusUpcomingProgrammesDone object:self.SearchSchedule
+														   queue:[NSOperationQueue mainQueue]
+													  usingBlock:^(NSNotification *note)
+		 {
+			 NSLog(@"%s", __PRETTY_FUNCTION__);
+			 
+			 [[NSNotificationCenter defaultCenter] removeObserver:self name:kArgusUpcomingProgrammesDone object:self.SearchSchedule];
+			 
+			 self.isSearching = NO;
+			 [self.tableView reloadData];
+		 }];
+		
 	}
 	
 }

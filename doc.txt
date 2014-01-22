@@ -83,7 +83,6 @@ PUBLIC ROADMAP:
 * localisation
 
 
-* Search needs a spinner
 * Browse/delete recordings
 * make better use of iPad screen space (tedious)
   * probably we don't need to split up edit schedule so much, but this means writing
