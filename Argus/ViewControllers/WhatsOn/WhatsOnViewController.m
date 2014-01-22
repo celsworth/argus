@@ -37,7 +37,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWhatsOn:)
 													 name:kArgusSelectedChannelGroupChanged
 												   object:[argus ChannelGroups]];
-	
+		
 	}
 	return self;
 }
@@ -83,21 +83,25 @@
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
     [super viewWillAppear:animated];
-
-	// refresh CurrentandNext if we have a Selected Channel Group
-	if ([[argus ChannelGroups] SelectedChannelGroup])
-	{
-		ArgusChannelGroup *scg = [[argus ChannelGroups] SelectedChannelGroup];
-		[scg getCurrentAndNext];
-	}
 	
-	autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(autoRedraw) userInfo:nil repeats:YES];
+	autoRedrawTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+													   target:self
+													 selector:@selector(autoRedraw)
+													 userInfo:nil
+													  repeats:YES];
 	[self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+	
+	// refresh CurrentAndNext if we have a Selected Channel Group
+	if ([[argus ChannelGroups] SelectedChannelGroup])
+	{
+		ArgusChannelGroup *scg = [[argus ChannelGroups] SelectedChannelGroup];
+		[scg getCurrentAndNext];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,7 +143,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{   
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"WhatsOnCell"];
     
     // Configure the cell...
@@ -161,28 +165,28 @@
 													 selector:@selector(reloadData)
 														 name:kArgusChannelLogoDone
 													   object:[channel Logo]];
-
+			
 			logo.image = nil;
 			
 			// draw a spinny for now?
 		}
-
+		
         UILabel *now_label = (UILabel *)[cell viewWithTag:1];
         UILabel *next_label = (UILabel *)[cell viewWithTag:2];
 		
 		UIImageView *now_iv = (UIImageView *)[cell viewWithTag:4];
 		UIImageView *next_iv = (UIImageView *)[cell viewWithTag:5];
-
+		
         NSDateFormatter *df = [[NSDateFormatter alloc] initWithPOSIXLocaleAndFormat:@"HH:mm"];
-					
+		
         ArgusProgramme *now_data = [channel CurrentProgramme];
 		now_label.textColor = [ArgusProgramme fgColourStd];
-
+		
 		if (now_data && now_data != (ArgusProgramme *)[NSNull null] && [now_data Property:kTitle])
 		{
 			NSDate *date = [now_data Property:kStartTime];
 			now_label.text = [NSString stringWithFormat:@"%@ %@", [df stringFromDate:date], [now_data Property:kTitle]];
-
+			
 			NSDate *StartTime = [now_data Property:kStartTime];
 			
 			UIProgressView *pctDone = (UIProgressView *)[cell viewWithTag:3];
@@ -206,11 +210,11 @@
 				now_iv.image = [[now_data upcomingProgramme] iconImage];
 			else
 				now_iv.image = nil;
-
+			
 		}
 		else
 			now_label.text = NSLocalizedString(@"No Data Available", @"Now/Next display when no programme in the EPG");
-
+		
 		
 		ArgusProgramme *next_data = [channel NextProgramme];
 		next_label.textColor = [ArgusProgramme fgColourStd];
@@ -222,8 +226,8 @@
 				next_iv.image = [[next_data upcomingProgramme] iconImage];
 			else
 				next_iv.image = nil;
-
-
+			
+			
 		}
 		else
 			next_label.text = NSLocalizedString(@"No Data Available", @"Now/Next display when no programme in the EPG");
@@ -270,7 +274,7 @@
 		// prevent more than one popup being visible
 		if (iPad())
 			[popoverController dismissPopoverAnimated:YES];
-
+		
 		UINavigationController *navC = [segue destinationViewController];
 		SelectChannelGroupViewController *dvc = (SelectChannelGroupViewController *)[navC visibleViewController];
 		
@@ -294,7 +298,7 @@
 -(void)didSelectChannelGroup:(ArgusChannelGroup *)ChannelGroup
 {
 	[[argus ChannelGroups] setSelectedChannelGroup:ChannelGroup];
-
+	
 	// don't do this here anymore, kArgusSelectedChannelGroupChanged observer will do it
 	// our delegate (SelectChannelGroup) selected something; get CaN for it
 	//[ChannelGroup getCurrentAndNext];
