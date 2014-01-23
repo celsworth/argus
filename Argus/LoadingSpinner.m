@@ -17,36 +17,40 @@
 @end
 
 @implementation LoadingSpinner
+
 -(id)init
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
-
-	self = [super init];
-	if (self)
+	
+	if (self = [super init])
 	{
 		UIStoryboard *tmp = [UIStoryboard storyboardWithName:(iPad() ? @"LoadingSpinner_iPad" : @"LoadingSpinner_iPhone") bundle:nil];
-		_vc = [tmp instantiateInitialViewController];
+		self.vc = [tmp instantiateInitialViewController];
 	}
 	return self;
 }
 
--(void)presentOnView:(UIView *)view
+-(void)presentOnView:(UIView *)targetView
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	self.vc.view.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.5];
+	UIView *view = [self.vc view];
+	
+	view.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.5];
 	
 	// this makes us fit into the parent view
-	self.vc.view.frame = view.bounds;
-	self.vc.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-	[view addSubview:self.vc.view];
+	view.frame = targetView.bounds;
+	view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	
+	[targetView addSubview:view];
 }
 
 -(void)setProgress:(CGFloat)pctDone
 {
-	self.vc.progressView.hidden = NO;
-	self.vc.progressView.progress = pctDone/100.0;
+	UIProgressView *progressView = [self.vc progressView];
+	
+	progressView.hidden = NO;
+	progressView.progress = pctDone/100.0;
 }
 
 -(void)fadeOut

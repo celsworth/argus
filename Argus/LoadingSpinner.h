@@ -12,7 +12,7 @@
 
 @interface LoadingSpinner : NSObject
 
--(void)presentOnView:(UIView *)view;
+-(void)presentOnView:(UIView *)targetView;
 -(void)setProgress:(CGFloat)pctDone;
 -(void)fadeOut;
 
