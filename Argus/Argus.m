@@ -68,7 +68,7 @@
 {
 	// this is so trivial it doesn't really need to be completed in a background block, but it's a sample of how its done
 	
-	ConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
 		//NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, response, data, error);
 		

@@ -306,7 +306,7 @@
 	NSString *body = [tmp JSONString];
 	
 	// block to run when the request finishes
-	ConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
 		NSLog(@"%s", __PRETTY_FUNCTION__);
 		

@@ -17,7 +17,7 @@
 
 // initialised in init
 @property (nonatomic, retain) NSMutableURLRequest *req;
-@property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
+@property (nonatomic, copy) ArgusConnectionCompletionBlock completionBlock;
 
 // this is set to retain ourselves on init and nulled when we're done
 // this ensures we're not released while our connection is alive
@@ -40,18 +40,18 @@
 	// old style default call, expected to handle notifications
 	return [self initWithUrl:url startImmediately:YES lowPriority:NO completionBlock:nil];
 }
--(id)initWithUrl:(NSString *)url completionBlock:(ConnectionCompletionBlock)completionBlock
+-(id)initWithUrl:(NSString *)url completionBlock:(ArgusConnectionCompletionBlock)completionBlock
 {
 	// new style default call, pass a block for completion
 	return [self initWithUrl:url startImmediately:YES lowPriority:NO completionBlock:completionBlock];
 }
 
 // single arg overrides
--(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ConnectionCompletionBlock)completionBlock
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ArgusConnectionCompletionBlock)completionBlock
 {
 	return [self initWithUrl:url startImmediately:startImmediately lowPriority:NO completionBlock:completionBlock];
 }
--(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ConnectionCompletionBlock)completionBlock
+-(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ArgusConnectionCompletionBlock)completionBlock
 {
 	return [self initWithUrl:url startImmediately:YES lowPriority:lowPriority completionBlock:completionBlock];
 }
@@ -64,7 +64,7 @@
 
 // full method
 -(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority
- completionBlock:(ConnectionCompletionBlock)completionBlock
+ completionBlock:(ArgusConnectionCompletionBlock)completionBlock
 {
 	self = [super init];
 	if (self)

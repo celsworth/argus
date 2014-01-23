@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^ConnectionCompletionBlock)(NSHTTPURLResponse *, NSData *, NSError *);
+typedef void(^ArgusConnectionCompletionBlock)(NSHTTPURLResponse *, NSData *, NSError *);
 
 #define kArgusConnectionDone @"kArgusConnectionDone"
 #define kArgusConnectionFail @"kArgusConnectionFail"
@@ -20,17 +20,17 @@ typedef void(^ConnectionCompletionBlock)(NSHTTPURLResponse *, NSData *, NSError 
 
 // simplified inits that assumes startImmediately=YES and lowPriority=NO
 -(id)initWithUrl:(NSString *)url;
--(id)initWithUrl:(NSString *)url completionBlock:(ConnectionCompletionBlock)completionBlock;
+-(id)initWithUrl:(NSString *)url completionBlock:(ArgusConnectionCompletionBlock)completionBlock;
 
 // single argument overrides
--(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ConnectionCompletionBlock)completionBlock;
--(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ConnectionCompletionBlock)completionBlock;
+-(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately completionBlock:(ArgusConnectionCompletionBlock)completionBlock;
+-(id)initWithUrl:(NSString *)url lowPriority:(BOOL)lowPriority completionBlock:(ArgusConnectionCompletionBlock)completionBlock;
 
 -(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority;
 
 // full call
 -(id)initWithUrl:(NSString *)url startImmediately:(BOOL)startImmediately lowPriority:(BOOL)lowPriority
- completionBlock:(ConnectionCompletionBlock)ConnectionCompletionBlock;
+ completionBlock:(ArgusConnectionCompletionBlock)completionBlock;
 
 -(void)setHTTPBody:(NSData *)body;
 
