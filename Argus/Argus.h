@@ -80,7 +80,6 @@
 
 -(void)checkApiVersion:(NSInteger)version;
 -(void)getVersion;
--(void)doEpgPartialSearchforString:(NSString *)search inChannelType:(ArgusChannelType)ChannelType;
 -(void)getLiveStreams;
 -(void)getChannels;
 -(ArgusConnection *)getChannelsForChannelType:(ArgusChannelType)ChannelType;

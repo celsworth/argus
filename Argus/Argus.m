@@ -21,17 +21,6 @@
 
 // encapsulating class for all communications with Argus Services.
 @implementation Argus
-@synthesize ChannelsKeyedByChannelId, NewChannelsKeyedByChannelId;
-@synthesize ChannelsKeyedByGuideChannelId, NewChannelsKeyedByGuideChannelId;
-@synthesize SearchResults;
-@synthesize ChannelGroups;
-@synthesize Categories;
-@synthesize RecordingFileFormats;
-@synthesize EmptySchedule;
-@synthesize ActiveRecordings, LiveStreams, Schedules, RecordingDisksInfo;
-@synthesize UpcomingProgrammes, UpcomingRecordings;
-@synthesize SelectedScheduleType;
-@synthesize Version;
 
 #pragma mark - Public API methods
 
@@ -41,17 +30,17 @@
 	if (self)
 	{
 		// set up containers
-		Schedules = [ArgusSchedules new];
-		UpcomingProgrammes = [ArgusUpcomingProgrammes new];
-		UpcomingRecordings = [ArgusUpcomingRecordings new];
+		self.Schedules = [ArgusSchedules new];
+		self.UpcomingProgrammes = [ArgusUpcomingProgrammes new];
+		self.UpcomingRecordings = [ArgusUpcomingRecordings new];
 		
-		Categories = [ArgusCategories new];
+		self.Categories = [ArgusCategories new];
 		
-		ChannelGroups = [ArgusChannelGroups new];
+		self.ChannelGroups = [ArgusChannelGroups new];
 		
-		RecordingFileFormats = [ArgusRecordingFileFormats new];
+		self.RecordingFileFormats = [ArgusRecordingFileFormats new];
 		
-		SelectedScheduleType = ArgusScheduleTypeRecording;
+		self.SelectedScheduleType = ArgusScheduleTypeRecording;
 	}
 	return self;
 }
@@ -70,107 +59,40 @@
 	
 	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
-		//NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, response, data, error);
-		
-		// will need error handling!
+		if (error) // error shown in ArgusConnectionQueue
+			return [OnMainThread postNotificationName:kArgusApiVersionDone object:self userInfo:nil];
 		
 		NSInteger rv = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] intValue];
 		NSDictionary *r = @{@"ApiVersion": @(rv)};
 		[OnMainThread postNotificationName:kArgusApiVersionDone object:self userInfo:r];
 	};
 	
-	__unused ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%d", version]
-													   completionBlock:cmp];
+	(void)[[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%d", version] completionBlock:cmp];
 }
 
 
 -(void)getVersion
 {
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:@"Core/Version"];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(VersionDone:)
-												 name:kArgusConnectionDone
-											   object:c];
-}
-
--(void)VersionDone:(NSNotification *)notify
-{
-	// notify userInfo now needs parsing into a string
-	NSData *data = [notify userInfo][@"data"];
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	// remove " around the result, we can't parse it as JSON because it's a bare string, not really valid JSON
-	Version = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusVersionDone object:self userInfo:nil];
-}
-
--(void)doEpgPartialSearchforString:(NSString *)search inChannelType:(ArgusChannelType)ChannelType
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-		
-	NSString *url = [NSString stringWithFormat:@"Scheduler/SearchGuideByPartialTitle/%d", ChannelType];
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
-	
-	NSString *body = [NSString stringWithFormat:@"\"%@\"", search];
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	[c enqueue];
-	
-	// await notification from ArgusConnection that the request has finished
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(EpgPartialSearchforStringDone:) name:kArgusConnectionDone object:c];
-	
-	[AppDelegate requestLoadingSpinner];
-}
-
--(void)EpgPartialSearchforStringDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	NSData *data = [notify userInfo][@"data"];
-	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSArray *jsonObject = [jsonParser objectWithData:data];
-	
-	NSMutableArray *tmpArr = [NSMutableArray new];
-	
-	for (NSDictionary *d in jsonObject)
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
-		ArgusProgramme *p = [[ArgusProgramme alloc] initWithDictionary:d];
+		if (error) // error shown in ArgusConnectionQueue
+			return [OnMainThread postNotificationName:kArgusVersionDone object:self userInfo:nil];
 		
-		NSString *ChannelId = d[kChannel][kChannelId];
-		assert(ChannelId);
+		// remove " around the result, we can't parse it as JSON because it's a bare string, not really valid JSON
+		self.Version = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]
+						stringByReplacingOccurrencesOfString:@"\"" withString:@""];
 		
-		ArgusChannel *c = [argus ChannelsKeyedByChannelId][ChannelId];
-		assert(c);
-		
-		[p setChannel:c];
-		
-		
-		[tmpArr addObject:p];
-	}
+		[OnMainThread postNotificationName:kArgusVersionDone object:self userInfo:nil];
+	};
 	
-	SearchResults = tmpArr;
-	
-	// notifications
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusEpgPartialSearchDone object:self userInfo:nil];
-	
-	[AppDelegate releaseLoadingSpinner];
+	(void)[[ArgusConnection alloc] initWithUrl:@"Core/Version" completionBlock:cmp];
 }
-
-
 
 
 -(void)getChannels
 {
-	NewChannelsKeyedByChannelId = [NSMutableDictionary new];
-	NewChannelsKeyedByGuideChannelId = [NSMutableDictionary new];
+	self.NewChannelsKeyedByChannelId = [NSMutableDictionary new];
+	self.NewChannelsKeyedByGuideChannelId = [NSMutableDictionary new];
 	
 	// this starts by getting TV Channels, once that's done it'll get Radio
 	ArgusConnection *c = [self getChannelsForChannelType:ArgusChannelTypeTelevision];
@@ -199,7 +121,7 @@
 	for (NSDictionary *d in jsonObject)
 	{
 		ArgusChannel *c = [[ArgusChannel alloc] initWithDictionary:d];
-		NewChannelsKeyedByChannelId[[c Property:kChannelId]] = c;
+		self.NewChannelsKeyedByChannelId[[c Property:kChannelId]] = c;
 		
 		// same for GuideChannelId. However this dictionary has arrays in it
 		// because there could be more than one Channel with a given GuideChannelId
@@ -208,11 +130,11 @@
 		if (!GuideChannelId)
 			continue;
 		
-		NSMutableArray *tmpArr = NewChannelsKeyedByGuideChannelId[GuideChannelId];
+		NSMutableArray *tmpArr = self.NewChannelsKeyedByGuideChannelId[GuideChannelId];
 		if (!tmpArr)
 		{
 			tmpArr = [NSMutableArray new];
-			NewChannelsKeyedByGuideChannelId[GuideChannelId] = tmpArr;
+			self.NewChannelsKeyedByGuideChannelId[GuideChannelId] = tmpArr;
 		}
 		[tmpArr addObject:c];
 	}
@@ -236,8 +158,8 @@
 	[self ChannelsDone:notify];
 	
 	// replace Channels with NewChannels
-	ChannelsKeyedByChannelId = NewChannelsKeyedByChannelId;
-	ChannelsKeyedByGuideChannelId = NewChannelsKeyedByGuideChannelId;
+	self.ChannelsKeyedByChannelId = self.NewChannelsKeyedByChannelId;
+	self.ChannelsKeyedByGuideChannelId =self. NewChannelsKeyedByGuideChannelId;
 	
 	// when radio channels are done, send out notifications
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusChannelsDone object:self userInfo:nil];
@@ -246,124 +168,76 @@
 
 -(void)getLiveStreams
 {
-	
-	[AppDelegate requestLoadingSpinner];
-	
 	NSString *url = [NSString stringWithFormat:@"Control/GetLiveStreams"];
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
-	// tell us when the ArgusConnection is done, so we can poke any waiters
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(LiveStreamsDone:)
-												 name:kArgusConnectionDone
-											   object:c];
-}
-
--(void)LiveStreamsDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	// notify userInfo now needs parsing into ChannelGroups
-	NSData *data = [notify userInfo][@"data"];
-	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSArray *jsonObject = [jsonParser objectWithData:data];
-	
-	NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithCapacity:32];
-	
-	for (NSDictionary *d in jsonObject)
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
-		ArgusLiveStream *t = [[ArgusLiveStream alloc] initWithDictionary:d];
-		[tmpArr addObject:t];
-	}
+		if (error) // error shown in ArgusConnectionQueue
+			return [OnMainThread postNotificationName:kArgusLiveStreamsDone object:self userInfo:nil];
+		
+		NSArray *jsonObject = [[SBJsonParser new] objectWithData:data];
+		
+		NSMutableArray *tmpArr = [NSMutableArray new];
+		
+		for (NSDictionary *d in jsonObject)
+		{
+			ArgusLiveStream *t = [[ArgusLiveStream alloc] initWithDictionary:d];
+			[tmpArr addObject:t];
+		}
+		
+		self.LiveStreams = tmpArr;
+		
+		[OnMainThread postNotificationName:kArgusLiveStreamsDone object:self userInfo:nil];
+	};
 	
-	LiveStreams = tmpArr;
-	
-	// done, send out notifications
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusLiveStreamsDone object:self userInfo:nil];
-	
-	[AppDelegate releaseLoadingSpinner];
+	(void)[[ArgusConnection alloc] initWithUrl:url completionBlock:cmp];
+
 }
 
 -(void)getActiveRecordings
 {
-	[AppDelegate requestLoadingSpinner];
-	
 	NSString *url = [NSString stringWithFormat:@"Control/ActiveRecordings"];
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
-	// tell us when the ArgusConnection is done, so we can poke any waiters
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(ActiveRecordingsDone:)
-												 name:kArgusConnectionDone
-											   object:c];
-}
-
--(void)ActiveRecordingsDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	// notify userInfo now needs parsing into ChannelGroups
-	NSData *data = [notify userInfo][@"data"];
-	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSArray *jsonObject = [jsonParser objectWithData:data];
-	
-	NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithCapacity:32];
-	
-	for (NSDictionary *d in jsonObject)
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
 	{
-		//NSLog(@"%s %@", __PRETTY_FUNCTION__, d);
-		ArgusActiveRecording *t = [[ArgusActiveRecording alloc] initWithDictionary:d];
-		[tmpArr addObject:t];
-	}
+		if (error) // error shown in ArgusConnectionQueue
+			return [OnMainThread postNotificationName:kArgusActiveRecordingsDone object:self userInfo:nil];
+		
+		NSArray *jsonObject = [[SBJsonParser new] objectWithData:data];
+		
+		NSMutableArray *tmpArr = [NSMutableArray new];
+		
+		for (NSDictionary *d in jsonObject)
+		{
+			//NSLog(@"%s %@", __PRETTY_FUNCTION__, d);
+			ArgusActiveRecording *t = [[ArgusActiveRecording alloc] initWithDictionary:d];
+			[tmpArr addObject:t];
+		}
+		
+		self.ActiveRecordings = tmpArr;
+		[OnMainThread postNotificationName:kArgusActiveRecordingsDone object:self userInfo:nil];
+	};
 	
-	ActiveRecordings = tmpArr;
-	
-	// done, send out notifications
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusActiveRecordingsDone object:self userInfo:nil];
-	
-	[AppDelegate releaseLoadingSpinner];
+	(void)[[ArgusConnection alloc] initWithUrl:url completionBlock:cmp];
 }
 
 -(void)getRecordingDisksInfo
 {
-	[AppDelegate requestLoadingSpinner];
-	
 	NSString *url = [NSString stringWithFormat:@"Control/GetRecordingDisksInfo"];
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
-	// tell us when the ArgusConnection is done, so we can poke any waiters
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(RecordingDisksInfoDone:)
-												 name:kArgusConnectionDone
-											   object:c];
-}
-
--(void)RecordingDisksInfoDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
+	{
+		if (error) // error shown in ArgusConnectionQueue
+			return [OnMainThread postNotificationName:kArgusRecordingDisksInfoDone object:self userInfo:nil];
+		
+		NSDictionary *jsonObject = [[SBJsonParser new] objectWithData:data];
+		
+		self.RecordingDisksInfo = [[ArgusRecordingDisksInfo alloc] initWithDictionary:jsonObject];
+		
+		[OnMainThread postNotificationName:kArgusRecordingDisksInfoDone object:self userInfo:nil];
+	};
 	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	NSData *data = [notify userInfo][@"data"];
-	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSDictionary *jsonObject = [jsonParser objectWithData:data];
-	
-	RecordingDisksInfo = [[ArgusRecordingDisksInfo alloc] initWithDictionary:jsonObject];
-	
-	// done, send out notifications
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusRecordingDisksInfoDone object:self userInfo:nil];
-	
-	[AppDelegate releaseLoadingSpinner];
+	(void)[[ArgusConnection alloc] initWithUrl:url completionBlock:cmp];
 }
 
 -(void)getUpcomingProgrammes
@@ -376,13 +250,13 @@
 	[AppDelegate requestLoadingSpinner];
 	
 	// fetch an empty schedule so it can be copied and edited to suit later
-	EmptySchedule = [[ArgusSchedule alloc] initEmptyWithChannelType:ArgusChannelTypeTelevision
-													   scheduleType:ArgusScheduleTypeRecording];
+	self.EmptySchedule = [[ArgusSchedule alloc] initEmptyWithChannelType:ArgusChannelTypeTelevision
+															scheduleType:ArgusScheduleTypeRecording];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(EmptyScheduleDone:)
 												 name:kArgusScheduleDone
-											   object:EmptySchedule];
+											   object:self.EmptySchedule];
 }
 -(void)EmptyScheduleDone:(NSNotification *)notify
 {
@@ -394,7 +268,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusEmptyScheduleDone object:self];
 	
 	[AppDelegate releaseLoadingSpinner];
-	
 }
 
 
