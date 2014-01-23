@@ -195,7 +195,7 @@
 	
 	if (isOnNow != self.isOnNow || hasFinished != self.hasFinished)
 	{
-		NSLog(@"%s %@ isOn=%d hasFin=%d", __PRETTY_FUNCTION__, [self Property:kTitle], self.isOnNow, self.hasFinished);
+		//NSLog(@"%s %@ isOn=%d hasFin=%d", __PRETTY_FUNCTION__, [self Property:kTitle], self.isOnNow, self.hasFinished);
 		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammeOnAirStatusChanged object:self userInfo:nil];
 	}
 	

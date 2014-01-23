@@ -36,7 +36,7 @@
 													  object:Programme queue:[NSOperationQueue mainQueue]
 												  usingBlock:^(NSNotification *note)
 	 {
-		 NSLog(@"%s", __PRETTY_FUNCTION__);
+		 //NSLog(@"%s", __PRETTY_FUNCTION__);
 		 [self updateColours];
 	 }];
 	

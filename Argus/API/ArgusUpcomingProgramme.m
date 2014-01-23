@@ -131,7 +131,7 @@
 	else
 		self.localNotification = nil; // probably not necessary
 	
-	NSLog(@"%s %d local notifications queued", __PRETTY_FUNCTION__, [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
+	//NSLog(@"%s %d local notifications queued", __PRETTY_FUNCTION__, [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
 }
 
 -(void)showLocalNotification
