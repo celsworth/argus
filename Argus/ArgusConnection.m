@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSMutableURLRequest *req;
 @property (nonatomic, copy) ConnectionCompletionBlock completionBlock;
 
-// this is set to ourselves on init and nulled when we're done
+// this is set to retain ourselves on init and nulled when we're done
 // this ensures we're not released while our connection is alive
 @property (nonatomic, retain) ArgusConnection *retainSelf;
 
@@ -30,14 +30,12 @@
 @property (nonatomic, retain) NSURLAuthenticationChallenge *connectionChallenge;
 @property (nonatomic, retain) NSMutableData *receivedData;
 
-//@property (nonatomic, retain) NSString *jobId;
-
 @end
 
 // instantiated every time we make a connection to Argus. Handles all subsequent network stuff.
 @implementation ArgusConnection
 
--(id)initWithUrl:(NSString *)url 
+-(id)initWithUrl:(NSString *)url
 {
 	// old style default call, expected to handle notifications
 	return [self initWithUrl:url startImmediately:YES lowPriority:NO completionBlock:nil];
@@ -70,22 +68,22 @@
 {
 	self = [super init];
 	if (self)
-	{	
+	{
 		// remember these so we can restart the request if we need auth details
-		_url = url;
-		_lowPriority = !lowPriority;
-		_completionBlock = completionBlock;
-		_retainSelf = self;
+		self.url = url;
+		self.lowPriority = !lowPriority;
+		self.completionBlock = completionBlock;
+		self.retainSelf = self;
 		
-		_req = [NSMutableURLRequest new];
-		[_req setHTTPMethod:@"POST"];
-		[_req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[_req setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-		[_req setTimeoutInterval:600.0]; // artificially long, we do NSTimer for timeout
-		// url set in start
+		self.req = [NSMutableURLRequest new];
+		[self.req setHTTPMethod:@"POST"];
+		[self.req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+		[self.req setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+		[self.req setTimeoutInterval:600.0]; // artificially long, we do NSTimer for timeout
+											 // url set in start
 		
-		_connection = nil;
-		_receivedData = [NSMutableData new];
+		self.connection = nil;
+		self.receivedData = [NSMutableData new];
 		
 		if (startImmediately)
 		{
@@ -99,13 +97,13 @@
 
 -(void)setHTTPBody:(NSData *)body
 {
-	[_req setHTTPBody:body];
+	[self.req setHTTPBody:body];
 }
 
 // if startImmediately was false, call enqueue instead (generally after setting a body)
 -(void)enqueue
 {
-	if (_lowPriority)
+	if (self.lowPriority)
 		[[[AppDelegate sharedInstance] arguscq] queueConnection:self];
 	else
 		[[[AppDelegate sharedInstance] arguscq] queueUrgentConnection:self];
@@ -113,24 +111,24 @@
 
 -(BOOL)start
 {
-	if (_connection) return NO; // connection already started!
-	if (!_req) return NO; // connection already finished!
+	if (self.connection) return NO; // connection already started!
+	if (!self.req) return NO; // connection already finished!
 	
-	[_req setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [self baseURL], _url]]];
-
-	NSLog(@"Argus %@ -start", _url);
-
-	_httpresponse = nil;
-	_error = nil;
+	[self.req setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [self baseURL], self.url]]];
 	
-	_connection = [[NSURLConnection alloc] initWithRequest:_req delegate:self];
+	NSLog(@"Argus %@ -start", self.url);
+	
+	self.httpresponse = nil;
+	self.error = nil;
+	
+	self.connection = [[NSURLConnection alloc] initWithRequest:self.req delegate:self];
 	
 	// set up our own timeout
-	_timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-													 target:self
-												   selector:@selector(cancel)
-												   userInfo:nil
-													repeats:NO];
+	self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+														 target:self
+													   selector:@selector(cancel)
+													   userInfo:nil
+														repeats:NO];
 	
 	[AppDelegate requestNetworkActivityIndicator];
 	
@@ -140,16 +138,16 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	[_timeOutTimer invalidate];
-	[_connection cancel];
-	_connection = nil;
-	_httpresponse = nil;
+	[self.timeOutTimer invalidate];
+	[self.connection cancel];
+	self.connection = nil;
+	self.httpresponse = nil;
 	
 	[AppDelegate releaseNetworkActivityIndicator];
-
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
 	
-	_retainSelf = nil;
+	self.retainSelf = nil;
 }
 
 -(void)connection:(NSURLConnection *)conn willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -160,13 +158,13 @@
 			 forAuthenticationChallenge:challenge];
 		return;
 	}
-
+	
 	//NSLog(@"willSendRequestForAuthenticationChallenge %@", challenge.protectionSpace.authenticationMethod);
-
+	
 	//NSLog(@"%d failures", [challenge previousFailureCount]);
 	
 	// keep a reference to the challenge so we can send later
-	_connectionChallenge = challenge;
+	self.connectionChallenge = challenge;
 	
 	//[SimpleKeychain delete:@"Argus_Credentials"];
 	NSDictionary *auth = [SimpleKeychain load:@"Argus_Credentials"];
@@ -174,86 +172,78 @@
 	{
 		// on the first auth attempt, try to use saved details if we have any
 		//NSLog(@"%s got stored auth details", __PRETTY_FUNCTION__);
-		[_connectionChallenge.sender useCredential:[NSURLCredential credentialWithUser:auth[@"user"]
-																			  password:auth[@"pass"]
-																		   persistence:NSURLCredentialPersistenceForSession]
-						forAuthenticationChallenge:_connectionChallenge];
+		[self.connectionChallenge.sender useCredential:[NSURLCredential credentialWithUser:auth[@"user"]
+																				  password:auth[@"pass"]
+																			   persistence:NSURLCredentialPersistenceForSession]
+							forAuthenticationChallenge:self.connectionChallenge];
 		
 	}
 	else
 	{
 		//NSLog(@"%s no stored auth details", __PRETTY_FUNCTION__);
-		[_connectionChallenge.sender continueWithoutCredentialForAuthenticationChallenge:_connectionChallenge];
+		[self.connectionChallenge.sender continueWithoutCredentialForAuthenticationChallenge:self.connectionChallenge];
 	}
 }
 
 -(void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error
 {
-	[_timeOutTimer invalidate];
-
-	_error = error;
+	[self.timeOutTimer invalidate];
+	
+	self.error = error;
 	
 	NSLog(@"Argus %@ -error %@", _url, error);
-
+	
 	// nil out connection, this is basically isRunning=NO
-	[_connection cancel];
-	_connection = nil;
+	[self.connection cancel];
+	self.connection = nil;
 	[AppDelegate releaseNetworkActivityIndicator];
-
+	
+	// tell someone about the failure
+	NSDictionary *userInfo = @{ @"error": error };
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:userInfo];
+	
 	if (self.completionBlock)
 	{
 		[[NSOperationQueue new] addOperationWithBlock:^{
 			self.completionBlock(self->_httpresponse, nil, error);
 		}];
-		
-		/* don't do the notification stuff below, assume the completionBlock has handled everything */
-		_retainSelf = nil;
-		return;
 	}
-
-	// tell someone about the failure
-	NSDictionary *userInfo = @{ @"error": error };
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:userInfo];
 	
-	_retainSelf = nil;
+	self.retainSelf = nil;
 }
 
 -(void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
 {
-	[_timeOutTimer invalidate];
-
-	_httpresponse = (NSHTTPURLResponse *)response;
+	[self.timeOutTimer invalidate];
 	
-	NSInteger statusCode = [_httpresponse statusCode];
-	NSLog(@"Argus %@ %d", _url, statusCode);
-
+	self.httpresponse = (NSHTTPURLResponse *)response;
+	
+	NSInteger statusCode = [self.httpresponse statusCode];
+	NSLog(@"Argus %@ %d", self.url, statusCode);
+	
 	if (statusCode == 200)
 	{
-		[_receivedData setLength:0];
+		[self.receivedData setLength:0];
     }
 	else
 	{
 		if (statusCode == 401 || statusCode == 403 || statusCode == 404)
 		{
-			[_connection cancel];
-			_connection = nil;
+			[self.connection cancel];
+			self.connection = nil;
 			[AppDelegate releaseNetworkActivityIndicator];
+			
+			// tell someone about the failure
+			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
 			
 			if (self.completionBlock)
 			{
 				[[NSOperationQueue new] addOperationWithBlock:^{
 					self.completionBlock(self->_httpresponse, nil, nil);
 				}];
-				
-				/* don't do the notification stuff below, assume the completionBlock has handled everything */
-				_retainSelf = nil;
-				return;
 			}
-
-			// tell someone about the failure
-			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
 			
-			_retainSelf = nil;
+			self.retainSelf = nil;
 		}
 	}
 }
@@ -261,44 +251,41 @@
 -(void)connection:(NSURLConnection *)conn didReceiveData:(NSData *)data
 {
 	// NSLog(@"didReceiveData");
-    [_receivedData appendData:data];
+    [self.receivedData appendData:data];
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)conn
 {
-	NSLog(@"Argus %@ -finish", _url);
-
+	NSLog(@"Argus %@ -finish", self.url);
+	
 	//NSLog(@"%@", receivedData);
 	
 	// nil out req so we can't be started again. this makes -start return NO
 	// if we need url after this we'll have to introduce isRunning and isFinished instead
-	_req = nil;
+	self.req = nil;
 	[AppDelegate releaseNetworkActivityIndicator];
-
+	
+	NSDictionary *info = @{ @"data": self.receivedData };
+	NSInteger statusCode = [self.httpresponse statusCode];
+	
+	if (statusCode == 500)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:info];
+		self.retainSelf = nil;
+		return;
+	}
+	
+	// tell all interested parties a request is done
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionDone object:self userInfo:info];
+	
 	if (self.completionBlock)
 	{
 		[[NSOperationQueue new] addOperationWithBlock:^{
 			self.completionBlock(self->_httpresponse, self->_receivedData, nil);
 		}];
-		
-		/* don't do the notification stuff below, assume the completionBlock has handled everything */
-		_retainSelf = nil;
-		return;
 	}
 	
-	NSDictionary *info = @{ @"data": _receivedData };
-	NSInteger statusCode = [_httpresponse statusCode];
-	
-	if (statusCode == 500)
-	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:info];
-		return;
-	}
-		
-	// tell all interested parties a request is done
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionDone object:self userInfo:info];
-	
-	_retainSelf = nil;
+	self.retainSelf = nil;
 }
 
 -(NSString *)baseURL
