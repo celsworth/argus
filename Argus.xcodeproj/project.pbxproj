@@ -46,8 +46,7 @@
 		8330718A14FF009C0042F7D5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8330718914FF009C0042F7D5 /* AppDelegate.m */; };
 		8330719314FF009C0042F7D5 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8330719214FF009C0042F7D5 /* MasterViewController.m */; };
 		8330719614FF009C0042F7D5 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8330719514FF009C0042F7D5 /* DetailViewController.m */; };
-		83311927152771670022FB2A /* LoadingPage_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83311926152771670022FB2A /* LoadingPage_iPhone.storyboard */; };
-		8331192C15287ABC0022FB2A /* LoadingPage_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8331192B15287ABC0022FB2A /* LoadingPage_iPad.storyboard */; };
+		83311927152771670022FB2A /* LoadingPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83311926152771670022FB2A /* LoadingPage.storyboard */; };
 		833119311528C81C0022FB2A /* RecordingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833119301528C81C0022FB2A /* RecordingsTVC.m */; };
 		833119351528CDCC0022FB2A /* SearchEpgTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833119341528CDCC0022FB2A /* SearchEpgTVC.m */; };
 		833654CD150BCD9F00C9E2E9 /* ArgusLiveStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 833654CC150BCD9F00C9E2E9 /* ArgusLiveStream.m */; };
@@ -67,16 +66,12 @@
 		834E402015C1C176004521F5 /* ArgusCardChannelAllocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 834E401F15C1C176004521F5 /* ArgusCardChannelAllocation.m */; };
 		834FE55E15044690003E427E /* SchedulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE55D15044690003E427E /* SchedulesViewController.m */; };
 		834FE562150468A1003E427E /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FE561150468A1003E427E /* ScheduleViewController.m */; };
-		83510E5F1875B6620022BE1F /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
-		83510E601875B66D0022BE1F /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83510E5C187321580022BE1F /* Reveal.framework */; };
 		83510E6F187BD3C50022BE1F /* OnMainThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 83510E6E187BD3C50022BE1F /* OnMainThread.m */; };
 		83544B82158D7F1600C7ADDE /* ScheduleViewPRHTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B81158D7F1600C7ADDE /* ScheduleViewPRHTVC.m */; };
 		83544B85158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 83544B84158D837A00C7ADDE /* ArgusScheduleRecordedProgram.m */; };
 		835B7518157065CB00029F2A /* ArgusChannelGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 835B7517157065CB00029F2A /* ArgusChannelGroups.m */; };
 		835B751B1570F44000029F2A /* ArgusGlobalDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 835B751A1570F44000029F2A /* ArgusGlobalDefinitions.m */; };
 		8369783D160A6EE700972686 /* LoadingSpinnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369783C160A6EE700972686 /* LoadingSpinnerViewController.m */; };
-		83697849160B89A600972686 /* LoadingSpinner_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83697848160B89A600972686 /* LoadingSpinner_iPhone.storyboard */; };
-		8369784B160B8AF900972686 /* LoadingSpinner_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8369784A160B8AF900972686 /* LoadingSpinner_iPad.storyboard */; };
 		8369784D160B90E200972686 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8369784C160B90E200972686 /* Default-568h@2x.png */; };
 		836B93E918719216000D7A7E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 837DD1A8153628A000DF0911 /* libTestFlight.a */; };
 		836C9326150665FF003A5D8F /* SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C9325150665FE003A5D8F /* SimpleKeychain.m */; };
@@ -101,6 +96,9 @@
 		839FFF281597F9D600170D78 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 839FFF271597F9D600170D78 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		83A1E42F152D32E000C12278 /* ArgusConnectionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */; };
 		83AA3B08150AE61B0042BA96 /* ScheduleTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */; };
+		83B0FBCD188F758700CCC672 /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
+		83B0FBCF188F761600CCC672 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B0FBCE188F761600CCC672 /* Reveal.framework */; };
+		83B0FBD61890BD7B00CCC672 /* LoadingSpinner.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */; };
 		83BA27F515007F25000EE007 /* WhatsOnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BA27F615007F25000EE007 /* WhatsOnViewController.m */; };
 		83BA27F815007F33000EE007 /* RotatingTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BA27F915007F33000EE007 /* RotatingTabBarController.m */; };
 		83DB13C3159765A400770DD5 /* LoadingPageTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DB13C4159765A400770DD5 /* LoadingPageTVC.m */; };
@@ -264,9 +262,8 @@
 		8330719214FF009C0042F7D5 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		8330719414FF009C0042F7D5 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DetailViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8330719514FF009C0042F7D5 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		83311926152771670022FB2A /* LoadingPage_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadingPage_iPhone.storyboard; sourceTree = "<group>"; };
+		83311926152771670022FB2A /* LoadingPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadingPage.storyboard; sourceTree = "<group>"; };
 		83311928152772A60022FB2A /* LoadingPageTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingPageTVC.h; sourceTree = "<group>"; };
-		8331192B15287ABC0022FB2A /* LoadingPage_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadingPage_iPad.storyboard; sourceTree = "<group>"; };
 		8331192F1528C81C0022FB2A /* RecordingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsTVC.h; sourceTree = "<group>"; };
 		833119301528C81C0022FB2A /* RecordingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsTVC.m; sourceTree = "<group>"; };
 		833119331528CDCC0022FB2A /* SearchEpgTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchEpgTVC.h; sourceTree = "<group>"; };
@@ -304,7 +301,6 @@
 		834FE55D15044690003E427E /* SchedulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchedulesViewController.m; sourceTree = "<group>"; };
 		834FE560150468A1003E427E /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
 		834FE561150468A1003E427E /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
-		83510E5C187321580022BE1F /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		83510E6D187BD3C50022BE1F /* OnMainThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnMainThread.h; path = Support/OnMainThread.h; sourceTree = "<group>"; };
 		83510E6E187BD3C50022BE1F /* OnMainThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnMainThread.m; path = Support/OnMainThread.m; sourceTree = "<group>"; };
 		83544B80158D7F1600C7ADDE /* ScheduleViewPRHTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewPRHTVC.h; sourceTree = "<group>"; };
@@ -317,8 +313,6 @@
 		835B751A1570F44000029F2A /* ArgusGlobalDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusGlobalDefinitions.m; sourceTree = "<group>"; };
 		8369783B160A6EE700972686 /* LoadingSpinnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingSpinnerViewController.h; sourceTree = "<group>"; };
 		8369783C160A6EE700972686 /* LoadingSpinnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingSpinnerViewController.m; sourceTree = "<group>"; };
-		83697848160B89A600972686 /* LoadingSpinner_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadingSpinner_iPhone.storyboard; sourceTree = "<group>"; };
-		8369784A160B8AF900972686 /* LoadingSpinner_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadingSpinner_iPad.storyboard; sourceTree = "<group>"; };
 		8369784C160B90E200972686 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		836C9324150665FD003A5D8F /* SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKeychain.h; sourceTree = "<group>"; };
 		836C9325150665FE003A5D8F /* SimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKeychain.m; sourceTree = "<group>"; };
@@ -362,6 +356,8 @@
 		83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusConnectionQueue.m; sourceTree = "<group>"; };
 		83AA3B06150AE61B0042BA96 /* ScheduleTypeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleTypeTVC.h; sourceTree = "<group>"; };
 		83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleTypeTVC.m; sourceTree = "<group>"; };
+		83B0FBCE188F761600CCC672 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../../../../../../Applications/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
+		83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingSpinner.xib; sourceTree = "<group>"; };
 		83BA27F615007F25000EE007 /* WhatsOnViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhatsOnViewController.m; sourceTree = "<group>"; };
 		83BA27F915007F33000EE007 /* RotatingTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RotatingTabBarController.m; sourceTree = "<group>"; };
 		83BA27FA15007F36000EE007 /* RotatingTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotatingTabBarController.h; sourceTree = "<group>"; };
@@ -461,8 +457,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83510E601875B66D0022BE1F /* Reveal.framework in Frameworks */,
-				83510E5F1875B6620022BE1F /* libTapkuLibrary.a in Frameworks */,
+				83B0FBCD188F758700CCC672 /* libTapkuLibrary.a in Frameworks */,
+				83B0FBCF188F761600CCC672 /* Reveal.framework in Frameworks */,
 				837DD1AD1536291400DF0911 /* libz.dylib in Frameworks */,
 				83452B14152F4DC200CC358A /* QuartzCore.framework in Frameworks */,
 				83452B12152F4DBE00CC358A /* MapKit.framework in Frameworks */,
@@ -591,12 +587,12 @@
 		8330717814FF009C0042F7D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				83B0FBCE188F761600CCC672 /* Reveal.framework */,
 				8330717D14FF009C0042F7D5 /* CoreGraphics.framework */,
 				8330717B14FF009C0042F7D5 /* Foundation.framework */,
 				837DD1AC1536291400DF0911 /* libz.dylib */,
 				83452B11152F4DBD00CC358A /* MapKit.framework */,
 				83452B13152F4DC200CC358A /* QuartzCore.framework */,
-				83510E5C187321580022BE1F /* Reveal.framework */,
 				830681B4150582F9007455FC /* Security.framework */,
 				83EF4D1D151038FE007A483B /* SystemConfiguration.framework */,
 				83452AFE152F4CA500CC358A /* TapkuLibrary.bundle */,
@@ -650,16 +646,14 @@
 		8330718014FF009C0042F7D5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				839BF41C159892770049AE42 /* MainStoryboard_iPhone.storyboard */,
-				839BF41B159892770049AE42 /* MainStoryboard_iPad.storyboard */,
-				83311926152771670022FB2A /* LoadingPage_iPhone.storyboard */,
-				8331192B15287ABC0022FB2A /* LoadingPage_iPad.storyboard */,
-				83697848160B89A600972686 /* LoadingSpinner_iPhone.storyboard */,
-				8369784A160B8AF900972686 /* LoadingSpinner_iPad.storyboard */,
 				839C52381501166000232E38 /* Settings.bundle */,
-				8330718114FF009C0042F7D5 /* Argus-Info.plist */,
 				8330718514FF009C0042F7D5 /* main.m */,
 				8330718714FF009C0042F7D5 /* Argus-Prefix.pch */,
+				8330718114FF009C0042F7D5 /* Argus-Info.plist */,
+				83311926152771670022FB2A /* LoadingPage.storyboard */,
+				83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */,
+				839BF41B159892770049AE42 /* MainStoryboard_iPad.storyboard */,
+				839BF41C159892770049AE42 /* MainStoryboard_iPhone.storyboard */,
 			);
 			name = "Supporting Files";
 			path = Support;
@@ -711,7 +705,7 @@
 			isa = PBXGroup;
 			children = (
 				83452B0A152F4CC300CC358A /* libTapkuLibrary.a */,
-				83452B0C152F4CC300CC358A /* LogicTests.octest */,
+				83452B0C152F4CC300CC358A /* LogicTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1031,10 +1025,10 @@
 			remoteRef = 83452B09152F4CC300CC358A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		83452B0C152F4CC300CC358A /* LogicTests.octest */ = {
+		83452B0C152F4CC300CC358A /* LogicTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = LogicTests.octest;
+			path = LogicTests.xctest;
 			remoteRef = 83452B0B152F4CC300CC358A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1048,8 +1042,7 @@
 				839C52391501166000232E38 /* Settings.bundle in Resources */,
 				831E50D41502F66B00FF6697 /* doc.txt in Resources */,
 				830681AC15054D1B007455FC /* Defaults.plist in Resources */,
-				83311927152771670022FB2A /* LoadingPage_iPhone.storyboard in Resources */,
-				8331192C15287ABC0022FB2A /* LoadingPage_iPad.storyboard in Resources */,
+				83311927152771670022FB2A /* LoadingPage.storyboard in Resources */,
 				83452AFF152F4CA500CC358A /* TapkuLibrary.bundle in Resources */,
 				83FC4E06155A0A7C005AF86D /* button_greenbg.png in Resources */,
 				83FC4E07155A0A7C005AF86D /* button_greenbg@2x.png in Resources */,
@@ -1060,6 +1053,7 @@
 				83FC4E0C155A0A7C005AF86D /* chris_stretchable_button_green.png in Resources */,
 				83FC4E0D155A0A7C005AF86D /* chris_stretchable_button_green@2x.png in Resources */,
 				83FC4E0E155A0A7C005AF86D /* chris_stretchable_button_red.png in Resources */,
+				83B0FBD61890BD7B00CCC672 /* LoadingSpinner.xib in Resources */,
 				83FC4E0F155A0A7C005AF86D /* chris_stretchable_button_red@2x.png in Resources */,
 				83FC4E10155A0A7C005AF86D /* chris_stretchable_button_yellow.png in Resources */,
 				83FC4E11155A0A7C005AF86D /* chris_stretchable_button_yellow@2x.png in Resources */,
@@ -1091,8 +1085,6 @@
 				83FC4E2C155A0A7C005AF86D /* tvr_iPad@2x.png in Resources */,
 				839BF41D159892770049AE42 /* MainStoryboard_iPad.storyboard in Resources */,
 				839BF41E159892770049AE42 /* MainStoryboard_iPhone.storyboard in Resources */,
-				83697849160B89A600972686 /* LoadingSpinner_iPhone.storyboard in Resources */,
-				8369784B160B8AF900972686 /* LoadingSpinner_iPad.storyboard in Resources */,
 				8369784D160B90E200972686 /* Default-568h@2x.png in Resources */,
 				830704611653D1BB0098AABA /* argus_logo_57.png in Resources */,
 				830704621653D1BB0098AABA /* argus_logo_72.png in Resources */,
@@ -1237,22 +1229,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = NO;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = "";
@@ -1282,16 +1272,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = NO;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				COPY_PHASE_STRIP = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -1320,15 +1312,19 @@
 		8330719A14FF009C0042F7D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/Frameworks",
+					"$(SYSTEM_APPS_DIR)/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = Frameworks/tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
@@ -1339,10 +1335,7 @@
 					"$(SRCROOT)/Argus",
 					"$(SRCROOT)/Frameworks/TestFlight",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Argus;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1353,16 +1346,19 @@
 		8330719B14FF009C0042F7D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/Frameworks",
+					"$(SYSTEM_APPS_DIR)/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=0";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = Frameworks/tapkulibrary/src/TapkuLibrary;
 				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
@@ -1373,16 +1369,90 @@
 					"$(SRCROOT)/Argus",
 					"$(SRCROOT)/Frameworks/TestFlight",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Argus;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
+		};
+		83B0FBC7188E3D0900CCC672 /* Signed Release Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = NO;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				SDKROOT = iphoneos;
+				SHARED_PRECOMPS_DIR = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Signed Release Debug";
+		};
+		83B0FBC8188E3D0900CCC672 /* Signed Release Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/Frameworks",
+					"$(SYSTEM_APPS_DIR)/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Argus/Support/Argus-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = Frameworks/tapkulibrary/src/TapkuLibrary;
+				INFOPLIST_FILE = "$(SRCROOT)/Argus/Support/Argus-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/Argus",
+					"$(SRCROOT)/Frameworks/TestFlight",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Argus;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = "Signed Release Debug";
 		};
 /* End XCBuildConfiguration section */
 
@@ -1391,6 +1461,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8330719714FF009C0042F7D5 /* Debug */,
+				83B0FBC7188E3D0900CCC672 /* Signed Release Debug */,
 				8330719814FF009C0042F7D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1400,6 +1471,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8330719A14FF009C0042F7D5 /* Debug */,
+				83B0FBC8188E3D0900CCC672 /* Signed Release Debug */,
 				8330719B14FF009C0042F7D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

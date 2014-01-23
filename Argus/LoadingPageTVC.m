@@ -43,6 +43,10 @@
 	// register for notifications that all the following are done, so we can
 	// remove spinners and add checkboxes as we go
 	
+	/* reset all tableview separator insets on iOS7 back to zero */
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
+		[[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ApiVersionDone:) name:kArgusApiVersionDone object:argus];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupsDone:) name:kArgusChannelGroupsDone object:[argus ChannelGroups]];

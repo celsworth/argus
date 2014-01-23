@@ -47,9 +47,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>
-	<string>LoadingPage_iPhone</string>
+	<string>LoadingPage</string>
 	<key>UIMainStoryboardFile~ipad</key>
-	<string>LoadingPage_iPad</string>
+	<string>LoadingPage</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
