@@ -172,8 +172,7 @@
 	
 	if (dark)
 	{
-		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
-		[toolBar setTintColor:[UIColor blackColor]];
+		[toolBar setBarTintColor:[UIColor blackColor]];
 	}
 	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];

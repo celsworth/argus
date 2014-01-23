@@ -61,11 +61,9 @@
 {
     [super viewDidLoad];
 	
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
 	if (dark)
 	{
-		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
+		// no special setup yet
 	}
 	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];

@@ -57,8 +57,6 @@
 
 	if (dark)
 	{
-		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
-
 		[self.tableView setBackgroundView:nil];
 		[self.tableView setBackgroundColor:[UIColor lightGrayColor]];
 	}

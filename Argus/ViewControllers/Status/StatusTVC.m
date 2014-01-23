@@ -59,7 +59,7 @@
 	
 	if (dark)
 	{
-		[[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
+		// no special setup yet
 	}
 	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];

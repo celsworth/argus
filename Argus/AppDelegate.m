@@ -55,6 +55,28 @@
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
 		[[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
 	
+	if (dark)
+	{
+		NSDictionary *textAttributes =
+		@{
+		  UITextAttributeTextColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+		  UITextAttributeTextShadowColor: [UIColor colorWithRed:128.0 green:128.0 blue:128.0 alpha:0.8],
+		  };
+		
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+				
+		[[UISearchBar appearance] setBackgroundColor:[UIColor blackColor]];
+		[[UILabel appearance] setTextColor:[UIColor whiteColor]];
+
+		[[UITableViewCell appearance] setBackgroundColor:[UIColor blackColor]];
+		
+		
+		[[UINavigationBar appearance] setBarTintColor:[UIColor blackColor]];
+		[[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
+		
+		
+		[[UITabBar appearance] setBarTintColor:[UIColor blackColor]];
+	}
     return YES;
 }
 							
