@@ -10,7 +10,7 @@
 
 #import "ArgusGlobalDefinitions.h"
 
-@interface ScheduleViewPRHTVC : UITableViewController
+@interface ScheduleViewPRHTVC : UITableViewController <UIActionSheetDelegate>
 
 @property (nonatomic, retain) ArgusGuid *ScheduleId;
 

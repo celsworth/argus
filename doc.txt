@@ -11,19 +11,12 @@ CODING CONVENTIONS I'M TRYING TO REMEMBER AND STICK TO ;)
 
 
 TODO:
-* connection timeout in preferences?
-
 * add Reachability class and don't bother trying to do anything when offline?
   * finish isWWAN()
-
 
 * When loading new tables which need data, ie Whats On -> Programme List
   the right thing to do seems to be to replace disclosure indicators with a spinner
   then push the view when the data is ready.. implement this everywhere?
-
-
-* schedule edit; "between times" was unset, added some times, didn't say "schedule not saved"
-  work out why and fix
 
 * getSchedules invokes 3 HTTP requests all the time, bit wasteful. could we just do one if scheduleType changed?
 
@@ -40,6 +33,9 @@ OUTSTANDING BUGS/ISSUES:
   we can improve this to O(1) by restoring UpcomingProgrammesKeyedByUpcomingProgramId
 * call cancelLocalNotification after a few minutes so they don't pile up?
 * check that failed connections reduce the networkActivity count properly
+* schedule edit; "between times" was unset, added some times, didn't say "schedule not saved"
+  work out why and fix
+
 
 
 
@@ -75,6 +71,7 @@ MUNDANE STUFF THAT COULD BE IMPROVED (not important)
 
 
 PUBLIC ROADMAP:
+* Recordings browsing and management
 * finish schedules (Directed By, Actors, Current Recordings)
 * colour coded EPG according to programme categories
 * light and dark switchable colour schemes
@@ -82,21 +79,22 @@ PUBLIC ROADMAP:
 * show notifications when an upcoming programme alert is starting
 * localisation
 
+* use kArgusProgrammeOnAirStatusChanged in WhatsOn and ProgrammeList
+  * this is tricky because cell background colours are done outside Cell classes
 
-* Browse/delete recordings
 * make better use of iPad screen space (tedious)
   * probably we don't need to split up edit schedule so much, but this means writing
     a whole new view controller to handle every element on one page?
 	* improve MVC here, check that view controllers aren't doing too much?
 * In-App Prefs?
+  * connection timeout
+  * "Submit anonymous crash reports" closer to release
 * Debug/Internal Settings
   * log of connections and responses
   * forget credentials
   * refetch schedules/upcoming/channels etc
-* "Submit anonymous crash reports" preference closer to release
 * when rotating on dynamic row height screens (Programme List so far), it'd be nice to re-scroll
   the visible rows to what they were before. Investigate how..
-* copy % shown progress view from what's on to ProgrammeList?
 * don't pass Argus* objects around so much, especially ones that can change
   * eg ArgusUpcomingProgramme will be released and remade when the list is updated
   * look for other instances where I do this and fix to pass an Id that won't change instead
@@ -112,7 +110,6 @@ PUBLIC ROADMAP:
 * show "no entries" in various tables when there's nothing to display:
   * search results
 * EPG: if viewing in past, and no programmes are shown, go to Now automatically
-* finish Remove All in View Previously Recorded History
 
 
 Advanced Stuff to consider:
@@ -131,8 +128,10 @@ Advanced Stuff to consider:
   leave manual refresh there for fixing up if they edit on another device
 
 
-NEW IN 0.24
-* crash in Edit Schedule 'On Days' fixed
-* rare crash on switching to EPG Grid fixed
-* experimental threading of some API requests to improve UI responsiveness
-* internal cleanups, as always :)
+NEW IN 0.25
+* 'Remove All' Previously Recorded History for a schedule now works
+* speed optimisations, mostly in EPG Grid
+* EPG Grid updates background box colours much more responsively
+  * (immediately on any programme start/end, not every 60s)
+* TapkuLibrary updated (EPG Grid calendar)
+* internal cleanups

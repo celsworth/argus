@@ -12,6 +12,8 @@
 #import "ArgusSchedule.h"
 #import "ArgusScheduleRecordedProgram.h"
 
+#import "AppDelegate.h"
+
 @implementation ScheduleViewPRHTVC
 @synthesize ScheduleId;
 
@@ -33,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
 	ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:ScheduleId];
 	[Schedule getPRH];
 	
@@ -48,7 +50,7 @@
 											 selector:@selector(redraw)
 												 name:kArgusScheduleRecordedProgramRemoveFromPRHDone
 											   object:nil];
-
+	
 	
 	// set up top-right buttons, "Remove All" and Refresh
 	UIBarButtonItem *removeAllButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove All"
@@ -56,7 +58,6 @@
 																	   target:self
 																	   action:@selector(removeAllPressed:)];
 	[removeAllButton setTintColor:[UIColor colorWithRed:0.8 green:0.2 blue:0.2 alpha:1]];
-	[removeAllButton setEnabled:NO];
 	
 	UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
 																				   target:self
@@ -109,13 +110,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:ScheduleId];
-
+	
 	if ([[Schedule PreviouslyRecordedHistory] count] == 0)
 		return [tableView dequeueReusableCellWithIdentifier:@"PRHNoneCell"];
-
+	
 	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PRHCell"];
-
+	
 	ArgusScheduleRecordedProgram *srp = Schedule.PreviouslyRecordedHistory[indexPath.row];
     
 	// could make this a tablecell class
@@ -164,7 +165,7 @@
 {
 	ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:ScheduleId];
 	ArgusScheduleRecordedProgram *srp = [Schedule PreviouslyRecordedHistory][indexPath.row];
-
+	
 	[srp removeFromPRH];
 	
 	// redraw so the spinny appears
@@ -180,9 +181,29 @@
 
 -(IBAction)removeAllPressed:(id)sender
 {
-	NSLog(@"%s not done yet", __PRETTY_FUNCTION__);
+	// confirmation dialog
 	
+	UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Confirm Remove All", nil)
+													delegate:self
+										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									  destructiveButtonTitle:NSLocalizedString(@"Remove All", nil)
+										   otherButtonTitles:nil];
+	if (iPad())
+		[as showInView:self.view];
+	else
+		[as showFromTabBar:self.tabBarController.tabBar];
 	
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	// cancel == 1
+	// delete == 0
+	if (buttonIndex == 0)
+	{
+		// trigger the deletion
+		ArgusSchedule *Schedule = [ArgusSchedule ScheduleForScheduleId:ScheduleId];
+		[Schedule clearPRH];
+	}
 }
 
 @end

@@ -788,9 +788,34 @@
 	[AppDelegate releaseLoadingSpinner];
 }
 
-// deleteFromPRH
-// actually, put this in ArgusScheduleRecordedProgram
-
+// ClearPreviouslyRecordedHistory/{scheduleId}
+-(void)clearPRH
+{
+	[AppDelegate requestLoadingSpinner];
+	
+	NSString *url = [NSString stringWithFormat:@"Control/ClearPreviouslyRecordedHistory/%@", [self Property:kScheduleId]];
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(clearPRHDone:)
+												 name:kArgusConnectionDone
+											   object:c];
+}
+-(void)clearPRHDone:(NSNotification *)notify
+{
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
+	// there will be no more notifications from that object
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
+	
+	// now we need to refresh our PRH
+	[self getPRH];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusScheduleClearPRHDone object:self];
+	
+	[AppDelegate releaseLoadingSpinner];
+}
 
 
 #pragma mark - Schedule Saving

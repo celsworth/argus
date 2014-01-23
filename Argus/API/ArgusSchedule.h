@@ -15,7 +15,7 @@
 #define kArgusSaveScheduleDone       @"ArgusSaveScheduleDone"
 
 #define kArgusScheduleGetPRHDone     @"kArgusScheduleGetPRHDone"
-#define kArgusScheduleDelPRHItemDone @"kArgusScheduleDelPRHItemDone"
+#define kArgusScheduleClearPRHDone   @"kArgusScheduleClearPRHDone"
 
 
 typedef enum {
@@ -192,6 +192,7 @@ typedef enum {
 -(void)getUpcomingProgrammes;
 
 -(void)getPRH;
+-(void)clearPRH;
 
 
 -(void)save;
