@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Elsworth IT Consulting Ltd. All rights reserved.
 //
 
+// This is the controlling class called from my code.
+// It inits a LoadingSpinnerViewController by loading a nib which has one in it.
+
 #import <QuartzCore/QuartzCore.h>
 
 #import "LoadingSpinner.h"
@@ -24,8 +27,8 @@
 	
 	if (self = [super init])
 	{
-		UIStoryboard *tmp = [UIStoryboard storyboardWithName:(iPad() ? @"LoadingSpinner_iPad" : @"LoadingSpinner_iPhone") bundle:nil];
-		self.vc = [tmp instantiateInitialViewController];
+		// this is an autolayout nib, and its so simple one nib will do for iPad and iPhone
+		self.vc = [[[NSBundle mainBundle] loadNibNamed:@"LoadingSpinner" owner:self options:nil] firstObject];
 	}
 	return self;
 }
@@ -34,6 +37,7 @@
 {
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
+	// the fullscreen main view in the nib
 	UIView *view = [self.vc view];
 	
 	view.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.5];
