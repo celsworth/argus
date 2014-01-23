@@ -29,12 +29,12 @@
 		// populate will be called when CurrentAndNextDone calls us back
 		
 		// be notified when channel groups change, and refresh our display (Argus.m will always pre-select one)
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWhatsOn:)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:)
 													 name:kArgusChannelGroupsDone
 												   object:[argus ChannelGroups]];
 		
 		// be notified when the active channel group changes (from another view probably)
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWhatsOn:)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:)
 													 name:kArgusSelectedChannelGroupChanged
 												   object:[argus ChannelGroups]];
 		
@@ -248,9 +248,9 @@
 
 
 #pragma mark - Navigation Bar Buttons
--(IBAction)refreshWhatsOn:(id)sender
+-(IBAction)refresh:(id)sender
 {
-	NSLog(@"%s (%@)", __PRETTY_FUNCTION__, sender);
+	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	ArgusChannelGroup *scg = [[argus ChannelGroups] SelectedChannelGroup];
 	[scg getCurrentAndNext];
@@ -320,10 +320,10 @@
 		if (isOnWWAN())
 		{
 			if (autoReloadDataOn3G)
-				[self refreshWhatsOn:self];
+				[self refresh:self];
 		}
 		else
-			[self refreshWhatsOn:self];
+			[self refresh:self];
 	}
 }
 

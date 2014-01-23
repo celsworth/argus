@@ -88,7 +88,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="FV2-8B-q7Y">
                             <connections>
-                                <action selector="refreshWhatsOn:" destination="1ph-Le-6MQ" id="hXL-Zc-gbh"/>
+                                <action selector="refresh:" destination="1ph-Le-6MQ" id="ar6-gY-k53"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

@@ -19,7 +19,7 @@
 
 @property (nonatomic, retain) NSTimer *autoRedrawTimer;
 
--(IBAction)refreshWhatsOn:(id)sender;
+-(IBAction)refresh:(id)sender;
 
 -(void)reloadData;
 

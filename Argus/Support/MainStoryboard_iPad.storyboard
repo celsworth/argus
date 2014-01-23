@@ -363,7 +363,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="85W-z2-wRW">
                             <connections>
-                                <action selector="refreshWhatsOn:" destination="UTy-J8-ksu" id="iNa-o6-gns"/>
+                                <action selector="refresh:" destination="UTy-J8-ksu" id="6Mj-hN-pCk"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
