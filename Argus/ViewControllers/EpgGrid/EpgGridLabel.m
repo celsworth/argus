@@ -32,8 +32,9 @@
 	viewPadding = 3;
 	
 	// watch for programme updates
-	[[NSNotificationCenter defaultCenter] addObserverForName:kArgusProgrammeOnAirStatusChanged
-													  object:Programme queue:[NSOperationQueue mainQueue]
+	[[NSNotificationCenter defaultCenter] addObserverForName:nil
+													  object:Programme
+													   queue:[NSOperationQueue mainQueue]
 												  usingBlock:^(NSNotification *note)
 	 {
 		 //NSLog(@"%s", __PRETTY_FUNCTION__);

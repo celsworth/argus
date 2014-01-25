@@ -51,13 +51,9 @@
 {
     [super viewDidLoad];
 	
-	// refresh when upcoming programmes returns, just to make sure we're accurate
+	/// redraw whenever the programme tells us anything
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redraw)
-												 name:kArgusUpcomingProgrammesDone
-											   object:[argus UpcomingProgrammes]];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redraw)
-												 name:kArgusProgrammeDone
+												 name:nil
 											   object:self.Programme];
 }
 

@@ -20,9 +20,10 @@ typedef enum {
 } ArgusProgrammeBgColour;
 
 
-#define kArgusProgrammeDone                 @"ArgusProgrammeDone"
+#define kArgusProgrammeDone                     @"ArgusProgrammeDone"
 
-#define kArgusProgrammeOnAirStatusChanged   @"ArgusProgrammeOnAirStatusChanged"
+#define kArgusProgrammeOnAirStatusChanged       @"ArgusProgrammeOnAirStatusChanged"
+#define kArgusProgrammeUpcomingProgrammeChanged @"kArgusProgrammeUpcomingProgrammeChanged"
 
 
 @class ArgusChannel;
@@ -38,8 +39,7 @@ typedef enum {
 
 
 // caches
-@property (nonatomic, retain) ArgusUpcomingProgramme *UpcomingProgrammeCached;
-@property (nonatomic, assign) BOOL UpcomingProgrammeHaveCached;
+@property (nonatomic, retain) ArgusUpcomingProgramme *upcomingProgramme;
 @property (nonatomic, assign) BOOL isOnNow;
 @property (nonatomic, assign) BOOL hasFinished;
 
@@ -57,16 +57,10 @@ typedef enum {
 +(UIColor *)fgColourStd;
 +(UIColor *)fgColourAlreadyShown;
 
-
 -(id)initWithDictionary:(NSDictionary *)input;
-
-//-(BOOL)populateSelfFromDictionary:(NSDictionary *)input;
 
 -(void)getFullDetails;
 
-
 -(NSString *)uniqueIdentifier;
-
--(ArgusUpcomingProgramme *)upcomingProgramme;
 
 @end

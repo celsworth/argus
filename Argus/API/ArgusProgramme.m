@@ -132,12 +132,17 @@
 	if (self)
 	{
 		[self populateSelfFromDictionary:input];
-		
-		// invalidate UpcomingProgrammeCached when necessary
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(killUpcomingProgrammeCache:)
-													 name:kArgusUpcomingProgrammesDone
-												   object:[argus UpcomingProgrammes]];
+				
+		// when we fetch a new Upcoming Programmes list, recheck to see if this Programme is in them
+		[[NSNotificationCenter defaultCenter] addObserverForName:kArgusUpcomingProgrammesDone
+														  object:[argus UpcomingProgrammes]
+														   queue:[NSOperationQueue new] // runs in background
+													  usingBlock:^(NSNotification *note)
+		 {
+			 [self redoUpcomingProgramme];
+		 }];
 	}
+	
 	return self;
 }
 -(void)dealloc
@@ -148,6 +153,17 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.programmeStartOrEndTimer invalidate];
+}
+
+-(void)redoUpcomingProgramme
+{
+	self.UpcomingProgramme = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
+}
+// default setter override to post a notification as well
+-(void)setUpcomingProgramme:(ArgusUpcomingProgramme *)upcomingProgramme
+{
+	_upcomingProgramme = upcomingProgramme;
+	[OnMainThread postNotificationName:kArgusProgrammeUpcomingProgrammeChanged object:self userInfo:nil];
 }
 
 -(void)initProgrammeStartOrEndTimer
@@ -207,15 +223,6 @@
 		[timer invalidate];
 		[self initProgrammeStartOrEndTimer];
 	}
-}
-
-// when the list of upcoming programmes changes,
-// our -upcomingProgramme will need to re-evaluate it's cache
-// so kill the cache and let it re-evaluate when its next called
--(void)killUpcomingProgrammeCache:(NSNotification *)notify
-{
-	self.UpcomingProgrammeHaveCached = NO;
-	self.UpcomingProgrammeCached = nil;
 }
 
 -(BOOL)populateSelfFromDictionary:(NSDictionary *)input
@@ -336,26 +343,6 @@
 	
 	// old, slow way
 	//return [NSString stringWithFormat:@"%@-%@-%@", ChannelId, self.StartTime, Title];
-}
-
-// find an ArgusUpcomingProgramme that matches this ArgusProgramme
--(ArgusUpcomingProgramme *)upcomingProgramme
-{
-	if (self.UpcomingProgrammeHaveCached)
-		return self.UpcomingProgrammeCached;
-	
-	if ([[[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier] count] == 0)
-	{
-		self.UpcomingProgrammeHaveCached = YES;
-		self.UpcomingProgrammeCached = nil;
-		return self.UpcomingProgrammeCached;
-	}
-	
-	// cache the upcoming programme, it's expensive to calculate.
-	// this cache is nuked when ArgusUpcomingProgrammesDone is seen (new upcoming programmes list)
-	self.UpcomingProgrammeCached = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
-	self.UpcomingProgrammeHaveCached = YES;
-	return self.UpcomingProgrammeCached;
 }
 
 -(ArgusProgrammeBgColour)backgroundColour
