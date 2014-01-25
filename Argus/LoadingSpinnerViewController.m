@@ -34,21 +34,22 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	
-	CGFloat cornerRadius = 10.0f;
+	// removed for iOS7
+	//CGFloat cornerRadius = 10.0f;
+	//[_pleaseWait.layer setCornerRadius:cornerRadius];
 	
-	[_pleaseWait.layer setCornerRadius:cornerRadius];
 	[_pleaseWait.layer setBorderColor:[UIColor lightGrayColor].CGColor];
 	[_pleaseWait.layer setBorderWidth:1.5f];
 	
 	[_pleaseWait.layer setShadowColor:[UIColor blackColor].CGColor];
-	[_pleaseWait.layer setShadowOpacity:0.8];
-	[_pleaseWait.layer setShadowRadius:3.0];
+	[_pleaseWait.layer setShadowOpacity:0.7];
+	[_pleaseWait.layer setShadowRadius:2.0];
 	[_pleaseWait.layer setShadowOffset:CGSizeMake(2, 2)];
 	
-	[_pleaseWait.layer setShadowPath:[UIBezierPath bezierPathWithRoundedRect:_pleaseWait.bounds cornerRadius:cornerRadius].CGPath];
+	// removed for iOS7
+	//[_pleaseWait.layer setShadowPath:[UIBezierPath bezierPathWithRoundedRect:_pleaseWait.bounds cornerRadius:cornerRadius].CGPath];
 
 	_progressView.hidden = YES;
-
 }
 
 - (void)didReceiveMemoryWarning
