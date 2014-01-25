@@ -44,7 +44,7 @@
 	dark = NO;
 	autoReloadDataOn3G = YES;
 	notifyForUpcomingAlerts = [defaults integerForKey:kArgusPreferenceNotifyForAlert];
-
+	
 	UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 	if (localNotification)
 	{
@@ -79,7 +79,7 @@
 	}
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     /*
@@ -91,7 +91,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
 }
@@ -115,7 +115,7 @@
 		[[argus RecordingFileFormats] getRecordingFileFormats];
 		[[argus UpcomingProgrammes] getUpcomingProgrammes];
 	}
-
+	
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -137,7 +137,7 @@
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
 	NSLog(@"%s %@", __PRETTY_FUNCTION__, notification);
-
+	
 	// don't think I need to do this?
 	//[[UIApplication sharedApplication] cancelLocalNotification:notification];
 	
@@ -147,16 +147,16 @@
 	
 	[[[argus UpcomingProgrammes] UpcomingAlerts] enumerateObjectsUsingBlock:
 	 ^(ArgusUpcomingProgramme *obj, NSUInteger idx, BOOL *stop)
-	{
-		if ([[obj Property:kUpcomingProgramId] isEqualToString:UpcomingProgrammeId])
-		{
-			[obj showLocalNotification];
-			*stop = YES;
-		}
-	}];
+	 {
+		 if ([[obj Property:kUpcomingProgramId] isEqualToString:UpcomingProgrammeId])
+		 {
+			 [obj showLocalNotification];
+			 *stop = YES;
+		 }
+	 }];
 	
 	
-
+	
 }
 
 +(AppDelegate *)sharedInstance
