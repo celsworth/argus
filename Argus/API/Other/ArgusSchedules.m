@@ -16,8 +16,6 @@
 #import "ArgusConnection.h"
 #import "AppDelegate.h"
 
-#import "SBJson.h"
-
 @implementation ArgusSchedules
 
 -(id)init
@@ -136,8 +134,7 @@
 	// notify userInfo now needs parsing into Schedules
 	NSData *data = [notify userInfo][@"data"];
 	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSArray *jsonObject = [jsonParser objectWithData:data];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	

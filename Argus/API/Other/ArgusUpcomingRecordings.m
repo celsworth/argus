@@ -17,9 +17,6 @@
 #import "ArgusConnection.h"
 #import "AppDelegate.h"
 
-//#import "SBJson.h"
-#import "JSONKit.h"
-
 @implementation ArgusUpcomingRecordings
 
 -(id)init
@@ -90,9 +87,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//	NSDictionary *jsonObject = [jsonParser objectWithData:data];
-	NSDictionary *jsonObject = [data objectFromJSONData];
+	NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];
@@ -145,9 +140,7 @@
 	
 	NSData *data = [[notify userInfo] objectForKey:@"data"];
 	
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//NSDictionary *jsonObject = [jsonParser objectWithData:data];
-	NSDictionary *jsonObject = [data objectFromJSONData];
+	NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];

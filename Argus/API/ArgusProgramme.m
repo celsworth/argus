@@ -12,8 +12,6 @@
 
 #import "AppDelegate.h"
 
-#import "SBJson.h"
-
 #import "NSString+JSONDate.h"
 #import "NSDate+Formatter.h"
 
@@ -283,8 +281,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSDictionary *jsonObject = [jsonParser objectWithData:data];
+	NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	//[self populateSelfFromDictionary:jsonObject];
 	// do not nuke originalData in here, merge them

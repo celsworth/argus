@@ -12,8 +12,6 @@
 #import "ArgusChannel.h"
 #import "ArgusProgramme.h"
 
-#import "JSONKit.h"
-
 // representation of a single ChannelGroup object as sent from Argus, plus our own extra bits
 
 @implementation ArgusChannelGroup
@@ -87,7 +85,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
@@ -118,9 +116,9 @@
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	NSString *body = [@{kChannelGroupId: self.ChannelGroupId} JSONString];
-	
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	// create a temporary dictionary to convert into JSON, to send as request body
+	NSDictionary *tmpDict = @{kChannelGroupId: self.ChannelGroupId};
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:tmpDict options:0 error:nil]];
 	
 	[c enqueue];
 	
@@ -144,7 +142,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
@@ -227,8 +225,7 @@
 	
 	//NSLog(@"%@", bodyDict);
 	
-	NSError *error;
-	[conn setHTTPBody:[bodyDict JSONDataWithOptions:JKSerializeOptionNone error:&error]];
+	[conn setHTTPBody:[NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil]];
 	
 	[conn enqueue];
 	
@@ -268,7 +265,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableDictionary *tmpDict = [NSMutableDictionary new];
 	

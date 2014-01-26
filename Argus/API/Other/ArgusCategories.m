@@ -11,8 +11,6 @@
 
 #import "AppDelegate.h"
 
-#import "JSONKit.h"
-
 @implementation ArgusCategories
 
 -(id)init
@@ -51,7 +49,7 @@
 		 [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 		 
 		 NSData *data = [notify userInfo][@"data"];
-		 NSArray *jsonObject = [data objectFromJSONData];
+		 NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		 NSMutableArray *tmpArr = [NSMutableArray new];
 		 
 		 for (NSString *category in jsonObject)

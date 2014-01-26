@@ -12,8 +12,6 @@
 #import "ArgusConnection.h"
 #import "AppDelegate.h"
 
-#import "JSONKit.h"
-
 @implementation ArgusRecordingFileFormats
 
 -(id)init
@@ -48,7 +46,7 @@
 		 [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 		 
 		 NSData *data = [notify userInfo][@"data"];
-		 NSArray *jsonObject = [data objectFromJSONData];
+		 NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		 
 		 NSMutableArray *tmpArr = [NSMutableArray new];
 		 NSMutableDictionary *tmpDict = [NSMutableDictionary new];

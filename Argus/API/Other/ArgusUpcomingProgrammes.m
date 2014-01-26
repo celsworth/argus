@@ -15,8 +15,6 @@
 #import "ArgusConnection.h"
 #import "AppDelegate.h"
 
-#import "JSONKit.h"
-
 @implementation ArgusUpcomingProgrammes
 
 // init from the global Argus object
@@ -195,7 +193,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
@@ -303,7 +301,6 @@
 	tmp[@"IncludeCancelled"] = @YES;
 	
 	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingProgramsForSchedule"];
-	NSString *body = [tmp JSONString];
 	
 	// block to run when the request finishes
 	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
@@ -316,7 +313,7 @@
 			return;
 		}
 		
-		NSDictionary *jsonObject = [data objectFromJSONData];
+		NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		//NSLog(@"%@", jsonObject);
 		
 		NSMutableArray *tmpArr = [NSMutableArray new];
@@ -345,7 +342,7 @@
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO completionBlock:cmp];
 	
 	//NSLog(@"%s: upcoming for: %@", __PRETTY_FUNCTION__, [self.IsForSchedule originalData]);
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:tmp options:0 error:nil]];
 	[c enqueue];
 }
 

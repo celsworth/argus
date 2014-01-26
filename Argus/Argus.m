@@ -14,9 +14,6 @@
 
 #import "ArgusUpcomingRecordings.h"
 
-#import "SBJson.h"
-#import "JSONKit.h"
-
 #import "AppDelegate.h"
 
 // encapsulating class for all communications with Argus Services.
@@ -114,9 +111,7 @@
 	// there will be no more notifications from that object
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
-	//SBJsonParser *jsonParser = [SBJsonParser new];
-	//NSArray *jsonObject = [jsonParser objectWithData:data];
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
 	
 	for (NSDictionary *d in jsonObject)
 	{
@@ -175,7 +170,7 @@
 		if (error) // error shown in ArgusConnectionQueue
 			return [OnMainThread postNotificationName:kArgusLiveStreamsDone object:self userInfo:nil];
 		
-		NSArray *jsonObject = [[SBJsonParser new] objectWithData:data];
+		NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		
 		NSMutableArray *tmpArr = [NSMutableArray new];
 		
@@ -203,7 +198,7 @@
 		if (error) // error shown in ArgusConnectionQueue
 			return [OnMainThread postNotificationName:kArgusActiveRecordingsDone object:self userInfo:nil];
 		
-		NSArray *jsonObject = [[SBJsonParser new] objectWithData:data];
+		NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		
 		NSMutableArray *tmpArr = [NSMutableArray new];
 		
@@ -230,7 +225,7 @@
 		if (error) // error shown in ArgusConnectionQueue
 			return [OnMainThread postNotificationName:kArgusRecordingDisksInfoDone object:self userInfo:nil];
 		
-		NSDictionary *jsonObject = [[SBJsonParser new] objectWithData:data];
+		NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		
 		self.RecordingDisksInfo = [[ArgusRecordingDisksInfo alloc] initWithDictionary:jsonObject];
 		

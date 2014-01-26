@@ -18,9 +18,6 @@
 
 #import "AppDelegate.h"
 
-#import "SBJson.h"
-#import "JSONKit.h"
-
 @implementation ArgusScheduleRule
 
 -(id)initWithSuperType:(ArgusScheduleRuleSuperType)SuperType
@@ -679,8 +676,7 @@
 	
 	NSData *data = [notify userInfo][@"data"];
 	
-	SBJsonParser *jsonParser = [SBJsonParser new];
-	NSDictionary *jsonObject = [jsonParser objectWithData:data];
+	NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	//NSLog(@"%s %@", __PRETTY_FUNCTION__, jsonObject);
 	
@@ -768,7 +764,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
 	
 	NSData *data = [notify userInfo][@"data"];
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	
@@ -830,13 +826,7 @@
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	//NSLog(@"%@", url);
-	
-	NSString *body = [self.originalData JSONRepresentation];
-	
-	NSLog(@"Saving Schedule: %@", body);
-	
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:self.originalData options:0 error:nil]];
 	
 	[c enqueue];
 	
@@ -859,8 +849,7 @@
 	
 	if (statusCode == 200)
 	{
-		SBJsonParser *jsonParser = [SBJsonParser new];
-		NSDictionary *jsonObject = [jsonParser objectWithData:data];
+		NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		
 		// populateSelfFromDictionary sets Schedule.Modified=NO
 		[self populateSelfFromDictionary:jsonObject];

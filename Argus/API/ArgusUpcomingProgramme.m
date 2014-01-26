@@ -21,8 +21,6 @@
 #import "DeviceDetection.h"
 #import "ArgusScheduleIcons.h"
 
-#import "JSONKit.h"
-
 @implementation ArgusUpcomingProgramme
 
 // given an UpcomingProgramId, look up an existing ArgusUpcomingProgramme object in the UpcomingProgrammes dictionary
@@ -249,9 +247,7 @@
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	NSString *body = [self.originalData JSONString];
-	
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:self.originalData options:0 error:nil]];
 	
 	[c enqueue];
 	
@@ -283,9 +279,7 @@
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
-	NSString *body = [self.originalData JSONString];
-	
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:self.originalData options:0 error:nil]];
 	
 	[c enqueue];
 	

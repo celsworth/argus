@@ -10,8 +10,6 @@
 
 #import "ArgusConnection.h"
 
-#import "JSONKit.h"
-
 @implementation ArgusChannelGroups
 
 -(id)init
@@ -84,7 +82,7 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	

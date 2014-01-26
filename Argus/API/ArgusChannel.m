@@ -9,8 +9,6 @@
 #import "ArgusChannel.h"
 #import "Argus.h"
 
-#import "JSONKit.h"
-
 #import "AppDelegate.h"
 
 #import "NSDateFormatter+LocaleAdditions.h"
@@ -100,7 +98,7 @@
 	BOOL dumpData = NO;
 	
 	NSData *data = [notify userInfo][@"data"];
-	NSArray *jsonObject = [data objectFromJSONData];
+	NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	NSMutableArray *tmpArr = [NSMutableArray new];
 	

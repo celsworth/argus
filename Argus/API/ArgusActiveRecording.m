@@ -9,10 +9,6 @@
 #import "Argus.h"
 #import "ArgusActiveRecording.h"
 
-#import "SBJson.h"
-
-#import "NSString+JSONDate.h"
-
 #import "AppDelegate.h"
 
 @implementation ArgusActiveRecording
@@ -58,8 +54,7 @@
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
 	
 	// request body is the live stream to stop, ie ourselves
-	NSString *body = [self.originalData JSONRepresentation];
-	[c setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:self.originalData options:0 error:nil]];
 	
 	[c enqueue];
 	
