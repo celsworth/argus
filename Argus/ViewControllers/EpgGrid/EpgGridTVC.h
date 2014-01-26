@@ -16,6 +16,8 @@
 
 #import "EpgGridCalendarPickerVC.h"
 
+#define kArgusEpgGridStartHour 3
+
 @interface EpgGridTVC : UIViewController <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, SelectChannelGroupDelegate, EpgGridLabelDelegate, EpgGridChannelDelegate, TKCalendarMonthViewDelegate, UIActionSheetDelegate> {
     //IBOutlet UIScrollView *sv1;
 	IBOutlet UIScrollView *sv2;

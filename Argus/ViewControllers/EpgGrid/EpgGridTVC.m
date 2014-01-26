@@ -278,11 +278,11 @@
 	// subtract 3 hours from the passed-in date, so when the user is viewing midnight-2:59am, we drop back
 	// into the previous day, because our EPG runs from 3am-3am.
 	NSDateComponents *cmps = [cal components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-									fromDate:[date dateByAddingTimeInterval:-10800]];
+									fromDate:[date dateByAddingTimeInterval:-kArgusEpgGridStartHour]];
 	
 	
 	// our EPG day starts at 3am
-	[cmps setHour:3];
+	[cmps setHour:kArgusEpgGridStartHour];
 	
 	return [cal dateFromComponents:cmps];
 }
@@ -699,8 +699,13 @@
 #pragma mark - TKCalendarMonthView delegate
 -(void)calendarMonthView:(TKCalendarMonthView *)monthView didSelectDate:(NSDate *)date
 {
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	[self zoomToDate:date animated:YES];
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, date);
+	
+	// because our EPG starts at 3am, we need to add 3 hours to this.
+	// otherwise zoomToDate thinks we want the previous day to what we actually selected.
+	NSDate *actualZoom = [date dateByAddingTimeInterval:kArgusEpgGridStartHour];
+	
+	[self zoomToDate:actualZoom animated:YES];
 	
 	if (!iPad())
 	{
