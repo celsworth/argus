@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Reachability.h"
+
 #import "Argus.h"
 #import "ArgusConnectionQueue.h"
 #import "LoadingSpinner.h"
@@ -50,7 +52,7 @@ ArgusPreferenceAlertNotification notifyForUpcomingAlerts;
 #define iPhone() ([[UIDevice currentDevice] userInterfaceIdiom] != UIUserInterfaceIdiomPad)
 
 
-#define isOnWWAN() ([AppDelegate isOnWWAN])
+#define isOnWWAN() ([[AppDelegate sharedInstance] isOnWWAN])
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -62,6 +64,9 @@ ArgusPreferenceAlertNotification notifyForUpcomingAlerts;
 
 @property (nonatomic, assign) BOOL refreshDataWhenForegrounded;
 
+@property (nonatomic) Reachability *reachability;
+
+
 +(AppDelegate *)sharedInstance;
 
 +(void) requestNetworkActivityIndicator;
@@ -70,7 +75,7 @@ ArgusPreferenceAlertNotification notifyForUpcomingAlerts;
 +(void) requestLoadingSpinner;
 +(void) releaseLoadingSpinner;
 
-+(BOOL)isOnWWAN;
+-(BOOL)isOnWWAN;
 
 @end
 

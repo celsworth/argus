@@ -40,6 +40,14 @@
 	// also handles failures and stuff
 	_arguscq = [ArgusConnectionQueue new];
 	
+	
+	self.reachability = [Reachability reachabilityWithHostName:[defaults stringForKey:@"host_preference"]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:)
+												 name:kReachabilityChangedNotification
+											   object:self.reachability];
+	[self.reachability startNotifier];
+	
+	
 	// global pointers to preferences
 	dark = NO;
 	autoReloadDataOn3G = YES;
@@ -210,11 +218,29 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 	}
 }
 
-
-
-// call Reachability?
-+(BOOL)isOnWWAN
+-(void)reachabilityChanged:(NSNotification *)note
 {
+	Reachability *curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+
+	NetworkStatus netStatus = [curReach currentReachabilityStatus];
+	
+	NSLog(@"%s %d", __PRETTY_FUNCTION__, [[note object] currentReachabilityStatus]);
+	
+}
+
+-(BOOL)isOnWWAN
+{
+	NetworkStatus netStatus = [[self reachability] currentReachabilityStatus];
+	switch (netStatus)
+	{
+		default:
+			return NO;
+			
+		case ReachableViaWWAN:
+			return YES;
+			
+	}
 	return NO;
 }
 
