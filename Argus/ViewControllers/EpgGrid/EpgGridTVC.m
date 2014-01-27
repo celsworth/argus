@@ -843,23 +843,15 @@
 	[self reloadData];
 	
 	// 1.6.1.0 B7 (API 50) and newer have an API call we can use to get all channel data for a CG
-	// no need for this if (we can't do it anyway, we don't know the server apiversion)
 	// if the new API call fails, we fall back in ChannelGroupProgrammesFail
-	// if (apiVersion >= 50)
-	{
-		[cg getProgrammesFrom:epgStartTime to:[epgStartTime dateByAddingTimeInterval:86400]];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupProgrammesDone:)
-													 name:kArgusProgrammesDone
-												   object:cg];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupProgrammesFail:)
-													 name:kArgusProgrammesFail
-												   object:cg];
-		
-		return;
-	}
 	
-	// older ones have to get a channel at a time
-	[self getProgrammesForChannelGroupOneAtATime:cg];
+	[cg getProgrammesFrom:epgStartTime to:[epgStartTime dateByAddingTimeInterval:86400]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupProgrammesDone:)
+												 name:kArgusProgrammesDone
+											   object:cg];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelGroupProgrammesFail:)
+												 name:kArgusProgrammesFail
+											   object:cg];
 }
 
 -(void)ChannelGroupProgrammesFail:(NSNotification *)notify
