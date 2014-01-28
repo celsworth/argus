@@ -872,6 +872,8 @@
 	
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
+	//NSDate *start = [NSDate date];
+	
 	ArgusChannelGroup *cg = [notify object];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:cg];
@@ -928,6 +930,8 @@
 		labelsByIndexPath[@(row)] = tmpArr;
 	}
 	
+	//NSLog(@"%s took %f seconds", __PRETTY_FUNCTION__, [[NSDate date] timeIntervalSinceDate:start]);
+
 	[tv_chanlogos reloadData]; [tv reloadData];
 	
 	[self updateVisibleLabels];
