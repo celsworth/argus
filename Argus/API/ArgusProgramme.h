@@ -43,6 +43,8 @@ typedef enum {
 @property (nonatomic, assign) BOOL isOnNow;
 @property (nonatomic, assign) BOOL hasFinished;
 
+@property (nonatomic, retain) NSString *uniqueIdentifierCached;
+
 -(void)setChannel:(ArgusChannel *)c;
 -(ArgusChannel *)Channel;
 
@@ -59,6 +61,7 @@ typedef enum {
 
 -(id)initWithDictionary:(NSDictionary *)input;
 
+/// Calls Guide/Program/$GuideProgramId
 -(void)getFullDetails;
 
 -(NSString *)uniqueIdentifier;

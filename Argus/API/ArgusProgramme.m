@@ -123,6 +123,7 @@
 	return col;
 }
 
+#pragma mark - Instance Lifecycle
 
 -(id)initWithDictionary:(NSDictionary *)input
 {
@@ -130,7 +131,7 @@
 	if (self)
 	{
 		[self populateSelfFromDictionary:input];
-				
+		
 		// when we fetch a new Upcoming Programmes list, recheck to see if this Programme is in them
 		[[NSNotificationCenter defaultCenter] addObserverForName:kArgusUpcomingProgrammesDone
 														  object:[argus UpcomingProgrammes]
@@ -153,16 +154,55 @@
 	[self.programmeStartOrEndTimer invalidate];
 }
 
--(void)redoUpcomingProgramme
-{
-	self.UpcomingProgramme = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
-}
+#pragma mark - Setter Overrides
+
 // default setter override to post a notification as well
 -(void)setUpcomingProgramme:(ArgusUpcomingProgramme *)upcomingProgramme
 {
-	_upcomingProgramme = upcomingProgramme;
-	[OnMainThread postNotificationName:kArgusProgrammeUpcomingProgrammeChanged object:self userInfo:nil];
+	if (_upcomingProgramme != upcomingProgramme)
+	{
+		_upcomingProgramme = upcomingProgramme;
+		[OnMainThread postNotificationName:kArgusProgrammeUpcomingProgrammeChanged object:self userInfo:nil];
+	}
 }
+-(void)setChannel:(ArgusChannel *)c
+{
+	_Channel = c;
+	
+	[self redoUpcomingProgramme];
+}
+
+#pragma mark - Instance Population
+
+-(BOOL)populateSelfFromDictionary:(NSDictionary *)input
+{
+	if (! [super populateSelfFromDictionary:input])
+		return NO;
+	
+	// cache some commonly used hard-to-calculate values
+	self.StartTime = [self Property:kStartTime];
+	self.StopTime = [self Property:kStopTime];
+	
+	[self initProgrammeStartOrEndTimer];
+	
+	[self redoUpcomingProgramme];
+	
+	return YES;
+}
+
+
+-(void)redoUpcomingProgramme
+{
+	//NSLog(@"%s", __PRETTY_FUNCTION__);
+	
+	// uniqueIdentifier relies on having a channel present, so this just won't work if there isn't one
+	if (self.Channel && [[[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier] count] > 0)
+	{
+		self.UpcomingProgramme = [[argus UpcomingProgrammes] UpcomingProgrammesKeyedByUniqueIdentifier][[self uniqueIdentifier]];
+	}
+}
+
+#pragma mark - Start/End Timer
 
 -(void)initProgrammeStartOrEndTimer
 {
@@ -223,40 +263,7 @@
 	}
 }
 
--(BOOL)populateSelfFromDictionary:(NSDictionary *)input
-{
-	if (! [super populateSelfFromDictionary:input])
-		return NO;
-	
-	// cache some commonly used hard-to-calculate values
-	self.StartTime = [self Property:kStartTime];
-	self.StopTime = [self Property:kStopTime];
-	
-	[self initProgrammeStartOrEndTimer];
-	
-	return YES;
-}
-
--(id)Property:(NSString *)what
-{
-	// couple of overrides to improve performance
-	if (self.StartTime && [what isEqual:kStartTime])
-		return self.StartTime;
-	
-	if (self.StopTime && [what isEqual:kStopTime])
-		return self.StopTime;
-	
-	return [super Property:what];
-}
-
-#if 0
--(void)setChannel:(ArgusChannel *)c
-{
-	// debugging why channels are getting set to nil
-	NSLog(@"setting channel of %@ to %@", [self Property:kTitle], c);
-	_Channel = c;
-}
-#endif
+#pragma mark - API Calls
 
 -(void)getFullDetails
 {
@@ -300,9 +307,27 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammeDone object:self];
 }
 
+#pragma mark - Property Override (optimisation)
+
+-(id)Property:(NSString *)what
+{
+	// couple of overrides to improve performance
+	if (self.StartTime && [what isEqual:kStartTime])
+		return self.StartTime;
+	
+	if (self.StopTime && [what isEqual:kStopTime])
+		return self.StopTime;
+	
+	return [super Property:what];
+}
+
+#pragma mark - Misc
 
 -(NSString *)uniqueIdentifier
 {
+	if (self.uniqueIdentifierCached)
+		return self.uniqueIdentifierCached;
+	
 	// a single GuideProgramId can be seen several times across multiple channels, so this
 	// returns a string that can uniquely identify an ArgusProgramme object across channels too
 	
@@ -315,28 +340,28 @@
 	
 	// if either of these are nil, this won't work, but they shouldn't be..
 	assert(ChannelId);
-	//assert(![ChannelId isKindOfClass:[NSNull class]]);
-	
 	
 	// most programmes will do this
 	NSString *GuideProgramId = [self originalData][kGuideProgramId];
 	//NSString *GuideProgramId = [self Property:kGuideProgramId];
 	//if (![GuideProgramId isKindOfClass:[NSNull class]])
 	if (GuideProgramId)
-		return [ChannelId stringByAppendingString:GuideProgramId];
+	{
+		self.uniqueIdentifierCached = [ChannelId stringByAppendingString:GuideProgramId];
+		return self.uniqueIdentifierCached;
+	}
 	
 	// but manual recordings don't have a GuideProgramId, so use this
 	NSString *Title = [self originalData][kTitle];
 	//NSString *Title = [self Property:kTitle];
+	
 	assert(Title);
-	//assert(![Title isKindOfClass:[NSNull class]]);
 	
-	NSString *uniqueId = @"";
-	uniqueId = [uniqueId stringByAppendingString:ChannelId];
-	uniqueId = [uniqueId stringByAppendingString:[NSString stringWithFormat:@"%@", self.StartTime]];
-	uniqueId = [uniqueId stringByAppendingString:Title];
-	return uniqueId;
-	
+	self.uniqueIdentifierCached = @"";
+	self.uniqueIdentifierCached = [self.uniqueIdentifierCached stringByAppendingString:ChannelId];
+	self.uniqueIdentifierCached = [self.uniqueIdentifierCached stringByAppendingString:[NSString stringWithFormat:@"%@", self.StartTime]];
+	self.uniqueIdentifierCached = [self.uniqueIdentifierCached stringByAppendingString:Title];
+	return self.uniqueIdentifierCached;
 	
 	// old, slow way
 	//return [NSString stringWithFormat:@"%@-%@-%@", ChannelId, self.StartTime, Title];
