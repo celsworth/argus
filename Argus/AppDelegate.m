@@ -108,9 +108,9 @@
 {
 	// if the notification preference was changed, update all our notifications, this could include setting them or cancelling them
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	ArgusPreferenceAlertNotification newNotifyPref = [defaults integerForKey:@"notify_alert_preference"];
 	
 	// if the preference changed while we were backgrounded, we need to refresh our local notifications
+	ArgusPreferenceAlertNotification newNotifyPref = [defaults integerForKey:@"notify_alert_preference"];
 	if (notifyForUpcomingAlerts != newNotifyPref)
 	{
 		notifyForUpcomingAlerts = newNotifyPref;
