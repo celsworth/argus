@@ -61,7 +61,7 @@ typedef enum {
 
 -(id)initWithDictionary:(NSDictionary *)input;
 
-/// Calls Guide/Program/$GuideProgramId
+/// Calls Guide/Program/{GuideProgramId}
 -(void)getFullDetails;
 
 -(NSString *)uniqueIdentifier;

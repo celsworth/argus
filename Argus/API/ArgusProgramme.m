@@ -184,7 +184,7 @@
 	self.StopTime = [self Property:kStopTime];
 	
 	[self initProgrammeStartOrEndTimer];
-	
+
 	[self redoUpcomingProgramme];
 	
 	return YES;
@@ -291,7 +291,7 @@
 	NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
 	//[self populateSelfFromDictionary:jsonObject];
-	// do not nuke originalData in here, merge them
+	// do not nuke originalData in here, merge them (why? does FullProgram not have something a ProgramSummary does?)
 	[self.originalData addEntriesFromDictionary:jsonObject];
 	
 	// cache some commonly used hard-to-calculate values.. ensure they're up to date
@@ -302,6 +302,10 @@
 	// if description isn't populated now, there isn't one
 	self.fullDetailsDone = true;
 	
+	// because this doesn't call populateSelfFromDictionary, we need to repeat these
+	[self initProgrammeStartOrEndTimer];
+	[self redoUpcomingProgramme];
+
 	//NSLog(@"%@", self.originalData);
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusProgrammeDone object:self];
