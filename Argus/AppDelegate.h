@@ -20,7 +20,7 @@
 	49: GetRecordings* (unused)
 	50: ChannelsProgams (optionally used in EPG Grid)
 	51: ChannelsProgramsDetails (unused)
-	??: SetRecordingFullyWatchedCount (Argus 2.0)
+	??: SetRecordingFullyWatchedCount (Argus 2.0.1)
 	60: RESTful overhaul (Argus 2.2)
  */
 #define REQUIRED_API_VERSION 45
@@ -46,7 +46,6 @@ Argus *argus;
 BOOL dark;
 BOOL autoReloadDataOn3G;
 ArgusPreferenceAlertNotification notifyForUpcomingAlerts;
-
 
 #define iPad()   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 #define iPhone() ([[UIDevice currentDevice] userInterfaceIdiom] != UIUserInterfaceIdiomPad)

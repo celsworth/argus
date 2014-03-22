@@ -72,10 +72,10 @@
 		  };
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-				
+		
 		[[UISearchBar appearance] setBackgroundColor:[UIColor blackColor]];
 		[[UILabel appearance] setTextColor:[UIColor whiteColor]];
-
+		
 		[[UITableViewCell appearance] setBackgroundColor:[UIColor blackColor]];
 		
 		
@@ -222,7 +222,7 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 {
 	Reachability *curReach = [note object];
     NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
-
+	
 	NetworkStatus netStatus = [curReach currentReachabilityStatus];
 	
 	NSLog(@"%s %d", __PRETTY_FUNCTION__, [[note object] currentReachabilityStatus]);
