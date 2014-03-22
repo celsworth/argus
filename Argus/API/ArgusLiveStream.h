@@ -17,12 +17,6 @@
 
 @property (nonatomic, retain) ArgusChannel *Channel;
 
-// our own metadata
-// this is set to YES when StopLiveStream has been sent
-// then back to NO when we get confirmation.
-// Status->LiveStreams uses this to update it's table accordingly
-@property (nonatomic, retain) NSNumber *StoppingAsNumber;
-
 // public getter/setter for StoppingAsNumber, translated to BOOL
 -(BOOL)Stopping;
 -(void)setStopping:(BOOL)val;

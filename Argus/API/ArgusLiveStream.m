@@ -10,6 +10,17 @@
 
 #import "AppDelegate.h"
 
+@interface ArgusLiveStream()
+
+// our own metadata
+// this is set to YES when StopLiveStream has been sent
+// then back to NO when we get confirmation.
+// Status->LiveStreams uses this to update it's table accordingly
+@property (nonatomic, retain) NSNumber *StoppingAsNumber;
+
+@end
+
+
 @implementation ArgusLiveStream
 
 // pass a JSONValue decoded dictionary.
@@ -31,6 +42,8 @@
 }
 -(void)dealloc
 {
+	self.Channel = nil;
+	
 	//NSLog(@"%s", __PRETTY_FUNCTION__); // spammy
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -46,39 +59,37 @@
 
 -(void)StopLiveStream
 {
-	// trigger a Program/{GuideProgramId} request to populate Description etc for this Programme
 	NSString *url = [NSString stringWithFormat:@"Control/StopLiveStream"];
 	
-	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url startImmediately:NO lowPriority:NO];
+	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
+	{
+		NSLog(@"%s", __PRETTY_FUNCTION__);
+		
+		self.StoppingAsNumber = @NO;
+		
+		// now update our LiveStreams list
+		// this needs doing on the main thread, not entirely sure why
+		// maybe this block's runloop is destroyed when the block ends, even though we ran this?
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			[argus getLiveStreams];
+		}];
+		
+		[OnMainThread postNotificationName:kArgusStopLiveStreamDone object:self userInfo:nil];
+	};
+	
+	
+	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url
+											 startImmediately:NO // because we need a http body, set below
+												  lowPriority:NO
+											  completionBlock:cmp];
 	
 	// request body is the live stream to stop, ie ourselves
 	[c setHTTPBody:[NSJSONSerialization dataWithJSONObject:self.originalData options:0 error:nil]];
-	
 	[c enqueue];
 	
 	self.StoppingAsNumber = @YES;
-	
-	// await notification from ArgusConnection that the request has finished
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(StopLiveStreamDone:)
-												 name:kArgusConnectionDone
-											   object:c];
 }
 
--(void)StopLiveStreamDone:(NSNotification *)notify
-{
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
-	// there will be no more notifications from that object
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notify object]];
-	
-	self.StoppingAsNumber = @NO;
-	
-	// now update our LiveStreams list
-	[argus getLiveStreams];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kArgusStopLiveStreamDone object:self];
-}
 
 
 @end
