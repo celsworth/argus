@@ -20,8 +20,9 @@
 	49: GetRecordings* (unused)
 	50: ChannelsProgams (optionally used in EPG Grid)
 	51: ChannelsProgramsDetails (unused)
-	??: SetRecordingFullyWatchedCount (Argus 2.0.1)
-	60: RESTful overhaul (Argus 2.2)
+	??: SetRecordingFullyWatchedCount (2.0.1)
+	60: RESTful overhaul (2.2)
+	66: GetRecordingsForProgramTitles, ForCategories, ForSchedules, OnChannelsArgus (2.3b4)
  */
 #define REQUIRED_API_VERSION 45
 
