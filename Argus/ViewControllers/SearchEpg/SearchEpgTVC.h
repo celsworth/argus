@@ -11,9 +11,13 @@
 
 #import "ArgusSchedule.h"
 
+#import "NoEntriesView.h"
+
 @interface SearchEpgTVC : UITableViewController <UISearchBarDelegate>
 
-@property (nonatomic, weak) IBOutlet UISearchBar *search;
+@property (nonatomic, retain) NoEntriesView *noEntriesView;
+
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, retain) ArgusSchedule *SearchSchedule;
 

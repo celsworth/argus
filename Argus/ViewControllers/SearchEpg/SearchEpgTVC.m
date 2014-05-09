@@ -18,6 +18,16 @@
 
 @implementation SearchEpgTVC
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super initWithCoder:aDecoder];
+	if (self)
+	{
+		//self.noEntriesView = [NoEntriesView new];
+	}
+	return self;
+}
+
 -(void)dealloc
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -42,6 +52,8 @@
 	
 	[self.view setBackgroundColor:[ArgusColours bgColour]];
 	[self.tableView setBackgroundColor:[ArgusColours bgColour]];
+		
+	//[self.noEntriesView presentOnView:self.tableView];
 }
 
 - (void)viewDidUnload
@@ -166,13 +178,13 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	[self.search resignFirstResponder];
+	[self.searchBar resignFirstResponder];
 	
 	NSString *searchStr = [[searchBar text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([searchStr length] > 0)
 	{
 		self.SearchSchedule = [[ArgusSchedule alloc] initWithExistingSchedule:[argus EmptySchedule]];
-		[self.SearchSchedule setChannelType:[self.search selectedScopeButtonIndex]];
+		[self.SearchSchedule setChannelType:[self.searchBar selectedScopeButtonIndex]];
 		[self.SearchSchedule setScheduleType:ArgusScheduleTypeRecording];
 		
 		ArgusScheduleRule *Rule = [self.SearchSchedule Rules][kArgusScheduleRuleSuperTypeProgramInfo];

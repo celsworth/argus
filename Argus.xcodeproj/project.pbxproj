@@ -86,6 +86,8 @@
 		83B0FBCD188F758700CCC672 /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
 		83B0FBCF188F761600CCC672 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B0FBCE188F761600CCC672 /* Reveal.framework */; };
 		83B0FBD61890BD7B00CCC672 /* LoadingSpinner.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */; };
+		83B0FBD91890C7DD00CCC672 /* NoEntriesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0FBD81890C7DD00CCC672 /* NoEntriesView.m */; };
+		83B0FBDB1890C82100CCC672 /* NoEntries.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B0FBDA1890C82100CCC672 /* NoEntries.xib */; };
 		83B0FBE01895698C00CCC672 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EF4D1B151038AD007A483B /* Reachability.m */; };
 		83BA27F515007F25000EE007 /* WhatsOnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BA27F615007F25000EE007 /* WhatsOnViewController.m */; };
 		83BA27F815007F33000EE007 /* RotatingTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BA27F915007F33000EE007 /* RotatingTabBarController.m */; };
@@ -320,6 +322,9 @@
 		83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleTypeTVC.m; sourceTree = "<group>"; };
 		83B0FBCE188F761600CCC672 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../../../../../../Applications/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
 		83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingSpinner.xib; sourceTree = "<group>"; };
+		83B0FBD71890C7DD00CCC672 /* NoEntriesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoEntriesView.h; sourceTree = "<group>"; };
+		83B0FBD81890C7DD00CCC672 /* NoEntriesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoEntriesView.m; sourceTree = "<group>"; };
+		83B0FBDA1890C82100CCC672 /* NoEntries.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoEntries.xib; sourceTree = "<group>"; };
 		83BA27F615007F25000EE007 /* WhatsOnViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhatsOnViewController.m; sourceTree = "<group>"; };
 		83BA27F915007F33000EE007 /* RotatingTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RotatingTabBarController.m; sourceTree = "<group>"; };
 		83BA27FA15007F36000EE007 /* RotatingTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotatingTabBarController.h; sourceTree = "<group>"; };
@@ -554,6 +559,8 @@
 				8330719514FF009C0042F7D5 /* DetailViewController.m */,
 				8330719114FF009C0042F7D5 /* MasterViewController.h */,
 				8330719214FF009C0042F7D5 /* MasterViewController.m */,
+				83B0FBD71890C7DD00CCC672 /* NoEntriesView.h */,
+				83B0FBD81890C7DD00CCC672 /* NoEntriesView.m */,
 				83BA27FA15007F36000EE007 /* RotatingTabBarController.h */,
 				83BA27F915007F33000EE007 /* RotatingTabBarController.m */,
 				831E50D01502C9A900FF6697 /* SelectChannelGroupViewController.h */,
@@ -578,6 +585,7 @@
 				8330718114FF009C0042F7D5 /* Argus-Info.plist */,
 				83311926152771670022FB2A /* LoadingPage.storyboard */,
 				83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */,
+				83B0FBDA1890C82100CCC672 /* NoEntries.xib */,
 				839BF41B159892770049AE42 /* MainStoryboard_iPad.storyboard */,
 				839BF41C159892770049AE42 /* MainStoryboard_iPhone.storyboard */,
 			);
@@ -1002,6 +1010,7 @@
 				83FC4E23155A0A7C005AF86D /* video_play.png in Resources */,
 				83FC4E24155A0A7C005AF86D /* video_play@2x.png in Resources */,
 				83FC4E25155A0A7C005AF86D /* video_rec.png in Resources */,
+				83B0FBDB1890C82100CCC672 /* NoEntries.xib in Resources */,
 				83FC4E26155A0A7C005AF86D /* video_rec@2x.png in Resources */,
 				83FC4E27155A0A7C005AF86D /* imdb_iPad.png in Resources */,
 				83FC4E28155A0A7C005AF86D /* imdb_iPad@2x.png in Resources */,
@@ -1091,6 +1100,7 @@
 				833119351528CDCC0022FB2A /* SearchEpgTVC.m in Sources */,
 				838894171529E2B6008E8D78 /* LoadingSpinner.m in Sources */,
 				83510E6F187BD3C50022BE1F /* OnMainThread.m in Sources */,
+				83B0FBD91890C7DD00CCC672 /* NoEntriesView.m in Sources */,
 				83889420152A29B0008E8D78 /* EpgGridTVC.m in Sources */,
 				83795C5D152BF42700BD995A /* EpgGridLabel.m in Sources */,
 				83A1E42F152D32E000C12278 /* ArgusConnectionQueue.m in Sources */,
