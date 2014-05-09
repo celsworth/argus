@@ -131,7 +131,9 @@ Advanced Stuff to consider:
 NEW IN 0.25
 * 'Remove All' Previously Recorded History for a schedule now works
 * speed optimisations, mostly in EPG Grid
+* selecting a day in EPG Grid calendar now goes to the correct day
 * EPG Grid updates background box colours much more responsively
-  * (immediately on any programme start/end, not every 60s)
+  * (immediately on any programme start/end, not every minute)
 * TapkuLibrary updated (EPG Grid calendar)
-* internal cleanups
+* replaced 3rd party JSON parsers with Apple's builtin library
+* other internal cleanups
