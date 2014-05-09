@@ -16,6 +16,14 @@
 {
 	[TestFlight takeOff:@"937054f4-277a-4121-ac3c-4082442f5367"];
 	
+	/*
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"rtsp://192.168.0.32:8554/stream-live-7-1"]];
+	if ([[UIApplication sharedApplication] canOpenURL:url])
+	{
+		[[UIApplication sharedApplication] openURL:url];
+	}
+	*/
+	
 	if (iPad())
 	{
 		// iPad
