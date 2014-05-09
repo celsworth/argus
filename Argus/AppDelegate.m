@@ -200,7 +200,21 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 	{
 		NSLog(@"%s", __PRETTY_FUNCTION__);
 		
+#if SHOW_SPINNER_IN_TAB
+		UIViewController *rvc = [[[AppDelegate sharedInstance] window] rootViewController];
+		if ([rvc isKindOfClass:[UITabBarController class]])
+		{
+			// show the spinner in the selected tab bar content, not over the tab bar
+			// this means the user can still navigate between tabs
+			UIViewController *vc = [(UITabBarController *)rvc selectedViewController];
+			[globalLoadingSpinner presentOnView:[vc view]];
+		}
+		else
+			// for LoadingPageTVC
+			[globalLoadingSpinner presentOnView:[[[[AppDelegate sharedInstance] window] rootViewController] view]];
+#else
 		[globalLoadingSpinner presentOnView:[[[[AppDelegate sharedInstance] window] rootViewController] view]];
+#endif
 	}
 	
 	++loadingSpinnerRefCount;
