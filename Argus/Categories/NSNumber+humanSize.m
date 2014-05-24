@@ -86,24 +86,24 @@
 		{
 			d = s / 86400;
 			s -= d * 86400;
-			[tmp addObject:[NSString stringWithFormat:@"%d %@", d, (d == 1 ? day : days)]];
+			[tmp addObject:[NSString stringWithFormat:@"%ld %@", d, (d == 1 ? day : days)]];
 		}
 		if (s > 3599)
 		{
 			h = s / 3600;
 			s -= h * 3600;
-			[tmp addObject:[NSString stringWithFormat:@"%d %@", h, (h == 1 ? hour : hours)]];
+			[tmp addObject:[NSString stringWithFormat:@"%ld %@", h, (h == 1 ? hour : hours)]];
 		}
 		if (s > 59)
 		{
 			m = s / 60;
-			[tmp addObject:[NSString stringWithFormat:@"%d %@", m, (m == 1 ? minute : minutes)]];
+			[tmp addObject:[NSString stringWithFormat:@"%ld %@", m, (m == 1 ? minute : minutes)]];
 		}
 	}
 	
 	// only display seconds for <1m durations
 	else if (s > 0)
-		[tmp addObject:[NSString stringWithFormat:@"%d %@", s, (s == 1 ? second : seconds)]];
+		[tmp addObject:[NSString stringWithFormat:@"%ld %@", s, (s == 1 ? second : seconds)]];
 
 	
 	return [tmp componentsJoinedByString:@" "];

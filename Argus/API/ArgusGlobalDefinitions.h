@@ -8,20 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef enum : NSInteger {
 	ArgusChannelTypeAny        = -1, // our own addition
 	ArgusChannelTypeTelevision = 0,
 	ArgusChannelTypeRadio      = 1,
 } ArgusChannelType;
 
-typedef enum {
+typedef enum : NSInteger {
 	ArgusScheduleTypeRecording  = 82,
 	ArgusScheduleTypeSuggestion = 83,
 	ArgusScheduleTypeAlert      = 65,
 } ArgusScheduleType;
 
-typedef enum
-{
+typedef enum : NSInteger {
 	ArgusScheduleEditTypePreRecord       = 1,
 	ArgusScheduleEditTypePostRecord      = 2,
 	
@@ -29,8 +28,7 @@ typedef enum
 	ArgusScheduleEditTypeStartingBetween = 4,
 } ArgusScheduleEditType;
 
-typedef enum
-{
+typedef enum : NSInteger {
 	ArgusCancellationReasonNone               = 0,
 	ArgusCancellationReasonManual             = 1,
 	ArgusCancellationReasonAlreadyQueued      = 2,
@@ -39,7 +37,7 @@ typedef enum
 
 
 
-typedef enum {
+typedef enum : NSInteger {
 	ArgusPriorityVeryLow  = -2,
 	ArgusPriorityLow      = -1,
 	ArgusPriorityNormal   =  0,

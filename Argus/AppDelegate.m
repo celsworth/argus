@@ -180,7 +180,7 @@
     return (AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
-static NSInteger networkActivityRefCount = 0;
+static int32_t networkActivityRefCount = 0;
 +(void) requestNetworkActivityIndicator
 {
 	++networkActivityRefCount;
@@ -195,7 +195,7 @@ static NSInteger networkActivityRefCount = 0;
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-static NSInteger loadingSpinnerRefCount = 0;
+static int32_t loadingSpinnerRefCount = 0;
 static LoadingSpinner *globalLoadingSpinner = nil;
 +(void) requestLoadingSpinner
 {
@@ -247,7 +247,7 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 	
 	NetworkStatus netStatus = [curReach currentReachabilityStatus];
 	
-	NSLog(@"%s %d", __PRETTY_FUNCTION__, [[note object] currentReachabilityStatus]);
+	NSLog(@"%s %ld", __PRETTY_FUNCTION__, [[note object] currentReachabilityStatus]);
 	
 }
 

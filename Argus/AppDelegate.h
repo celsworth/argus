@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Elsworth IT Consulting Ltd. All rights reserved.
 //
 
+#define NS_BUILD_32_LIKE_64 1
+
 #import <UIKit/UIKit.h>
 
 #import "Reachability.h"
@@ -33,7 +35,7 @@
 
 #define kArgusLocalNotificationProgrammeKey  @"kArgusLocalNotificationProgrammeKey"
 
-typedef enum {
+typedef enum : int64_t {
 	ArgusPreferenceAlertNotificationOff     = -1,
 	ArgusPreferenceAlertNotificationAtStart =  0,
 	

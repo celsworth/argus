@@ -238,7 +238,7 @@
 		833654D4150C32D800C9E2E9 /* ArgusActiveRecording.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ArgusActiveRecording.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		833654D5150C32D800C9E2E9 /* ArgusActiveRecording.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArgusActiveRecording.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		833777471500774300EDFE50 /* ProgrammeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgrammeDetailsViewController.h; sourceTree = "<group>"; };
-		833777481500774400EDFE50 /* ProgrammeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgrammeDetailsViewController.m; sourceTree = "<group>"; };
+		833777481500774400EDFE50 /* ProgrammeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProgrammeDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8339734615043DC6008BE5B6 /* ArgusSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusSchedule.h; sourceTree = "<group>"; };
 		8339734715043DC7008BE5B6 /* ArgusSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusSchedule.m; sourceTree = "<group>"; };
 		83452AFE152F4CA500CC358A /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = tapkulibrary/src/TapkuLibrary.bundle; sourceTree = "<group>"; };
@@ -315,9 +315,9 @@
 		839D03631550C3CE0064D88D /* ArgusUpcomingProgrammes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArgusUpcomingProgrammes.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		839E984C14FF0D210019BB38 /* WhatsOnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhatsOnViewController.h; sourceTree = "<group>"; };
 		839E984F14FF140C0019BB38 /* ProgrammeListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgrammeListViewController.h; sourceTree = "<group>"; };
-		839E985014FF140C0019BB38 /* ProgrammeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgrammeListViewController.m; sourceTree = "<group>"; };
+		839E985014FF140C0019BB38 /* ProgrammeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProgrammeListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83A1E42D152D32DE00C12278 /* ArgusConnectionQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusConnectionQueue.h; sourceTree = "<group>"; };
-		83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusConnectionQueue.m; sourceTree = "<group>"; };
+		83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArgusConnectionQueue.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83AA3B06150AE61B0042BA96 /* ScheduleTypeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleTypeTVC.h; sourceTree = "<group>"; };
 		83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleTypeTVC.m; sourceTree = "<group>"; };
 		83B0FBCE188F761600CCC672 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../../../../../../Applications/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
@@ -332,7 +332,7 @@
 		83E11B8B15222015007BBB4F /* ScheduleEditRuleAroundTimeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditRuleAroundTimeTVC.h; sourceTree = "<group>"; };
 		83E11B8C15222015007BBB4F /* ScheduleEditRuleAroundTimeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEditRuleAroundTimeTVC.m; sourceTree = "<group>"; };
 		83E11B8F15223AA8007BBB4F /* ScheduleEditPreRecordTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditPreRecordTVC.h; sourceTree = "<group>"; };
-		83E11B9015223AA8007BBB4F /* ScheduleEditPreRecordTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEditPreRecordTVC.m; sourceTree = "<group>"; };
+		83E11B9015223AA8007BBB4F /* ScheduleEditPreRecordTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ScheduleEditPreRecordTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83E11B981523DC6A007BBB4F /* UILabel+Alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Alignment.h"; sourceTree = "<group>"; };
 		83E11B991523DC6A007BBB4F /* UILabel+Alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Alignment.m"; sourceTree = "<group>"; };
 		83E11B9B1524B624007BBB4F /* ScheduleEditRuleChannelsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEditRuleChannelsTVC.h; sourceTree = "<group>"; };
@@ -360,7 +360,7 @@
 		83EF4D0E150E8483007A483B /* ArgusRecordingDiskInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArgusRecordingDiskInfo.h; sourceTree = "<group>"; };
 		83EF4D0F150E8483007A483B /* ArgusRecordingDiskInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArgusRecordingDiskInfo.m; sourceTree = "<group>"; };
 		83EF4D11150EC6F3007A483B /* NSNumber+humanSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+humanSize.h"; sourceTree = "<group>"; };
-		83EF4D12150EC6F3007A483B /* NSNumber+humanSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+humanSize.m"; sourceTree = "<group>"; };
+		83EF4D12150EC6F3007A483B /* NSNumber+humanSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSNumber+humanSize.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83EF4D1A151038AD007A483B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		83EF4D1B151038AD007A483B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		83EF4D1D151038FE007A483B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -375,7 +375,7 @@
 		83F32ADB1533DBD00090F553 /* SelectUpcomingTypeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectUpcomingTypeTVC.h; sourceTree = "<group>"; };
 		83F32ADC1533DBD00090F553 /* SelectUpcomingTypeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectUpcomingTypeTVC.m; sourceTree = "<group>"; };
 		83F32ADE1534FFC60090F553 /* UpcomingProgrammeEditPreRecordTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingProgrammeEditPreRecordTVC.h; sourceTree = "<group>"; };
-		83F32ADF1534FFC70090F553 /* UpcomingProgrammeEditPreRecordTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingProgrammeEditPreRecordTVC.m; sourceTree = "<group>"; };
+		83F32ADF1534FFC70090F553 /* UpcomingProgrammeEditPreRecordTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = UpcomingProgrammeEditPreRecordTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83F32AE1153597280090F553 /* EpgGridLongPressPopupTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpgGridLongPressPopupTVC.h; sourceTree = "<group>"; };
 		83F32AE2153597280090F553 /* EpgGridLongPressPopupTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EpgGridLongPressPopupTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83FC4DDC155A0A7C005AF86D /* button_greenbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_greenbg.png; sourceTree = "<group>"; };
@@ -1161,7 +1161,6 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1183,8 +1182,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				PROVISIONING_PROFILE = "53C6808E-872D-4867-B0FC-01F3A87AE225";
 				SDKROOT = iphoneos;
 				SHARED_PRECOMPS_DIR = "";
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -1204,7 +1202,6 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1223,8 +1220,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				PROVISIONING_PROFILE = "53C6808E-872D-4867-B0FC-01F3A87AE225";
 				SDKROOT = iphoneos;
 				SHARED_PRECOMPS_DIR = "";
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -1237,8 +1233,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1272,7 +1267,6 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1313,11 +1307,10 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Bogons Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Bogons Ltd";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -1334,13 +1327,13 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D424A205-2E7D-4976-86EA-5E5A433F89E9";
+				ONLY_ACTIVE_ARCH = NO;
+				PROVISIONING_PROFILE = "53C6808E-872D-4867-B0FC-01F3A87AE225";
 				SDKROOT = iphoneos;
 				SHARED_PRECOMPS_DIR = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = "Signed Release Debug";
 		};
@@ -1348,8 +1341,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

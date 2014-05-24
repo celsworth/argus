@@ -158,7 +158,7 @@
 {
 	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingPrograms/%d?includeCancelled=true", scheduleType];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/UpcomingPrograms/%ld?includeCancelled=true", scheduleType];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
 	// we poke a different selector depending on scheduleType

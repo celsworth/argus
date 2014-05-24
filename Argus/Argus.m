@@ -64,10 +64,10 @@
 		[OnMainThread postNotificationName:kArgusApiVersionDone object:self userInfo:r];
 	};
 	
-	(void)[[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%d", version] completionBlock:cmp];
+	(void)[[ArgusConnection alloc] initWithUrl:[NSString stringWithFormat:@"Core/Ping/%ld", version] completionBlock:cmp];
 }
 
-
+/* don't think this is actually used right now */
 -(void)getVersion
 {
 	ArgusConnectionCompletionBlock cmp = ^(NSHTTPURLResponse *response, NSData *data, NSError *error)
@@ -98,7 +98,7 @@
 
 -(ArgusConnection *)getChannelsForChannelType:(ArgusChannelType)ChannelType
 {
-	NSString *url = [NSString stringWithFormat:@"Scheduler/Channels/%d", ChannelType];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/Channels/%ld", ChannelType];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
 	return c;

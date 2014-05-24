@@ -117,7 +117,7 @@
 			return;
 		
 		// avoid spamming console too much by only printing this when we're going to do something
-		NSLog(@"%s q=%d a=%d", __PRETTY_FUNCTION__, [queuedConnections count], activeConnectionCount);
+		NSLog(@"%s q=%lu a=%ld", __PRETTY_FUNCTION__, [queuedConnections count], activeConnectionCount);
 		
 		ArgusConnection *c = queuedConnections[0];
 		
@@ -213,7 +213,7 @@
 				
 			default:
 				tmp = [[NSString alloc] initWithData:[notify userInfo][@"data"] encoding:NSASCIIStringEncoding];
-				NSLog(@"HTTP Error %d: %@", [[c httpresponse] statusCode], tmp);
+				NSLog(@"HTTP Error %ld: %@", [[c httpresponse] statusCode], tmp);
 				break;
 		}
 	}

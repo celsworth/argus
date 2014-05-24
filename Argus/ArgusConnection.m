@@ -219,7 +219,7 @@
 	self.httpresponse = (NSHTTPURLResponse *)response;
 	
 	NSInteger statusCode = [self.httpresponse statusCode];
-	NSLog(@"Argus %@ %d", self.url, statusCode);
+	NSLog(@"Argus %@ %ld", self.url, statusCode);
 	
 	if (statusCode == 200)
 	{

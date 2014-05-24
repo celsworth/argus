@@ -221,7 +221,7 @@
 	}
 	
 	// failsafe ;)
-	NSLog(@"%s: no programme details for row %d", __PRETTY_FUNCTION__, indexPath.row);
+	NSLog(@"%s: no programme details for row %ld", __PRETTY_FUNCTION__, indexPath.row);
 	return 50.0f;
 }
 

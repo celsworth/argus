@@ -127,12 +127,12 @@
 -(BOOL)getArgumentAsDayOfWeekSelected:(ArgusScheduleRuleDaysOfWeek)day
 {
 	// Arguments[0] is a bitmask of days of week
-	NSInteger days = [self.Arguments[0] intValue];
+	int32_t days = [self.Arguments[0] intValue];
 	return (days & day);
 }
 -(void)setArgumentAsDayOfWeek:(ArgusScheduleRuleDaysOfWeek)day selected:(BOOL)selected
 {
-	NSInteger days = [self.Arguments[0] intValue];
+	int32_t days = [self.Arguments[0] intValue];
 	
 	if (selected)
 		days |= day;
@@ -633,7 +633,7 @@
 {
 	Modified = @NO;
 	
-	NSString *url = [NSString stringWithFormat:@"Scheduler/EmptySchedule/%d/%d", ChannelType, ScheduleType];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/EmptySchedule/%ld/%ld", ChannelType, ScheduleType];
 	
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	

@@ -320,7 +320,7 @@
 
 -(void)processRecordActionSheetClickAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"%s: %d", __PRETTY_FUNCTION__, buttonIndex);
+	NSLog(@"%s: %ld", __PRETTY_FUNCTION__, buttonIndex);
 	
 	// take a copy of EmptySchedule so we can mess with it
 	ArgusSchedule *newSchedule = [[ArgusSchedule alloc] initWithExistingSchedule:[argus EmptySchedule]];

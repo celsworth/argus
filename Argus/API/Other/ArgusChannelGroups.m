@@ -72,7 +72,7 @@
 }
 -(ArgusConnection *)getChannelGroupsForChannelType:(ArgusChannelType)ChannelType
 {
-	NSString *url = [NSString stringWithFormat:@"Scheduler/ChannelGroups/%d", ChannelType];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/ChannelGroups/%ld", ChannelType];
 	//NSLog(@"ChannelGroups @ %@", url);
 	
 	return [[ArgusConnection alloc] initWithUrl:url];
@@ -127,7 +127,7 @@
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *Saved_CG_Name = [defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupName];
-	NSInteger Saved_CG_Type = [[defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupType] intValue];
+	int32_t Saved_CG_Type = [[defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupType] intValue];
 	if (Saved_CG_Name)
 	{
 		if (!self.SelectedChannelGroup && Saved_CG_Type == ArgusChannelTypeTelevision)

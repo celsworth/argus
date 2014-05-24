@@ -112,7 +112,7 @@
 	AppDelegate.sharedInstance.window.frame = r;
 	//	NSLog(@"rotated; wf fixed to %f.%f, %fx%f", r.origin.x, r.origin.y, r.size.width, r.size.height);
 
-	NSLog(@"rotating to %d", toInterfaceOrientation);
+	//NSLog(@"rotating to %ld", toInterfaceOrientation);
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

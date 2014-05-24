@@ -71,7 +71,7 @@
 {
 	//NSLog(@"%s %d %d", __PRETTY_FUNCTION__, channelType, scheduleType);
 	
-	NSString *url = [NSString stringWithFormat:@"Scheduler/Schedules/%d/%d", channelType, scheduleType];
+	NSString *url = [NSString stringWithFormat:@"Scheduler/Schedules/%ld/%ld", channelType, scheduleType];
 	ArgusConnection *c = [[ArgusConnection alloc] initWithUrl:url];
 	
 	// we poke a different selector depending on scheduleType

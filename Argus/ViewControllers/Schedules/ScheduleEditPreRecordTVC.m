@@ -93,9 +93,9 @@
 	switch (component)
 	{
 		default: abort();
-		case 0: return [NSString stringWithFormat:@"%dh", row];
-		case 1: return [NSString stringWithFormat:@"%02dm", row];	
-		case 2: return [NSString stringWithFormat:@"%02ds", row];	
+		case 0: return [NSString stringWithFormat:@"%ldh", row];
+		case 1: return [NSString stringWithFormat:@"%02ldm", row];	
+		case 2: return [NSString stringWithFormat:@"%02lds", row];	
 	}
 }
 
