@@ -700,13 +700,17 @@
 -(void)calendarMonthView:(TKCalendarMonthView *)monthView didSelectDate:(NSDate *)date
 {
 	NSLog(@"%s %@", __PRETTY_FUNCTION__, date);
+
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	// because our EPG starts at 3am, we need to add 3 hours to this.
-	// otherwise zoomToDate thinks we want the previous day to what we actually selected.
-	NSDate *actualZoom = [date dateByAddingTimeInterval:kArgusEpgGridStartHour];
+	NSDateComponents *cmp1 = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate:date];
+	NSDateComponents *cmp2 = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate:epgStartTime];
+		
+	NSTimeInterval intr = [[gregorian dateFromComponents:cmp1] timeIntervalSinceDate:	[gregorian dateFromComponents:cmp2]];
 	
-	[self zoomToDate:actualZoom animated:YES];
-	
+	epgStartTime = [epgStartTime dateByAddingTimeInterval:intr];
+	[self refreshPressed:self];
+
 	if (iPhone())
 	{
 		// dismissing the calendar immediately with animation on iPhone seems to lead
