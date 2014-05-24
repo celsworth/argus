@@ -124,7 +124,7 @@
 	ArgusConnection *c = [notify object];
 	
 	// check if logo response was 200 or 304 to see if we have a new(er) one to save
-	int64_t statusCode = [[c httpresponse] statusCode];
+	NSInteger statusCode = [[c httpresponse] statusCode];
 	if (statusCode == 204)
 	{
 		// no logo

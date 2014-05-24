@@ -33,7 +33,7 @@
 
 #define kArgusLocalNotificationProgrammeKey  @"kArgusLocalNotificationProgrammeKey"
 
-typedef enum : int64_t {
+typedef enum : NSInteger {
 	ArgusPreferenceAlertNotificationOff     = -1,
 	ArgusPreferenceAlertNotificationAtStart =  0,
 	

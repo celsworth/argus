@@ -127,12 +127,12 @@
 -(BOOL)getArgumentAsDayOfWeekSelected:(ArgusScheduleRuleDaysOfWeek)day
 {
 	// Arguments[0] is a bitmask of days of week
-	int32_t days = [self.Arguments[0] intValue];
+	NSInteger days = [self.Arguments[0] intValue];
 	return (days & day);
 }
 -(void)setArgumentAsDayOfWeek:(ArgusScheduleRuleDaysOfWeek)day selected:(BOOL)selected
 {
-	int32_t days = [self.Arguments[0] intValue];
+	NSInteger days = [self.Arguments[0] intValue];
 	
 	if (selected)
 		days |= day;

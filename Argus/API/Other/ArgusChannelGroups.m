@@ -127,7 +127,7 @@
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *Saved_CG_Name = [defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupName];
-	int32_t Saved_CG_Type = [[defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupType] intValue];
+	NSInteger Saved_CG_Type = [[defaults stringForKey:kArgusUserDefaultsSelectedChannelGroupType] intValue];
 	if (Saved_CG_Name)
 	{
 		if (!self.SelectedChannelGroup && Saved_CG_Type == ArgusChannelTypeTelevision)

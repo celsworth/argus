@@ -180,7 +180,7 @@
     return (AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
-static int32_t networkActivityRefCount = 0;
+static NSInteger networkActivityRefCount = 0;
 +(void) requestNetworkActivityIndicator
 {
 	++networkActivityRefCount;
@@ -195,7 +195,7 @@ static int32_t networkActivityRefCount = 0;
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-static int32_t loadingSpinnerRefCount = 0;
+static NSInteger loadingSpinnerRefCount = 0;
 static LoadingSpinner *globalLoadingSpinner = nil;
 +(void) requestLoadingSpinner
 {
