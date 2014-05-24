@@ -13,6 +13,8 @@ typedef void(^ArgusConnectionCompletionBlock)(NSHTTPURLResponse *, NSData *, NSE
 #define kArgusConnectionDone @"kArgusConnectionDone"
 #define kArgusConnectionFail @"kArgusConnectionFail"
 
+#define kArgusConnectionErrorDomain @"kArgusConnectionErrorDomain"
+
 @interface ArgusConnection : NSObject <NSURLConnectionDelegate>
 
 @property (nonatomic, retain) NSHTTPURLResponse *httpresponse;

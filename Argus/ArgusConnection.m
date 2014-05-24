@@ -236,10 +236,14 @@
 			// tell someone about the failure
 			[[NSNotificationCenter defaultCenter] postNotificationName:kArgusConnectionFail object:self userInfo:nil];
 			
+			self.error = [NSError errorWithDomain:kArgusConnectionErrorDomain
+											 code:statusCode
+										 userInfo:nil];
+			
 			if (self.completionBlock)
 			{
 				[[NSOperationQueue new] addOperationWithBlock:^{
-					self.completionBlock(self->_httpresponse, nil, nil);
+					self.completionBlock(self->_httpresponse, nil, self->_error);
 				}];
 			}
 			

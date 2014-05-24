@@ -89,7 +89,18 @@
 }
 -(void)ApiVersionDone:(NSNotification *)notify
 {
-	NSInteger returnCode = [[notify userInfo][@"ApiVersion"] intValue];
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
+	NSDictionary *userInfo = [notify userInfo];
+	/* check we have an ApiVersion */
+	if (! userInfo[@"ApiVersion"])
+	{
+		/* no ApiVersion? */
+		NSLog(@"%s no ApiVersion found", __PRETTY_FUNCTION__);
+		return;
+	}
+	
+	NSInteger returnCode = [userInfo[@"ApiVersion"] intValue];
 	
 	[(UIActivityIndicatorView *)([apiVersionCell viewWithTag:1]) stopAnimating];
 
