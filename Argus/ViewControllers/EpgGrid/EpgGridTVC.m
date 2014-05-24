@@ -707,7 +707,7 @@
 	
 	[self zoomToDate:actualZoom animated:YES];
 	
-	if (!iPad())
+	if (iPhone())
 	{
 		// dismissing the calendar immediately with animation on iPhone seems to lead
 		// to the wrong date being shown in the grid. probably interpreting a second
