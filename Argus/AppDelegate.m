@@ -245,7 +245,7 @@ static LoadingSpinner *globalLoadingSpinner = nil;
 	Reachability *curReach = [note object];
     NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
 	
-	NetworkStatus netStatus = [curReach currentReachabilityStatus];
+	//NetworkStatus netStatus = [curReach currentReachabilityStatus];
 	
 	NSLog(@"%s %ld", __PRETTY_FUNCTION__, [[note object] currentReachabilityStatus]);
 	
