@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C39" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="lzG-Ia-zDo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="lzG-Ia-zDo">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Rotating Tab Bar Controller-->
@@ -28,7 +27,7 @@
             </objects>
             <point key="canvasLocation" x="-554" y="-335"/>
         </scene>
-        <!--Whats On View Controller - What's On-->
+        <!--What's On-->
         <scene sceneID="HHS-Ob-J7I">
             <objects>
                 <tableViewController id="1ph-Le-6MQ" customClass="WhatsOnViewController" sceneMemberID="viewController">
@@ -98,7 +97,7 @@
             </objects>
             <point key="canvasLocation" x="516" y="-1494"/>
         </scene>
-        <!--Navigation Controller - SchedulesNavController-->
+        <!--SchedulesNavController-->
         <scene sceneID="6Wu-D9-Fax">
             <objects>
                 <navigationController storyboardIdentifier="SchedulesNavController" title="SchedulesNavController" definesPresentationContext="YES" id="z2x-92-JCm" sceneMemberID="viewController">
@@ -115,7 +114,7 @@
             </objects>
             <point key="canvasLocation" x="38" y="-335"/>
         </scene>
-        <!--Schedules View Controller - Schedules-->
+        <!--Schedules-->
         <scene sceneID="LnL-JE-zZk">
             <objects>
                 <tableViewController id="YGt-al-VzP" customClass="SchedulesViewController" sceneMemberID="viewController">
@@ -187,7 +186,7 @@
             </objects>
             <point key="canvasLocation" x="516" y="-335"/>
         </scene>
-        <!--Schedule View Controller - Placeholder Schedule Name-->
+        <!--Placeholder Schedule Name-->
         <scene sceneID="dBP-fB-mQX">
             <objects>
                 <tableViewController storyboardIdentifier="ScheduleViewController" id="tzq-3C-anA" customClass="ScheduleViewController" sceneMemberID="viewController">
@@ -586,7 +585,7 @@
             </objects>
             <point key="canvasLocation" x="1520" y="-335"/>
         </scene>
-        <!--Upcoming Programme EditTVC - Edit Upcoming Programme-->
+        <!--Edit Upcoming Programme-->
         <scene sceneID="SLy-aB-BnL">
             <objects>
                 <tableViewController id="26y-0Z-kDP" customClass="UpcomingProgrammeEditTVC" sceneMemberID="viewController">
@@ -775,7 +774,7 @@
             </objects>
             <point key="canvasLocation" x="2032" y="-1494"/>
         </scene>
-        <!--Schedule Edit KeepTVC - Edit Keep Values-->
+        <!--Edit Keep Values-->
         <scene sceneID="xwd-El-oRZ">
             <objects>
                 <tableViewController id="CCf-0J-OJ3" customClass="ScheduleEditKeepTVC" sceneMemberID="viewController">
@@ -958,7 +957,7 @@
             </objects>
             <point key="canvasLocation" x="2060" y="-817"/>
         </scene>
-        <!--Schedule Edit Rule TitleTVC - Placeholder Title-->
+        <!--Placeholder Title-->
         <scene sceneID="ysw-Cq-M28">
             <objects>
                 <tableViewController id="dDW-q7-Hkf" customClass="ScheduleEditRuleTitleTVC" sceneMemberID="viewController">
@@ -1043,7 +1042,7 @@
             </objects>
             <point key="canvasLocation" x="3045" y="-1090"/>
         </scene>
-        <!--Schedule Edit RulesTVC - Rules-->
+        <!--Rules-->
         <scene sceneID="eaf-TO-hvn">
             <objects>
                 <tableViewController id="uBG-Pa-RQX" customClass="ScheduleEditRulesTVC" sceneMemberID="viewController">
@@ -1545,7 +1544,7 @@
             </objects>
             <point key="canvasLocation" x="2496" y="-741"/>
         </scene>
-        <!--Schedule Edit Rule Days Of WeekTVC - On Days-->
+        <!--On Days-->
         <scene sceneID="EVy-WG-Xwg">
             <objects>
                 <tableViewController id="8Ef-N4-ZpL" customClass="ScheduleEditRuleDaysOfWeekTVC" sceneMemberID="viewController">
@@ -1606,7 +1605,7 @@
             </objects>
             <point key="canvasLocation" x="3903" y="-1090"/>
         </scene>
-        <!--Select Channel Group View Controller - Channel Group-->
+        <!--Channel Group-->
         <scene sceneID="cRY-Kg-yfZ">
             <objects>
                 <tableViewController id="hhu-0H-cAW" customClass="SelectChannelGroupViewController" sceneMemberID="viewController">
@@ -1670,7 +1669,7 @@
             </objects>
             <point key="canvasLocation" x="1054" y="-2075"/>
         </scene>
-        <!--Programme List View Controller - Placeholder Channel Name-->
+        <!--Placeholder Channel Name-->
         <scene sceneID="NbS-g6-4cB">
             <objects>
                 <tableViewController storyboardIdentifier="ProgrammeListViewController" id="VT3-hT-CCl" customClass="ProgrammeListViewController" sceneMemberID="viewController">
@@ -1755,7 +1754,7 @@
             </objects>
             <point key="canvasLocation" x="1054" y="-1494"/>
         </scene>
-        <!--Programme Details View Controller - Programme Details-->
+        <!--Programme Details-->
         <scene sceneID="Lew-WZ-YZL">
             <objects>
                 <viewController storyboardIdentifier="ProgrammeDetailsViewController" id="fhf-pT-l7K" customClass="ProgrammeDetailsViewController" sceneMemberID="viewController">
@@ -1886,10 +1885,10 @@
                         <outlet property="airChannelLogo" destination="LTZ-H0-0pr" id="XLs-90-g1x"/>
                         <outlet property="date" destination="OLu-ob-woX" id="ZUe-2p-sqX"/>
                         <outlet property="dateSubtext" destination="tjO-X2-NRQ" id="adU-HF-JV3"/>
-                        <outlet property="description" destination="1hW-49-rd2" id="PRX-oz-iBw"/>
                         <outlet property="detailsLoading" destination="s5G-JI-6yP" id="PkA-vw-kR4"/>
                         <outlet property="optionsButtonItem" destination="0MK-QN-SGt" id="V1n-Tx-Kl7"/>
                         <outlet property="pctDone" destination="dSg-Mk-qWa" id="cSv-E4-bnb"/>
+                        <outlet property="progdescription" destination="1hW-49-rd2" id="Gfe-8n-Epn"/>
                         <outlet property="progtitle" destination="qeT-JR-5Yk" id="zlF-PY-s0J"/>
                         <outlet property="searchButtonItem" destination="mZt-D7-GTU" id="55p-yQ-Bm0"/>
                         <outlet property="subtitle" destination="hBz-lj-3WM" id="5WO-an-i9k"/>
@@ -1906,7 +1905,7 @@
             </objects>
             <point key="canvasLocation" x="1576" y="-1494"/>
         </scene>
-        <!--Navigation Controller - WhatsOnNavController-->
+        <!--WhatsOnNavController-->
         <scene sceneID="ApF-rR-nKZ">
             <objects>
                 <navigationController storyboardIdentifier="WhatsOnNavController" title="WhatsOnNavController" definesPresentationContext="YES" id="6Eh-AQ-VFF" sceneMemberID="viewController">
@@ -1922,7 +1921,7 @@
             </objects>
             <point key="canvasLocation" x="38" y="-1494"/>
         </scene>
-        <!--Schedule TypeTVC - Schedule Type-->
+        <!--Schedule Type-->
         <scene sceneID="QU8-w3-5W7">
             <objects>
                 <tableViewController id="2vq-ga-4pp" customClass="ScheduleTypeTVC" sceneMemberID="viewController">
@@ -2049,7 +2048,7 @@
             </objects>
             <point key="canvasLocation" x="1520" y="233"/>
         </scene>
-        <!--Navigation Controller - UpcomingProgrammesNavController-->
+        <!--UpcomingProgrammesNavController-->
         <scene sceneID="x1b-Xa-8iW">
             <objects>
                 <navigationController storyboardIdentifier="UpcomingProgrammesNavController" title="UpcomingProgrammesNavController" definesPresentationContext="YES" id="Nbb-z7-ara" sceneMemberID="viewController">
@@ -2065,7 +2064,7 @@
             </objects>
             <point key="canvasLocation" x="38" y="858"/>
         </scene>
-        <!--Upcoming ProgrammesTVC - Upcoming-->
+        <!--Upcoming-->
         <scene sceneID="rTR-LV-vS4">
             <objects>
                 <tableViewController id="Bye-IJ-bKg" customClass="UpcomingProgrammesTVC" sceneMemberID="viewController">
@@ -2179,7 +2178,7 @@
             </objects>
             <point key="canvasLocation" x="2060" y="309"/>
         </scene>
-        <!--Navigation Controller - SearchNavController-->
+        <!--SearchNavController-->
         <scene sceneID="xMe-c3-hkr">
             <objects>
                 <navigationController storyboardIdentifier="SearchNavController" title="SearchNavController" definesPresentationContext="YES" id="VJV-fG-mLH" sceneMemberID="viewController">
@@ -2195,7 +2194,7 @@
             </objects>
             <point key="canvasLocation" x="38" y="253"/>
         </scene>
-        <!--Search EpgTVC - Search EPG-->
+        <!--Search EPG-->
         <scene sceneID="lRT-Cg-rl2">
             <objects>
                 <viewController id="oF7-mU-us8" customClass="SearchEpgTVC" sceneMemberID="viewController">
@@ -2332,7 +2331,7 @@
             </objects>
             <point key="canvasLocation" x="1054" y="233"/>
         </scene>
-        <!--Schedule Edit Rule On DateTVC - On Date-->
+        <!--On Date-->
         <scene sceneID="VQ4-GW-3JH">
             <objects>
                 <tableViewController id="0pZ-l5-VNn" customClass="ScheduleEditRuleOnDateTVC" sceneMemberID="viewController">
@@ -2364,27 +2363,6 @@
                                                         <!--2012-03-15 15:15:56 +0000-->
                                                     </date>
                                                     <locale key="locale" localeIdentifier="en_US"/>
-                                                    <timeZone key="timeZone" name="America/Los_Angeles">
-                                                        <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                                    </timeZone>
                                                     <connections>
                                                         <action selector="datePickerValueChanged:" destination="0pZ-l5-VNn" eventType="valueChanged" id="4IN-2n-XzF"/>
                                                     </connections>
@@ -2418,7 +2396,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3477" y="-1090"/>
         </scene>
-        <!--Schedule Edit Rule ChannelsTVC - Channels-->
+        <!--Channels-->
         <scene sceneID="hNd-R2-bt8">
             <objects>
                 <tableViewController id="QNG-Ww-1IM" customClass="ScheduleEditRuleChannelsTVC" sceneMemberID="viewController">
@@ -2500,7 +2478,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3045" y="-516"/>
         </scene>
-        <!--Schedule Edit Rule Add Channels - Add Channels-->
+        <!--Add Channels-->
         <scene sceneID="D7F-8R-eDC">
             <objects>
                 <tableViewController id="39O-iY-BTG" customClass="ScheduleEditRuleAddChannels" sceneMemberID="viewController">
@@ -2562,7 +2540,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3477" y="-516"/>
         </scene>
-        <!--Schedule Edit Rule Around TimeTVC - Starting Time-->
+        <!--Starting Time-->
         <scene sceneID="RDT-NR-cir">
             <objects>
                 <tableViewController id="kTR-oH-F3H" customClass="ScheduleEditRuleAroundTimeTVC" sceneMemberID="viewController">
@@ -2594,27 +2572,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                         <!--2012-03-27 15:08:27 +0000-->
                                                     </date>
                                                     <locale key="locale" localeIdentifier="en_US"/>
-                                                    <timeZone key="timeZone" name="America/Los_Angeles">
-                                                        <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                                    </timeZone>
                                                     <connections>
                                                         <action selector="datePickerValueChanged:" destination="kTR-oH-F3H" eventType="valueChanged" id="Bap-e7-50Y"/>
                                                     </connections>
@@ -2660,7 +2617,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="4335" y="-1090"/>
         </scene>
-        <!--Schedule Edit Pre RecordTVC - Placeholder-->
+        <!--Placeholder-->
         <scene sceneID="NE7-ur-Wzk">
             <objects>
                 <tableViewController id="Ykx-Nj-Bg3" customClass="ScheduleEditPreRecordTVC" sceneMemberID="viewController">
@@ -2721,7 +2678,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2496" y="-137"/>
         </scene>
-        <!--Schedule Edit File FormatTVC - Recording File Format-->
+        <!--Recording File Format-->
         <scene sceneID="2xh-xE-57P">
             <objects>
                 <tableViewController id="urp-au-gPh" customClass="ScheduleEditFileFormatTVC" sceneMemberID="viewController">
@@ -2790,7 +2747,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2060" y="-254"/>
         </scene>
-        <!--Schedule Edit Rule Directed By - Placeholder-->
+        <!--Placeholder-->
         <scene sceneID="t9w-mB-tOi">
             <objects>
                 <tableViewController id="lNR-ws-bOH" customClass="ScheduleEditRuleDirectedBy" sceneMemberID="viewController">
@@ -2848,7 +2805,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3045" y="48"/>
         </scene>
-        <!--Schedule Edit Rule Add Director - Add Entry-->
+        <!--Add Entry-->
         <scene sceneID="cfF-ZL-Z9d">
             <objects>
                 <tableViewController id="LTr-xg-k8E" customClass="ScheduleEditRuleAddDirector" sceneMemberID="viewController">
@@ -2896,7 +2853,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3426" y="48"/>
         </scene>
-        <!--Navigation Controller - EpgNavController-->
+        <!--EpgNavController-->
         <scene sceneID="d9q-7g-j6V">
             <objects>
                 <navigationController storyboardIdentifier="EpgNavController" title="EpgNavController" definesPresentationContext="YES" id="jaq-VC-M6C" sceneMemberID="viewController">
@@ -2912,7 +2869,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="38" y="-908"/>
         </scene>
-        <!--Epg GridTVC - EPG-->
+        <!--EPG-->
         <scene sceneID="ZMh-cV-6Y6">
             <objects>
                 <viewController id="nzB-90-Op4" customClass="EpgGridTVC" sceneMemberID="viewController">
@@ -3021,7 +2978,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="516" y="-908"/>
         </scene>
-        <!--Epg Grid Calendar PickerVC - Select Day-->
+        <!--Select Day-->
         <scene sceneID="fd2-nQ-wu5">
             <objects>
                 <viewController id="GrD-Ci-UiH" customClass="EpgGridCalendarPickerVC" sceneMemberID="viewController">
@@ -3031,7 +2988,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1015" y="-908"/>
         </scene>
-        <!--Select Upcoming TypeTVC - Upcoming Type-->
+        <!--Upcoming Type-->
         <scene sceneID="WRj-Wm-ET7">
             <objects>
                 <tableViewController id="TC6-ge-qGA" customClass="SelectUpcomingTypeTVC" sceneMemberID="viewController">
@@ -3133,7 +3090,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2570" y="642"/>
         </scene>
-        <!--Upcoming Programme Edit Pre RecordTVC - Pre-Record-->
+        <!--Pre-Record-->
         <scene sceneID="KAY-Pc-3nI">
             <objects>
                 <tableViewController id="gQV-qF-NfL" customClass="UpcomingProgrammeEditPreRecordTVC" sceneMemberID="viewController">
@@ -3291,7 +3248,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1409" y="-908"/>
         </scene>
-        <!--Navigation Controller - StatusNavController-->
+        <!--StatusNavController-->
         <scene sceneID="lPJ-5R-tD5">
             <objects>
                 <navigationController storyboardIdentifier="StatusNavController" title="StatusNavController" definesPresentationContext="YES" id="bxF-nD-lOW" sceneMemberID="viewController">
@@ -3307,7 +3264,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="38" y="-2091"/>
         </scene>
-        <!--StatusTVC - Live Status-->
+        <!--Live Status-->
         <scene sceneID="Y6q-yK-sU0">
             <objects>
                 <tableViewController id="iXm-KJ-fWY" customClass="StatusTVC" sceneMemberID="viewController">
@@ -3546,7 +3503,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="516" y="-2091"/>
         </scene>
-        <!--Schedule ViewPRHTVC - Record History-->
+        <!--Record History-->
         <scene sceneID="U4y-bb-Fmc">
             <objects>
                 <tableViewController id="31P-6b-jgR" customClass="ScheduleViewPRHTVC" sceneMemberID="viewController">
@@ -3626,7 +3583,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2060" y="904"/>
         </scene>
-        <!--Schedule Edit Rule CategoryTVC - Category-->
+        <!--Category-->
         <scene sceneID="UIS-XU-DMO">
             <objects>
                 <tableViewController id="k5b-7i-r5a" customClass="ScheduleEditRuleCategoryTVC" sceneMemberID="viewController">

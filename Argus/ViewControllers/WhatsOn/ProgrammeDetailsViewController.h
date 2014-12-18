@@ -34,7 +34,7 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *progtitle;
 @property (nonatomic, weak) IBOutlet UILabel *subtitle;
-@property (nonatomic, weak) IBOutlet UILabel *description;
+@property (nonatomic, weak) IBOutlet UILabel *progdescription;
 
 @property (nonatomic, weak) IBOutlet UILabel *timeStart;
 @property (nonatomic, weak) IBOutlet UILabel *timeDuration;

@@ -70,9 +70,9 @@
 	// it must match original scrollview frame size in the storyboard
 	// tried sv.contentSize = sv.frame.size but doesn't work, gets 389 instead of 296?
 	if (iPad())
-		self.sv.contentSize = CGSizeMake(self.description.frame.size.width, 642);
+		self.sv.contentSize = CGSizeMake(self.progdescription.frame.size.width, 642);
 	else
-		self.sv.contentSize = CGSizeMake(self.description.frame.size.width, 296);
+		self.sv.contentSize = CGSizeMake(self.progdescription.frame.size.width, 296);
 	
 	//	NSLog(@"sv is %f x %f", sv.contentSize.width, sv.contentSize.height);
 	
@@ -135,13 +135,13 @@
 	if ([self.Programme Property:kDescription])
 	{
 		[self.detailsLoading stopAnimating];
-		self.description.text = [self.Programme Property:kDescription];
+		self.progdescription.text = [self.Programme Property:kDescription];
 	}
 	else
 	{
 		if ([self.Programme Property:kGuideProgramId])
 		{
-			self.description.text = nil;
+			self.progdescription.text = nil;
 
 			// no description, if we didn't try to fetch it already, do so
 			if (! [self.Programme fullDetailsDone])
@@ -156,12 +156,12 @@
 		{
 			// do not attempt to fetch descriptions if GuideProgramId is nil
 			// this signifies a manual recording
-			self.description.text = NSLocalizedString(@"<manual recording, no details available>", nil);
+			self.progdescription.text = NSLocalizedString(@"<manual recording, no details available>", nil);
 		}
 	}
 	
 	// top-align the description text
-	[self.description topAlign];
+	[self.progdescription topAlign];
 	
 #if 0
 	CGSize tmp = CGSizeMake(self.description.frame.size.width, MAXFLOAT);

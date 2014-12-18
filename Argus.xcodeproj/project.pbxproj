@@ -84,7 +84,6 @@
 		83A1E42F152D32E000C12278 /* ArgusConnectionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */; };
 		83AA3B08150AE61B0042BA96 /* ScheduleTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */; };
 		83B0FBCD188F758700CCC672 /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83452B0A152F4CC300CC358A /* libTapkuLibrary.a */; };
-		83B0FBCF188F761600CCC672 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B0FBCE188F761600CCC672 /* Reveal.framework */; };
 		83B0FBD61890BD7B00CCC672 /* LoadingSpinner.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */; };
 		83B0FBD91890C7DD00CCC672 /* NoEntriesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0FBD81890C7DD00CCC672 /* NoEntriesView.m */; };
 		83B0FBDB1890C82100CCC672 /* NoEntries.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B0FBDA1890C82100CCC672 /* NoEntries.xib */; };
@@ -320,7 +319,6 @@
 		83A1E42E152D32DF00C12278 /* ArgusConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArgusConnectionQueue.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83AA3B06150AE61B0042BA96 /* ScheduleTypeTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleTypeTVC.h; sourceTree = "<group>"; };
 		83AA3B07150AE61B0042BA96 /* ScheduleTypeTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleTypeTVC.m; sourceTree = "<group>"; };
-		83B0FBCE188F761600CCC672 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../../../../../../Applications/Development/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
 		83B0FBD51890BD7B00CCC672 /* LoadingSpinner.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingSpinner.xib; sourceTree = "<group>"; };
 		83B0FBD71890C7DD00CCC672 /* NoEntriesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoEntriesView.h; sourceTree = "<group>"; };
 		83B0FBD81890C7DD00CCC672 /* NoEntriesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoEntriesView.m; sourceTree = "<group>"; };
@@ -424,7 +422,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				83B0FBCD188F758700CCC672 /* libTapkuLibrary.a in Frameworks */,
-				83B0FBCF188F761600CCC672 /* Reveal.framework in Frameworks */,
 				837DD1AD1536291400DF0911 /* libz.dylib in Frameworks */,
 				83452B14152F4DC200CC358A /* QuartzCore.framework in Frameworks */,
 				83452B12152F4DBE00CC358A /* MapKit.framework in Frameworks */,
@@ -518,7 +515,6 @@
 		8330717814FF009C0042F7D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83B0FBCE188F761600CCC672 /* Reveal.framework */,
 				8330717D14FF009C0042F7D5 /* CoreGraphics.framework */,
 				8330717B14FF009C0042F7D5 /* Foundation.framework */,
 				837DD1AC1536291400DF0911 /* libz.dylib */,
@@ -923,7 +919,12 @@
 				ORGANIZATIONNAME = "Elsworth IT Consulting Ltd";
 				TargetAttributes = {
 					8330717414FF009C0042F7D5 = {
-						DevelopmentTeam = 5L62727F42;
+						DevelopmentTeam = 869YXPEF4W;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -1233,7 +1234,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1260,7 +1261,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Argus;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1269,7 +1269,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1296,7 +1296,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Argus;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1347,7 +1346,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1374,7 +1373,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Argus;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Signed Release Debug";
